@@ -2,41 +2,56 @@ import re
 
 
 def analyze_sql(sql):
-    sql = sql.strip()
 
-    operation = sql.split()[0].upper()
+    sql_clean = sql.strip()
+    sql_lower = sql_clean.lower()
+
+    operation_match = re.match(
+        r"\s*(select|insert|update|delete|drop|alter|truncate)",
+        sql_lower
+    )
+
+    if operation_match:
+        operation = operation_match.group(1).upper()
+    else:
+        operation = "UNKNOWN"
+
+    table = "unknown"
 
     table_match = re.search(
-        r'\b(?:FROM|UPDATE|INTO)\s+([a-zA-Z_][a-zA-Z0-9_]*)',
-        sql,
-        re.IGNORECASE
+        r"\b(?:from|update|into|delete\s+from)\s+([a-zA-Z_][a-zA-Z0-9_]*)",
+        sql_lower
     )
 
-    table = table_match.group(1) if table_match else None
+    if table_match:
+        table = table_match.group(1)
 
     where_match = re.search(
-        r'\bWHERE\b(.*?)(?:;|$)',
-        sql,
+        r"\bwhere\b(.*?)(?:;|$)",
+        sql_lower,
         re.IGNORECASE
     )
 
-    where = where_match.group(1).strip() if where_match else None
-
-    if where:
+    if where_match:
+        where = where_match.group(1).strip()
         scope = "filtered"
     else:
+        where = None
         scope = "all_rows"
 
     return {
         "operation": operation,
         "table": table,
         "where": where,
-        "scope": scope
+        "scope": scope,
+        "sql": sql_clean
     }
 
 
-sql = "UPDATE employees SET salary = 70000 WHERE name = 'Arun';"
+if __name__ == "__main__":
 
-info = analyze_sql(sql)
+    sql = "UPDATE employees SET salary = 70000 WHERE name = 'Arun';"
 
-print(info)
+    result = analyze_sql(sql)
+
+    print(result)

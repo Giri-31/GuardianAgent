@@ -5,7 +5,7 @@ import sqlite3
 from sql_analyzer import analyze_sql
 from intent_analyzer import analyze_intent
 from risk_engine import calculate_risk
-
+from intent_sql_checker import check_intent_sql
 
 client = genai.Client(
     api_key=os.getenv("GEMINI_API_KEY")
@@ -128,8 +128,11 @@ def analyze_impact(sql, scope):
     }
 
 
-def guardian_check(user_request, sql):
-    intent = analyze_intent(user_request)
+def guardian_check(user_request, sql, known_intent=None):
+    if known_intent is not None:
+        intent = known_intent
+    else:
+        intent = analyze_intent(user_request)
 
     sql_info = analyze_sql(sql)
 
@@ -137,18 +140,26 @@ def guardian_check(user_request, sql):
 
     impact = analyze_impact(sql, scope)
 
+    intent_sql_result = check_intent_sql(
+    intent,
+    sql_info,
+    scope
+)
+
     risk = calculate_risk(
-        intent,
-        sql_info,
-        scope,
-        impact
-    )
+    intent,
+    sql_info,
+    scope,
+    impact,
+    intent_sql_result
+)
 
     return {
         "intent": intent,
         "sql_info": sql_info,
         "scope": scope,
         "impact": impact,
+        "intent_sql": intent_sql_result,
         "risk": risk
     }
 

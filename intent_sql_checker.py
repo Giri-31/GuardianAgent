@@ -1,41 +1,60 @@
-from sql_analyzer import analyze_sql
-from intent_analyzer import analyze_intent
-from sql_analyzer import analyze_sql
-from intent_analyzer import analyze_intent
+def check_intent_sql(intent, sql_info, scope):
+    mismatches = []
 
+    operation = intent["operation"]
+    target = intent["target"].lower()
+    field = intent["field"].lower()
+    intent_scope = intent["scope"].lower()
 
-def check_intent_sql(intent, sql_info):
-    if intent["operation"] != sql_info["operation"]:
-        return "MISMATCH"
+    where = str(sql_info["where"]).lower()
+    sql_operation = sql_info["operation"]
 
-    intended_scope = intent["scope"]
+    if operation != sql_operation:
+        mismatches.append("OPERATION_MISMATCH")
 
-    if intended_scope == "single employee":
-        target = intent["target"]
-        where = sql_info["where"]
+    if target != "unknown":
 
-        if where is None:
-            return "MISMATCH"
+        if target == "all employees":
+            if sql_info["scope"] != "all_rows":
+                mismatches.append("SCOPE_MISMATCH")
 
-        if target.lower() not in where.lower():
-            return "MISMATCH"
+        elif target not in where:
 
-    return "MATCH"
+            if sql_operation == "SELECT":
+                mismatches.append("TARGET_MISMATCH")
+            else:
+                mismatches.append("TARGET_MISMATCH")
 
+    if field != "unknown":
 
-if __name__ == "__main__":
-    user_request = "Change Arun's salary to 70000."
+        if sql_operation in ["UPDATE", "INSERT"]:
+            sql_lower = sql_info.get("sql", "").lower()
 
-    sql = "UPDATE employees SET salary = 70000 WHERE name = 'Arun';"
+            if field not in sql_lower:
+                mismatches.append("FIELD_MISMATCH")
 
-    intent = analyze_intent(user_request)
+    if intent_scope == "single employee":
 
-    sql_info = analyze_sql(sql)
+        if scope != "ONE_ROW":
+            mismatches.append("SCOPE_MISMATCH")
 
-    result = check_intent_sql(intent, sql_info)
+    elif intent_scope == "multiple employees":
 
-    print("User request:", user_request)
-    print("Intent:", intent)
-    print("SQL:", sql)
-    print("SQL analysis:", sql_info)
-    print("Intent-SQL check:", result)
+        if scope == "ALL_ROWS" and target != "all employees":
+            mismatches.append("SCOPE_MISMATCH")
+
+    elif intent_scope == "all employees":
+
+        if scope != "MULTIPLE_ROWS" and sql_info["scope"] != "all_rows":
+            mismatches.append("SCOPE_MISMATCH")
+
+    if mismatches:
+        return {
+            "status": "MISMATCH",
+            "mismatches": mismatches
+        }
+
+    return {
+        "status": "MATCH",
+        "mismatches": []
+    }

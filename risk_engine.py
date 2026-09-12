@@ -1,75 +1,99 @@
-def calculate_risk(intent, sql_info, scope, impact):
+def calculate_risk(intent, sql_info, scope, impact, intent_sql_result):
+
+    operation = sql_info["operation"]
+    mismatches = intent_sql_result["mismatches"]
+
     risk_score = 0
 
-    if intent["operation"] != sql_info["operation"]:
-        risk_score += 4
+    if operation in ["DROP", "ALTER", "TRUNCATE"]:
+        return {
+            "risk_score": 10,
+            "risk_level": "HIGH",
+            "decision": "BLOCK"
+        }
 
-    if intent["scope"] == "single employee" and scope == "MULTIPLE_ROWS":
-        risk_score += 4
+    if operation == "DELETE":
+        return {
+            "risk_score": 10,
+            "risk_level": "HIGH",
+            "decision": "BLOCK"
+        }
 
-    if intent["scope"] == "single employee" and scope == "ALL_ROWS":
-        risk_score += 5
+    if "OPERATION_MISMATCH" in mismatches:
+        return {
+            "risk_score": 10,
+            "risk_level": "HIGH",
+            "decision": "BLOCK"
+        }
 
-    if impact["risk_level"] == "LOW":
-        risk_score += 0
+    if "TARGET_MISMATCH" in mismatches:
+        if operation == "SELECT":
+            return {
+                "risk_score": 3,
+                "risk_level": "MEDIUM",
+                "decision": "CONFIRM"
+            }
 
-    elif impact["risk_level"] == "MEDIUM":
-        risk_score += 2
+        return {
+            "risk_score": 10,
+            "risk_level": "HIGH",
+            "decision": "BLOCK"
+        }
 
-    elif impact["risk_level"] == "HIGH":
-        risk_score += 4
+    if "FIELD_MISMATCH" in mismatches:
+        return {
+            "risk_score": 10,
+            "risk_level": "HIGH",
+            "decision": "BLOCK"
+        }
 
-    elif impact["risk_level"] == "CRITICAL":
-        risk_score += 6
+    if "SCOPE_MISMATCH" in mismatches:
 
-    if risk_score >= 6:
-        risk_level = "HIGH"
-        decision = "BLOCK"
+        if operation == "SELECT":
+            return {
+                "risk_score": 3,
+                "risk_level": "MEDIUM",
+                "decision": "CONFIRM"
+            }
 
-    elif risk_score >= 3:
-        risk_level = "MEDIUM"
-        decision = "CONFIRM"
+        return {
+            "risk_score": 10,
+            "risk_level": "HIGH",
+            "decision": "BLOCK"
+        }
 
-    else:
-        risk_level = "LOW"
-        decision = "ALLOW"
+    if operation == "UPDATE":
+
+        if scope == "ONE_ROW":
+            return {
+                "risk_score": 0,
+                "risk_level": "LOW",
+                "decision": "ALLOW"
+            }
+
+        return {
+            "risk_score": 3,
+            "risk_level": "MEDIUM",
+            "decision": "CONFIRM"
+        }
+
+    if operation == "INSERT":
+        return {
+            "risk_score": 3,
+            "risk_level": "MEDIUM",
+            "decision": "CONFIRM"
+        }
+
+    if operation == "SELECT":
+
+        return {
+            "risk_score": 0,
+            "risk_level": "LOW",
+            "decision": "ALLOW"
+        }
 
     return {
-        "risk_score": risk_score,
-        "risk_level": risk_level,
-        "decision": decision
+        "risk_score": 10,
+        "risk_level": "HIGH",
+        "decision": "BLOCK"
     }
-
-
-if __name__ == "__main__":
-
-    intent = {
-        "operation": "UPDATE",
-        "target": "Arun",
-        "field": "salary",
-        "value": "70000",
-        "scope": "single employee"
-    }
-
-    sql_info = {
-        "operation": "UPDATE",
-        "table": "employees",
-        "where": "name = 'Arun'",
-        "scope": "filtered"
-    }
-
-    scope = "ONE_ROW"
-
-    impact = {
-        "impact_type": "DATA_MODIFICATION",
-        "risk_level": "MEDIUM"
-    }
-
-    result = calculate_risk(
-        intent,
-        sql_info,
-        scope,
-        impact
-    )
-
-    print("Risk result:", result)
