@@ -36,7 +36,7 @@ Rules:
     return response.text.strip()
 
 
-tasks = load_dbbench()
+tasks = load_dbbench()[:5]
 
 task = tasks[0]
 

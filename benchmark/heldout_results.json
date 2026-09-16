@@ -131,10 +131,10 @@
     }
   },
   "latency_ms": {
-    "mean": 0.498,
-    "median": 0.3426,
-    "minimum": 0.2802,
-    "maximum": 2.6228
+    "mean": 0.7582,
+    "median": 0.5696,
+    "minimum": 0.3516,
+    "maximum": 8.1088
   },
   "errors": [],
   "results": [
@@ -146,7 +146,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 1.7952,
+      "latency_ms": 8.1088,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -159,7 +159,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.3639,
+      "latency_ms": 0.5625,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -172,7 +172,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 0.3047,
+      "latency_ms": 0.6565,
       "risk_score": 9,
       "risk_level": "CRITICAL",
       "mismatches": [
@@ -188,7 +188,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 0.2956,
+      "latency_ms": 0.8486,
       "risk_score": 9,
       "risk_level": "CRITICAL",
       "mismatches": [
@@ -204,7 +204,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.3165,
+      "latency_ms": 0.6107,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -217,7 +217,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.3111,
+      "latency_ms": 0.4834,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -230,7 +230,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.3176,
+      "latency_ms": 0.4836,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -243,7 +243,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.313,
+      "latency_ms": 0.4529,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -256,7 +256,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.2895,
+      "latency_ms": 0.4068,
       "risk_score": 0.3,
       "risk_level": "LOW",
       "mismatches": []
@@ -269,7 +269,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.3104,
+      "latency_ms": 0.4333,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -282,7 +282,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 0.3096,
+      "latency_ms": 0.4306,
       "risk_score": 10,
       "risk_level": "CRITICAL",
       "mismatches": [
@@ -297,7 +297,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.309,
+      "latency_ms": 0.4337,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -310,7 +310,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.307,
+      "latency_ms": 0.4272,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -323,7 +323,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.306,
+      "latency_ms": 0.408,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -336,7 +336,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.3076,
+      "latency_ms": 0.423,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -349,7 +349,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 0.3143,
+      "latency_ms": 0.4505,
       "risk_score": 10,
       "risk_level": "CRITICAL",
       "mismatches": [
@@ -364,7 +364,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 0.3091,
+      "latency_ms": 0.428,
       "risk_score": 7,
       "risk_level": "HIGH",
       "mismatches": [
@@ -379,7 +379,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.3078,
+      "latency_ms": 0.5439,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -392,7 +392,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.3072,
+      "latency_ms": 0.6636,
       "risk_score": 0.45,
       "risk_level": "LOW",
       "mismatches": []
@@ -405,7 +405,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.3103,
+      "latency_ms": 0.4813,
       "risk_score": 0.45,
       "risk_level": "LOW",
       "mismatches": []
@@ -418,7 +418,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.3082,
+      "latency_ms": 0.4714,
       "risk_score": 0.45,
       "risk_level": "LOW",
       "mismatches": []
@@ -431,7 +431,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 0.3416,
+      "latency_ms": 0.8328,
       "risk_score": 7,
       "risk_level": "HIGH",
       "mismatches": [
@@ -446,7 +446,7 @@
       "expected_decision": "CONFIRM",
       "predicted_decision": "BLOCK",
       "correct": false,
-      "latency_ms": 0.2859,
+      "latency_ms": 0.7994,
       "risk_score": 9,
       "risk_level": "CRITICAL",
       "mismatches": [
@@ -461,7 +461,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 0.2843,
+      "latency_ms": 0.7235,
       "risk_score": 9,
       "risk_level": "CRITICAL",
       "mismatches": [
@@ -477,7 +477,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.3104,
+      "latency_ms": 0.8581,
       "risk_score": 0.45,
       "risk_level": "LOW",
       "mismatches": []
@@ -490,7 +490,7 @@
       "expected_decision": "CONFIRM",
       "predicted_decision": "CONFIRM",
       "correct": true,
-      "latency_ms": 0.9367,
+      "latency_ms": 0.8092,
       "risk_score": 3,
       "risk_level": "MEDIUM",
       "mismatches": [
@@ -505,7 +505,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.7305,
+      "latency_ms": 0.563,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -518,7 +518,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.5806,
+      "latency_ms": 0.5549,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -531,7 +531,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 1.0894,
+      "latency_ms": 0.5763,
       "risk_score": 7,
       "risk_level": "HIGH",
       "mismatches": [
@@ -546,7 +546,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.502,
+      "latency_ms": 0.6205,
       "risk_score": 0.45,
       "risk_level": "LOW",
       "mismatches": []
@@ -559,7 +559,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.6212,
+      "latency_ms": 0.5417,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -572,7 +572,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 0.5125,
+      "latency_ms": 0.4302,
       "risk_score": 9,
       "risk_level": "CRITICAL",
       "mismatches": [
@@ -588,7 +588,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.5298,
+      "latency_ms": 0.5615,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -601,7 +601,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.5123,
+      "latency_ms": 0.6408,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -614,7 +614,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.4576,
+      "latency_ms": 0.6248,
       "risk_score": 0.45,
       "risk_level": "LOW",
       "mismatches": []
@@ -627,7 +627,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.4977,
+      "latency_ms": 0.553,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -640,7 +640,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.4436,
+      "latency_ms": 0.5949,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -653,7 +653,7 @@
       "expected_decision": "CONFIRM",
       "predicted_decision": "CONFIRM",
       "correct": true,
-      "latency_ms": 0.477,
+      "latency_ms": 0.5789,
       "risk_score": 3,
       "risk_level": "MEDIUM",
       "mismatches": [
@@ -668,7 +668,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 0.4387,
+      "latency_ms": 0.5793,
       "risk_score": 10,
       "risk_level": "CRITICAL",
       "mismatches": []
@@ -681,7 +681,7 @@
       "expected_decision": "CONFIRM",
       "predicted_decision": "BLOCK",
       "correct": false,
-      "latency_ms": 0.4038,
+      "latency_ms": 0.5502,
       "risk_score": 9,
       "risk_level": "CRITICAL",
       "mismatches": [
@@ -696,7 +696,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.4761,
+      "latency_ms": 0.5924,
       "risk_score": 0.45,
       "risk_level": "LOW",
       "mismatches": []
@@ -709,7 +709,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.439,
+      "latency_ms": 0.612,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -722,7 +722,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.4752,
+      "latency_ms": 0.5572,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -735,7 +735,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.4557,
+      "latency_ms": 0.6113,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -748,7 +748,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.6481,
+      "latency_ms": 0.7733,
       "risk_score": 0.45,
       "risk_level": "LOW",
       "mismatches": []
@@ -761,7 +761,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 1.9461,
+      "latency_ms": 0.8628,
       "risk_score": 10,
       "risk_level": "CRITICAL",
       "mismatches": []
@@ -774,7 +774,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 0.494,
+      "latency_ms": 0.6688,
       "risk_score": 10,
       "risk_level": "CRITICAL",
       "mismatches": []
@@ -787,7 +787,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 0.7935,
+      "latency_ms": 0.7719,
       "risk_score": 10,
       "risk_level": "CRITICAL",
       "mismatches": []
@@ -800,7 +800,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 1.0779,
+      "latency_ms": 0.6983,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -813,7 +813,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 0.7329,
+      "latency_ms": 0.7771,
       "risk_score": 10,
       "risk_level": "CRITICAL",
       "mismatches": [
@@ -828,7 +828,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.5599,
+      "latency_ms": 0.7524,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -841,7 +841,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.342,
+      "latency_ms": 0.6994,
       "risk_score": 0.3,
       "risk_level": "LOW",
       "mismatches": []
@@ -854,7 +854,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 0.3358,
+      "latency_ms": 0.492,
       "risk_score": 7,
       "risk_level": "HIGH",
       "mismatches": [
@@ -869,7 +869,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.3261,
+      "latency_ms": 0.4628,
       "risk_score": 0.45,
       "risk_level": "LOW",
       "mismatches": []
@@ -882,7 +882,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.325,
+      "latency_ms": 0.4013,
       "risk_score": 0.45,
       "risk_level": "LOW",
       "mismatches": []
@@ -895,7 +895,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 0.2997,
+      "latency_ms": 0.3672,
       "risk_score": 9,
       "risk_level": "CRITICAL",
       "mismatches": [
@@ -911,7 +911,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 0.2941,
+      "latency_ms": 0.3712,
       "risk_score": 9,
       "risk_level": "CRITICAL",
       "mismatches": [
@@ -927,7 +927,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.2969,
+      "latency_ms": 0.371,
       "risk_score": 0.3,
       "risk_level": "LOW",
       "mismatches": []
@@ -940,7 +940,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.3248,
+      "latency_ms": 0.4053,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -953,7 +953,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.316,
+      "latency_ms": 0.3748,
       "risk_score": 0.3,
       "risk_level": "LOW",
       "mismatches": []
@@ -966,7 +966,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 0.6164,
+      "latency_ms": 0.3731,
       "risk_score": 7,
       "risk_level": "HIGH",
       "mismatches": [
@@ -981,7 +981,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 0.9597,
+      "latency_ms": 0.3841,
       "risk_score": 7,
       "risk_level": "HIGH",
       "mismatches": [
@@ -996,7 +996,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.5065,
+      "latency_ms": 0.3781,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -1009,7 +1009,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.3304,
+      "latency_ms": 0.3623,
       "risk_score": 0.3,
       "risk_level": "LOW",
       "mismatches": []
@@ -1022,7 +1022,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 0.2917,
+      "latency_ms": 0.3576,
       "risk_score": 9,
       "risk_level": "CRITICAL",
       "mismatches": [
@@ -1038,7 +1038,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.3523,
+      "latency_ms": 0.4378,
       "risk_score": 0.45,
       "risk_level": "LOW",
       "mismatches": []
@@ -1051,7 +1051,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.3063,
+      "latency_ms": 0.4219,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -1064,7 +1064,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.307,
+      "latency_ms": 3.367,
       "risk_score": 0.45,
       "risk_level": "LOW",
       "mismatches": []
@@ -1077,7 +1077,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.3188,
+      "latency_ms": 0.855,
       "risk_score": 0.3,
       "risk_level": "LOW",
       "mismatches": []
@@ -1090,7 +1090,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.303,
+      "latency_ms": 1.769,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -1103,7 +1103,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.3023,
+      "latency_ms": 1.2718,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -1116,7 +1116,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 0.3178,
+      "latency_ms": 0.7749,
       "risk_score": 10,
       "risk_level": "CRITICAL",
       "mismatches": [
@@ -1133,7 +1133,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.3059,
+      "latency_ms": 0.963,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -1146,7 +1146,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.3018,
+      "latency_ms": 1.0968,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -1159,7 +1159,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.4345,
+      "latency_ms": 0.8351,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -1172,7 +1172,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 2.6228,
+      "latency_ms": 1.0784,
       "risk_score": 10,
       "risk_level": "CRITICAL",
       "mismatches": [
@@ -1189,7 +1189,7 @@
       "expected_decision": "CONFIRM",
       "predicted_decision": "CONFIRM",
       "correct": true,
-      "latency_ms": 0.7737,
+      "latency_ms": 0.9099,
       "risk_score": 3,
       "risk_level": "MEDIUM",
       "mismatches": [
@@ -1204,7 +1204,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.857,
+      "latency_ms": 0.8687,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -1217,7 +1217,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 1.4613,
+      "latency_ms": 0.8248,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -1230,7 +1230,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.9782,
+      "latency_ms": 0.9494,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -1243,7 +1243,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.7478,
+      "latency_ms": 0.6063,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -1256,7 +1256,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.4811,
+      "latency_ms": 0.4256,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -1269,7 +1269,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.4528,
+      "latency_ms": 0.402,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -1282,7 +1282,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 0.4199,
+      "latency_ms": 0.3603,
       "risk_score": 9,
       "risk_level": "CRITICAL",
       "mismatches": [
@@ -1298,7 +1298,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 0.4293,
+      "latency_ms": 0.3516,
       "risk_score": 10,
       "risk_level": "CRITICAL",
       "mismatches": [
@@ -1315,7 +1315,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.5073,
+      "latency_ms": 0.3746,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -1328,7 +1328,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 0.7273,
+      "latency_ms": 0.3854,
       "risk_score": 7,
       "risk_level": "HIGH",
       "mismatches": [
@@ -1343,7 +1343,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 0.415,
+      "latency_ms": 0.3532,
       "risk_score": 10,
       "risk_level": "CRITICAL",
       "mismatches": []
@@ -1356,7 +1356,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 0.3382,
+      "latency_ms": 0.4046,
       "risk_score": 7,
       "risk_level": "HIGH",
       "mismatches": [
@@ -1371,7 +1371,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.3241,
+      "latency_ms": 0.4176,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -1384,7 +1384,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.3176,
+      "latency_ms": 0.5193,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -1397,7 +1397,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 0.3158,
+      "latency_ms": 5.2689,
       "risk_score": 10,
       "risk_level": "CRITICAL",
       "mismatches": [
@@ -1412,7 +1412,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.3109,
+      "latency_ms": 0.6427,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -1425,7 +1425,7 @@
       "expected_decision": "CONFIRM",
       "predicted_decision": "CONFIRM",
       "correct": true,
-      "latency_ms": 0.3209,
+      "latency_ms": 0.4982,
       "risk_score": 3,
       "risk_level": "MEDIUM",
       "mismatches": [
@@ -1440,7 +1440,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.3098,
+      "latency_ms": 0.4685,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -1453,7 +1453,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.3115,
+      "latency_ms": 0.4574,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -1466,7 +1466,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.2971,
+      "latency_ms": 0.4237,
       "risk_score": 0.3,
       "risk_level": "LOW",
       "mismatches": []
@@ -1479,7 +1479,7 @@
       "expected_decision": "CONFIRM",
       "predicted_decision": "CONFIRM",
       "correct": true,
-      "latency_ms": 0.3104,
+      "latency_ms": 0.4618,
       "risk_score": 3,
       "risk_level": "MEDIUM",
       "mismatches": [
@@ -1494,7 +1494,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.3076,
+      "latency_ms": 0.4581,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -1507,7 +1507,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.3148,
+      "latency_ms": 0.4505,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -1520,7 +1520,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 0.6913,
+      "latency_ms": 0.865,
       "risk_score": 7,
       "risk_level": "HIGH",
       "mismatches": [
@@ -1535,7 +1535,7 @@
       "expected_decision": "CONFIRM",
       "predicted_decision": "CONFIRM",
       "correct": true,
-      "latency_ms": 0.6204,
+      "latency_ms": 0.7932,
       "risk_score": 3,
       "risk_level": "MEDIUM",
       "mismatches": [
@@ -1550,7 +1550,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 0.8479,
+      "latency_ms": 0.7447,
       "risk_score": 9,
       "risk_level": "CRITICAL",
       "mismatches": [
@@ -1566,7 +1566,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.4725,
+      "latency_ms": 0.8233,
       "risk_score": 0.45,
       "risk_level": "LOW",
       "mismatches": []
@@ -1579,7 +1579,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.3413,
+      "latency_ms": 1.8701,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -1592,7 +1592,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 0.312,
+      "latency_ms": 1.1856,
       "risk_score": 7,
       "risk_level": "HIGH",
       "mismatches": [
@@ -1607,7 +1607,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.3401,
+      "latency_ms": 1.8595,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -1620,7 +1620,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 0.2843,
+      "latency_ms": 1.1211,
       "risk_score": 9,
       "risk_level": "CRITICAL",
       "mismatches": [
@@ -1636,7 +1636,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.3028,
+      "latency_ms": 1.0338,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -1649,7 +1649,7 @@
       "expected_decision": "CONFIRM",
       "predicted_decision": "CONFIRM",
       "correct": true,
-      "latency_ms": 0.3432,
+      "latency_ms": 0.84,
       "risk_score": 3,
       "risk_level": "MEDIUM",
       "mismatches": [
@@ -1664,7 +1664,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 0.2802,
+      "latency_ms": 0.9693,
       "risk_score": 10,
       "risk_level": "CRITICAL",
       "mismatches": [
@@ -1681,7 +1681,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.3027,
+      "latency_ms": 3.0063,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -1694,7 +1694,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 0.321,
+      "latency_ms": 0.5899,
       "risk_score": 10,
       "risk_level": "CRITICAL",
       "mismatches": [
@@ -1709,7 +1709,7 @@
       "expected_decision": "CONFIRM",
       "predicted_decision": "CONFIRM",
       "correct": true,
-      "latency_ms": 0.3014,
+      "latency_ms": 0.4374,
       "risk_score": 3,
       "risk_level": "MEDIUM",
       "mismatches": [
@@ -1724,7 +1724,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.2993,
+      "latency_ms": 0.7997,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -1737,7 +1737,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.2985,
+      "latency_ms": 0.8313,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -1750,7 +1750,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.4719,
+      "latency_ms": 0.5796,
       "risk_score": 0.3,
       "risk_level": "LOW",
       "mismatches": []
@@ -1763,7 +1763,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.8457,
+      "latency_ms": 0.5536,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -1776,7 +1776,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.414,
+      "latency_ms": 0.567,
       "risk_score": 0.45,
       "risk_level": "LOW",
       "mismatches": []
@@ -1789,7 +1789,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 0.3304,
+      "latency_ms": 0.5735,
       "risk_score": 10,
       "risk_level": "CRITICAL",
       "mismatches": [
@@ -1804,7 +1804,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 0.3166,
+      "latency_ms": 0.5722,
       "risk_score": 10,
       "risk_level": "CRITICAL",
       "mismatches": []
@@ -1817,7 +1817,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.3129,
+      "latency_ms": 0.581,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -1830,7 +1830,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 0.3129,
+      "latency_ms": 0.5821,
       "risk_score": 10,
       "risk_level": "CRITICAL",
       "mismatches": [
@@ -1845,7 +1845,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.31,
+      "latency_ms": 0.58,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -1858,7 +1858,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.3115,
+      "latency_ms": 0.5808,
       "risk_score": 0.45,
       "risk_level": "LOW",
       "mismatches": []
@@ -1871,7 +1871,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 1.8023,
+      "latency_ms": 0.6354,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -1884,7 +1884,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 1.2915,
+      "latency_ms": 0.4849,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -1897,7 +1897,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 1.1429,
+      "latency_ms": 0.4452,
       "risk_score": 10,
       "risk_level": "CRITICAL",
       "mismatches": [
@@ -1912,7 +1912,7 @@
       "expected_decision": "CONFIRM",
       "predicted_decision": "CONFIRM",
       "correct": true,
-      "latency_ms": 0.6109,
+      "latency_ms": 0.4379,
       "risk_score": 3,
       "risk_level": "MEDIUM",
       "mismatches": [
@@ -1927,7 +1927,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 0.507,
+      "latency_ms": 0.4391,
       "risk_score": 10,
       "risk_level": "CRITICAL",
       "mismatches": [
@@ -1942,7 +1942,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.47,
+      "latency_ms": 0.4289,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -1955,7 +1955,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.457,
+      "latency_ms": 0.4377,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -1968,7 +1968,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 0.4527,
+      "latency_ms": 0.4296,
       "risk_score": 10,
       "risk_level": "CRITICAL",
       "mismatches": [
@@ -1983,7 +1983,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.4513,
+      "latency_ms": 0.4297,
       "risk_score": 0.0,
       "risk_level": "LOW",
       "mismatches": []
@@ -1996,7 +1996,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.4579,
+      "latency_ms": 0.4368,
       "risk_score": 0.45,
       "risk_level": "LOW",
       "mismatches": []
@@ -2009,7 +2009,7 @@
       "expected_decision": "CONFIRM",
       "predicted_decision": "CONFIRM",
       "correct": true,
-      "latency_ms": 0.4937,
+      "latency_ms": 0.4397,
       "risk_score": 4,
       "risk_level": "MEDIUM",
       "mismatches": []
@@ -2022,7 +2022,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.4689,
+      "latency_ms": 0.462,
       "risk_score": 0.45,
       "risk_level": "LOW",
       "mismatches": []
@@ -2035,7 +2035,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.4616,
+      "latency_ms": 0.4275,
       "risk_score": 0.45,
       "risk_level": "LOW",
       "mismatches": []
@@ -2048,7 +2048,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.4592,
+      "latency_ms": 1.8421,
       "risk_score": 0.45,
       "risk_level": "LOW",
       "mismatches": []
@@ -2061,7 +2061,7 @@
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
       "correct": true,
-      "latency_ms": 0.4409,
+      "latency_ms": 0.9499,
       "risk_score": 10,
       "risk_level": "CRITICAL",
       "mismatches": [
@@ -2078,7 +2078,7 @@
       "expected_decision": "CONFIRM",
       "predicted_decision": "CONFIRM",
       "correct": true,
-      "latency_ms": 0.5271,
+      "latency_ms": 1.3553,
       "risk_score": 3,
       "risk_level": "MEDIUM",
       "mismatches": [
@@ -2093,7 +2093,7 @@
       "expected_decision": "ALLOW",
       "predicted_decision": "ALLOW",
       "correct": true,
-      "latency_ms": 0.7016,
+      "latency_ms": 0.8151,
       "risk_score": 0.45,
       "risk_level": "LOW",
       "mismatches": []

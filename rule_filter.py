@@ -24,9 +24,10 @@ def rule_filter(sql):
 
     return "ALLOW"
 
-sql = "UPDATE employees SET salary = 70000 WHERE department = 'IT';"
+if __name__ == "__main__":
+    sql = "UPDATE employees SET salary = 70000 WHERE department = 'IT';"
 
-decision = rule_filter(sql)
+    decision = rule_filter(sql)
 
-print("SQL:", sql)
-print("Decision:", decision)
+    print("SQL:", sql)
+    print("Decision:", decision)
