@@ -45,36 +45,184 @@ Do not explain anything.
 
 
 def analyze_scope_safely(sql):
-    sql_upper = sql.upper().strip()
+    """
+    Safely estimate how many database rows a SQL statement affects.
+
+    The SQL is NEVER executed directly.
+
+    Scope categories:
+        ZERO_ROWS
+        ONE_ROW
+        MULTIPLE_ROWS
+        ALL_ROWS
+        UNKNOWN
+
+    Handles:
+        SELECT
+        UPDATE
+        DELETE
+        INSERT
+
+    Supports qualified columns such as:
+        e.name
+        employees.name
+    """
+
+    import re
+    import sqlite3
+
+    sql_clean = sql.strip()
+    sql_upper = sql_clean.upper()
 
     connection = sqlite3.connect("company.db")
     cursor = connection.cursor()
 
     try:
-        if "WHERE" not in sql_upper:
-            cursor.execute("SELECT COUNT(*) FROM employees")
-        else:
-            where_condition = sql.split("WHERE", 1)[1].rstrip(";")
 
-            cursor.execute(
-                "SELECT COUNT(*) FROM employees WHERE " + where_condition
+        # =====================================================
+        # INSERT
+        # =====================================================
+        #
+        # INSERT does not use WHERE.
+        # A normal single-row INSERT affects one row.
+        #
+        if sql_upper.startswith("INSERT"):
+
+            values_match = re.search(
+                r"\bVALUES\b(.+)",
+                sql_clean,
+                re.IGNORECASE | re.DOTALL
             )
 
-        count = cursor.fetchone()[0]
+            if not values_match:
+                connection.close()
+                return "UNKNOWN"
 
-    except:
+            values_part = (
+                values_match.group(1)
+                .rstrip(";")
+                .strip()
+            )
+
+            # Count simple VALUES tuples.
+            tuples = re.findall(
+                r"\([^()]*\)",
+                values_part
+            )
+
+            connection.close()
+
+            if len(tuples) == 1:
+                return "ONE_ROW"
+
+            if len(tuples) > 1:
+                return "MULTIPLE_ROWS"
+
+            return "UNKNOWN"
+
+        # =====================================================
+        # Statements without WHERE
+        # =====================================================
+
+        if "WHERE" not in sql_upper:
+
+            cursor.execute(
+                "SELECT COUNT(*) FROM employees"
+            )
+
+            row_count = cursor.fetchone()[0]
+
+            connection.close()
+
+            if sql_upper.startswith("SELECT"):
+                if row_count == 0:
+                    return "ZERO_ROWS"
+
+                if row_count == 1:
+                    return "ONE_ROW"
+
+                return "MULTIPLE_ROWS"
+
+            # UPDATE / DELETE without WHERE affect all rows.
+            if sql_upper.startswith(
+                ("UPDATE", "DELETE")
+            ):
+                return "ALL_ROWS"
+
+            return "UNKNOWN"
+
+        # =====================================================
+        # Extract WHERE condition
+        # =====================================================
+
+        where_match = re.search(
+            r"\bWHERE\b(.+?)(?:;|$)",
+            sql_clean,
+            re.IGNORECASE | re.DOTALL
+        )
+
+        if not where_match:
+            connection.close()
+            return "UNKNOWN"
+
+        where_condition = (
+            where_match.group(1)
+            .strip()
+        )
+
+        # =====================================================
+        # Normalize qualified column names
+        #
+        # Example:
+        #
+        #     e.name = 'Arun'
+        #
+        # becomes:
+        #
+        #     name = 'Arun'
+        #
+        # This allows SQLite to evaluate the condition
+        # against the employees table.
+        # =====================================================
+
+        where_condition = re.sub(
+            r"\b[a-zA-Z_][a-zA-Z0-9_]*\.",
+            "",
+            where_condition
+        )
+
+        # =====================================================
+        # Count matching rows
+        # =====================================================
+
+        count_query = (
+            "SELECT COUNT(*) "
+            "FROM employees "
+            "WHERE "
+            + where_condition
+        )
+
+        cursor.execute(count_query)
+
+        row_count = cursor.fetchone()[0]
+
+        connection.close()
+
+        # =====================================================
+        # Convert row count to scope
+        # =====================================================
+
+        if row_count == 0:
+            return "ZERO_ROWS"
+
+        if row_count == 1:
+            return "ONE_ROW"
+
+        return "MULTIPLE_ROWS"
+
+    except Exception:
         connection.close()
         return "UNKNOWN"
-
-    connection.close()
-
-    if count == 0:
-        return "ZERO_ROWS"
-
-    if count == 1:
-        return "ONE_ROW"
-
-    return "MULTIPLE_ROWS"
 
 
 def analyze_impact(sql, scope):

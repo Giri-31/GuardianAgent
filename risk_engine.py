@@ -138,6 +138,14 @@ def calculate_risk(intent, sql_info, scope, impact, intent_sql_result):
             "risk_components": risk_components
         }
 
+    if operation == "INSERT":
+        return {
+        "risk_score": 4,
+        "risk_level": "MEDIUM",
+        "decision": "CONFIRM",
+        "risk_components": risk_components
+    }
+
     # ---------------------------------------------------------
     # DELETE
     # ---------------------------------------------------------

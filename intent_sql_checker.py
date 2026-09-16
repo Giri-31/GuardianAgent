@@ -8,7 +8,10 @@ def check_intent_sql(intent, sql_info, scope):
     intent_scope = intent["scope"].lower()
 
     where = str(
-        sql_info.get("where", "")
+        sql_info.get(
+            "where",
+            ""
+        )
     ).lower()
 
     sql_operation = sql_info["operation"]
@@ -34,6 +37,10 @@ def check_intent_sql(intent, sql_info, scope):
 
     if target != "unknown":
 
+        # -----------------------------------------------------
+        # ALL EMPLOYEES
+        # -----------------------------------------------------
+
         if target == "all employees":
 
             if sql_info["scope"] != "all_rows":
@@ -41,6 +48,26 @@ def check_intent_sql(intent, sql_info, scope):
                 mismatches.append(
                     "SCOPE_MISMATCH"
                 )
+
+        # -----------------------------------------------------
+        # INSERT
+        #
+        # INSERT has no WHERE clause.
+        # Therefore check whether the intended target
+        # appears in the INSERT statement itself.
+        # -----------------------------------------------------
+
+        elif sql_operation == "INSERT":
+
+            if target not in sql_text:
+
+                mismatches.append(
+                    "TARGET_MISMATCH"
+                )
+
+        # -----------------------------------------------------
+        # SELECT / UPDATE / DELETE
+        # -----------------------------------------------------
 
         elif target not in where:
 
@@ -53,11 +80,6 @@ def check_intent_sql(intent, sql_info, scope):
     # =========================================================
 
     if field != "unknown":
-
-        # Check fields for both reads and writes.
-        #
-        # This is important because a SELECT can also access
-        # the wrong field.
 
         if field not in sql_text:
 
