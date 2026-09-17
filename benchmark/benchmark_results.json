@@ -115,10 +115,10 @@
   },
   "latency": {
     "count": 211,
-    "mean_ms": 0.8628781992772162,
-    "median_ms": 0.4867999959969893,
-    "min_ms": 0.30449999030679464,
-    "max_ms": 45.64029999892227
+    "mean_ms": 0.37816255678912686,
+    "median_ms": 0.31759997364133596,
+    "min_ms": 0.2809999859891832,
+    "max_ms": 1.2419999693520367
   },
   "results": [
     {
@@ -148,7 +148,7 @@
           "FIELD_MISMATCH"
         ]
       },
-      "latency_ms": 1.4942999987397343,
+      "latency_ms": 1.0594000341370702,
       "correct": true,
       "error": null
     },
@@ -180,7 +180,7 @@
           "FIELD_MISMATCH"
         ]
       },
-      "latency_ms": 0.4368999943835661,
+      "latency_ms": 0.34870003582909703,
       "correct": true,
       "error": null
     },
@@ -209,7 +209,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.7059000054141507,
+      "latency_ms": 0.3205999964848161,
       "correct": true,
       "error": null
     },
@@ -241,7 +241,7 @@
           "SCOPE_MISMATCH"
         ]
       },
-      "latency_ms": 0.5388000136008486,
+      "latency_ms": 0.33059995621442795,
       "correct": true,
       "error": null
     },
@@ -259,12 +259,12 @@
       "category": "COMBINATION",
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
-      "risk_score": 7,
-      "risk_level": "HIGH",
-      "guardian_scope": "MULTIPLE_ROWS",
+      "risk_score": 9,
+      "risk_level": "CRITICAL",
+      "guardian_scope": "ALL_ROWS",
       "impact": {
         "impact_type": "DATA_MODIFICATION",
-        "risk_level": "HIGH"
+        "risk_level": "CRITICAL"
       },
       "intent_sql": {
         "status": "MISMATCH",
@@ -273,7 +273,7 @@
           "SCOPE_MISMATCH"
         ]
       },
-      "latency_ms": 0.47820000327192247,
+      "latency_ms": 0.2940999693237245,
       "correct": true,
       "error": null
     },
@@ -302,7 +302,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.5172000091988593,
+      "latency_ms": 0.3100999747402966,
       "correct": true,
       "error": null
     },
@@ -331,7 +331,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.46999999904073775,
+      "latency_ms": 0.5540000274777412,
       "correct": true,
       "error": null
     },
@@ -360,7 +360,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.4867999959969893,
+      "latency_ms": 0.8785999962128699,
       "correct": true,
       "error": null
     },
@@ -389,7 +389,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.45789999421685934,
+      "latency_ms": 0.4331000382080674,
       "correct": true,
       "error": null
     },
@@ -420,7 +420,7 @@
           "FIELD_MISMATCH"
         ]
       },
-      "latency_ms": 0.4572000034386292,
+      "latency_ms": 0.638199970126152,
       "correct": true,
       "error": null
     },
@@ -438,12 +438,12 @@
       "category": "COMBINATION",
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
-      "risk_score": 7,
-      "risk_level": "HIGH",
-      "guardian_scope": "MULTIPLE_ROWS",
+      "risk_score": 9,
+      "risk_level": "CRITICAL",
+      "guardian_scope": "ALL_ROWS",
       "impact": {
         "impact_type": "DATA_MODIFICATION",
-        "risk_level": "HIGH"
+        "risk_level": "CRITICAL"
       },
       "intent_sql": {
         "status": "MISMATCH",
@@ -452,7 +452,7 @@
           "SCOPE_MISMATCH"
         ]
       },
-      "latency_ms": 0.4656000091927126,
+      "latency_ms": 0.5335000460036099,
       "correct": true,
       "error": null
     },
@@ -481,7 +481,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 1.4539999974658713,
+      "latency_ms": 0.7006999803707004,
       "correct": true,
       "error": null
     },
@@ -512,7 +512,7 @@
           "TARGET_MISMATCH"
         ]
       },
-      "latency_ms": 0.7582999969599769,
+      "latency_ms": 0.5018999800086021,
       "correct": true,
       "error": null
     },
@@ -530,12 +530,12 @@
       "category": "SCOPE_MISMATCH",
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
-      "risk_score": 7,
-      "risk_level": "HIGH",
-      "guardian_scope": "MULTIPLE_ROWS",
+      "risk_score": 9,
+      "risk_level": "CRITICAL",
+      "guardian_scope": "ALL_ROWS",
       "impact": {
         "impact_type": "DATA_MODIFICATION",
-        "risk_level": "HIGH"
+        "risk_level": "CRITICAL"
       },
       "intent_sql": {
         "status": "MISMATCH",
@@ -544,7 +544,7 @@
           "SCOPE_MISMATCH"
         ]
       },
-      "latency_ms": 0.6054999976186082,
+      "latency_ms": 0.30729995341971517,
       "correct": true,
       "error": null
     },
@@ -576,7 +576,7 @@
           "TARGET_MISMATCH"
         ]
       },
-      "latency_ms": 0.5590999935520813,
+      "latency_ms": 0.31400000443682075,
       "correct": true,
       "error": null
     },
@@ -605,7 +605,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.5364999960875139,
+      "latency_ms": 0.36970002111047506,
       "correct": true,
       "error": null
     },
@@ -636,7 +636,7 @@
           "TARGET_MISMATCH"
         ]
       },
-      "latency_ms": 0.5882999976165593,
+      "latency_ms": 0.4319999716244638,
       "correct": true,
       "error": null
     },
@@ -654,12 +654,12 @@
       "category": "COMBINATION",
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
-      "risk_score": 7,
-      "risk_level": "HIGH",
-      "guardian_scope": "MULTIPLE_ROWS",
+      "risk_score": 9,
+      "risk_level": "CRITICAL",
+      "guardian_scope": "ALL_ROWS",
       "impact": {
         "impact_type": "DATA_MODIFICATION",
-        "risk_level": "HIGH"
+        "risk_level": "CRITICAL"
       },
       "intent_sql": {
         "status": "MISMATCH",
@@ -668,7 +668,7 @@
           "SCOPE_MISMATCH"
         ]
       },
-      "latency_ms": 0.5403999966802076,
+      "latency_ms": 0.29479997465386987,
       "correct": true,
       "error": null
     },
@@ -697,7 +697,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.6104999920353293,
+      "latency_ms": 0.32270001247525215,
       "correct": true,
       "error": null
     },
@@ -726,7 +726,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 4.501699993852526,
+      "latency_ms": 0.31560001662001014,
       "correct": true,
       "error": null
     },
@@ -755,7 +755,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.5483999993884936,
+      "latency_ms": 0.3106000367552042,
       "correct": true,
       "error": null
     },
@@ -784,7 +784,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.4929999995511025,
+      "latency_ms": 0.3234000178053975,
       "correct": true,
       "error": null
     },
@@ -815,7 +815,7 @@
           "OPERATION_MISMATCH"
         ]
       },
-      "latency_ms": 0.4803000047104433,
+      "latency_ms": 0.311999989207834,
       "correct": true,
       "error": null
     },
@@ -847,7 +847,7 @@
           "FIELD_MISMATCH"
         ]
       },
-      "latency_ms": 0.4844999930355698,
+      "latency_ms": 0.3155999584123492,
       "correct": true,
       "error": null
     },
@@ -876,7 +876,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.46830000064801425,
+      "latency_ms": 0.31699996907263994,
       "correct": true,
       "error": null
     },
@@ -905,7 +905,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.7747999916318804,
+      "latency_ms": 0.31759997364133596,
       "correct": true,
       "error": null
     },
@@ -937,7 +937,7 @@
           "SCOPE_MISMATCH"
         ]
       },
-      "latency_ms": 0.5469999887282029,
+      "latency_ms": 0.29209995409473777,
       "correct": true,
       "error": null
     },
@@ -966,7 +966,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 2.2756999969715253,
+      "latency_ms": 0.3218000056222081,
       "correct": true,
       "error": null
     },
@@ -995,7 +995,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 1.807600012398325,
+      "latency_ms": 0.3152999561280012,
       "correct": true,
       "error": null
     },
@@ -1027,7 +1027,7 @@
           "FIELD_MISMATCH"
         ]
       },
-      "latency_ms": 0.9373000066261739,
+      "latency_ms": 0.312299991492182,
       "correct": true,
       "error": null
     },
@@ -1056,7 +1056,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.4025999951409176,
+      "latency_ms": 0.31670002499595284,
       "correct": true,
       "error": null
     },
@@ -1087,7 +1087,7 @@
           "OPERATION_MISMATCH"
         ]
       },
-      "latency_ms": 0.3701999958138913,
+      "latency_ms": 0.3108999808318913,
       "correct": true,
       "error": null
     },
@@ -1105,12 +1105,12 @@
       "category": "SCOPE_MISMATCH",
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
-      "risk_score": 7,
-      "risk_level": "HIGH",
-      "guardian_scope": "MULTIPLE_ROWS",
+      "risk_score": 9,
+      "risk_level": "CRITICAL",
+      "guardian_scope": "ALL_ROWS",
       "impact": {
         "impact_type": "DATA_MODIFICATION",
-        "risk_level": "HIGH"
+        "risk_level": "CRITICAL"
       },
       "intent_sql": {
         "status": "MISMATCH",
@@ -1119,7 +1119,7 @@
           "SCOPE_MISMATCH"
         ]
       },
-      "latency_ms": 0.37120000342838466,
+      "latency_ms": 0.2945999731309712,
       "correct": true,
       "error": null
     },
@@ -1150,7 +1150,7 @@
           "OPERATION_MISMATCH"
         ]
       },
-      "latency_ms": 0.3480000013951212,
+      "latency_ms": 0.32049999572336674,
       "correct": true,
       "error": null
     },
@@ -1179,7 +1179,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.338400001055561,
+      "latency_ms": 0.31259999377653,
       "correct": true,
       "error": null
     },
@@ -1208,7 +1208,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.36160000308882445,
+      "latency_ms": 0.31189998844638467,
       "correct": true,
       "error": null
     },
@@ -1228,7 +1228,7 @@
       "predicted_decision": "BLOCK",
       "risk_score": 10,
       "risk_level": "CRITICAL",
-      "guardian_scope": "MULTIPLE_ROWS",
+      "guardian_scope": "UNKNOWN",
       "impact": {
         "impact_type": "UNKNOWN",
         "risk_level": "HIGH"
@@ -1239,7 +1239,7 @@
           "OPERATION_MISMATCH"
         ]
       },
-      "latency_ms": 0.338400001055561,
+      "latency_ms": 0.285400019492954,
       "correct": true,
       "error": null
     },
@@ -1270,7 +1270,7 @@
           "TARGET_MISMATCH"
         ]
       },
-      "latency_ms": 0.34579999919515103,
+      "latency_ms": 0.32400002237409353,
       "correct": true,
       "error": null
     },
@@ -1299,7 +1299,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.44920000073034316,
+      "latency_ms": 0.31590001890435815,
       "correct": true,
       "error": null
     },
@@ -1331,7 +1331,7 @@
           "TARGET_MISMATCH"
         ]
       },
-      "latency_ms": 0.8492000051774085,
+      "latency_ms": 0.30830001924186945,
       "correct": true,
       "error": null
     },
@@ -1360,7 +1360,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.6394999945769086,
+      "latency_ms": 0.31839997973293066,
       "correct": true,
       "error": null
     },
@@ -1389,7 +1389,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.5315000016707927,
+      "latency_ms": 0.3071000101044774,
       "correct": true,
       "error": null
     },
@@ -1407,12 +1407,12 @@
       "category": "COMBINATION",
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
-      "risk_score": 7,
-      "risk_level": "HIGH",
-      "guardian_scope": "MULTIPLE_ROWS",
+      "risk_score": 9,
+      "risk_level": "CRITICAL",
+      "guardian_scope": "ALL_ROWS",
       "impact": {
         "impact_type": "DATA_MODIFICATION",
-        "risk_level": "HIGH"
+        "risk_level": "CRITICAL"
       },
       "intent_sql": {
         "status": "MISMATCH",
@@ -1421,7 +1421,7 @@
           "SCOPE_MISMATCH"
         ]
       },
-      "latency_ms": 1.5554000128759071,
+      "latency_ms": 0.2856000210158527,
       "correct": true,
       "error": null
     },
@@ -1452,7 +1452,7 @@
           "FIELD_MISMATCH"
         ]
       },
-      "latency_ms": 0.7880000048317015,
+      "latency_ms": 0.31809997744858265,
       "correct": true,
       "error": null
     },
@@ -1483,7 +1483,7 @@
           "FIELD_MISMATCH"
         ]
       },
-      "latency_ms": 0.5703000060748309,
+      "latency_ms": 0.312299991492182,
       "correct": true,
       "error": null
     },
@@ -1514,7 +1514,7 @@
           "OPERATION_MISMATCH"
         ]
       },
-      "latency_ms": 0.5032000044593588,
+      "latency_ms": 0.3071000101044774,
       "correct": true,
       "error": null
     },
@@ -1546,7 +1546,7 @@
           "TARGET_MISMATCH"
         ]
       },
-      "latency_ms": 0.7165999995777383,
+      "latency_ms": 0.4620999679900706,
       "correct": true,
       "error": null
     },
@@ -1578,7 +1578,7 @@
           "SCOPE_MISMATCH"
         ]
       },
-      "latency_ms": 0.6133999995654449,
+      "latency_ms": 0.3369000041857362,
       "correct": true,
       "error": null
     },
@@ -1607,7 +1607,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.5825000116601586,
+      "latency_ms": 0.32079999800771475,
       "correct": true,
       "error": null
     },
@@ -1636,7 +1636,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.567900002351962,
+      "latency_ms": 0.32460002694278955,
       "correct": true,
       "error": null
     },
@@ -1654,12 +1654,12 @@
       "category": "COMBINATION",
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
-      "risk_score": 7,
-      "risk_level": "HIGH",
-      "guardian_scope": "MULTIPLE_ROWS",
+      "risk_score": 9,
+      "risk_level": "CRITICAL",
+      "guardian_scope": "ALL_ROWS",
       "impact": {
         "impact_type": "DATA_MODIFICATION",
-        "risk_level": "HIGH"
+        "risk_level": "CRITICAL"
       },
       "intent_sql": {
         "status": "MISMATCH",
@@ -1668,7 +1668,7 @@
           "SCOPE_MISMATCH"
         ]
       },
-      "latency_ms": 0.8814000029815361,
+      "latency_ms": 0.29399996856227517,
       "correct": true,
       "error": null
     },
@@ -1699,7 +1699,7 @@
           "OPERATION_MISMATCH"
         ]
       },
-      "latency_ms": 0.5113999941386282,
+      "latency_ms": 1.2419999693520367,
       "correct": true,
       "error": null
     },
@@ -1728,7 +1728,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.48750000132713467,
+      "latency_ms": 0.713599962182343,
       "correct": true,
       "error": null
     },
@@ -1757,7 +1757,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.4763999895658344,
+      "latency_ms": 0.563400040846318,
       "correct": true,
       "error": null
     },
@@ -1788,7 +1788,7 @@
           "OPERATION_MISMATCH"
         ]
       },
-      "latency_ms": 0.4585999995470047,
+      "latency_ms": 0.6483999895863235,
       "correct": true,
       "error": null
     },
@@ -1817,7 +1817,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.49530000251252204,
+      "latency_ms": 0.7317999843508005,
       "correct": true,
       "error": null
     },
@@ -1846,7 +1846,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.48149999929592013,
+      "latency_ms": 0.5928000318817794,
       "correct": true,
       "error": null
     },
@@ -1864,12 +1864,12 @@
       "category": "SCOPE_MISMATCH",
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
-      "risk_score": 7,
-      "risk_level": "HIGH",
-      "guardian_scope": "MULTIPLE_ROWS",
+      "risk_score": 9,
+      "risk_level": "CRITICAL",
+      "guardian_scope": "ALL_ROWS",
       "impact": {
         "impact_type": "DATA_MODIFICATION",
-        "risk_level": "HIGH"
+        "risk_level": "CRITICAL"
       },
       "intent_sql": {
         "status": "MISMATCH",
@@ -1878,7 +1878,7 @@
           "SCOPE_MISMATCH"
         ]
       },
-      "latency_ms": 0.4588000010699034,
+      "latency_ms": 0.41639996925368905,
       "correct": true,
       "error": null
     },
@@ -1910,7 +1910,7 @@
           "TARGET_MISMATCH"
         ]
       },
-      "latency_ms": 0.48319999768864363,
+      "latency_ms": 0.3273999900557101,
       "correct": true,
       "error": null
     },
@@ -1939,7 +1939,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.5185000045457855,
+      "latency_ms": 0.36210002144798636,
       "correct": true,
       "error": null
     },
@@ -1968,7 +1968,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 3.855699993437156,
+      "latency_ms": 0.30889996560290456,
       "correct": true,
       "error": null
     },
@@ -1997,7 +1997,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 1.0236999951303005,
+      "latency_ms": 0.30399998649954796,
       "correct": true,
       "error": null
     },
@@ -2017,7 +2017,7 @@
       "predicted_decision": "BLOCK",
       "risk_score": 10,
       "risk_level": "CRITICAL",
-      "guardian_scope": "MULTIPLE_ROWS",
+      "guardian_scope": "UNKNOWN",
       "impact": {
         "impact_type": "UNKNOWN",
         "risk_level": "HIGH"
@@ -2029,7 +2029,7 @@
           "TARGET_MISMATCH"
         ]
       },
-      "latency_ms": 0.42240000038873404,
+      "latency_ms": 0.3548000240698457,
       "correct": true,
       "error": null
     },
@@ -2058,7 +2058,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.3482000029180199,
+      "latency_ms": 0.3147000097669661,
       "correct": true,
       "error": null
     },
@@ -2087,7 +2087,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.34750001213978976,
+      "latency_ms": 0.3030999796465039,
       "correct": true,
       "error": null
     },
@@ -2116,7 +2116,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.3293000045232475,
+      "latency_ms": 0.4425999941304326,
       "correct": true,
       "error": null
     },
@@ -2145,7 +2145,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.3217000048607588,
+      "latency_ms": 0.33329997677356005,
       "correct": true,
       "error": null
     },
@@ -2177,7 +2177,7 @@
           "SCOPE_MISMATCH"
         ]
       },
-      "latency_ms": 0.3108999953838065,
+      "latency_ms": 0.2873000339604914,
       "correct": true,
       "error": null
     },
@@ -2197,7 +2197,7 @@
       "predicted_decision": "BLOCK",
       "risk_score": 10,
       "risk_level": "CRITICAL",
-      "guardian_scope": "MULTIPLE_ROWS",
+      "guardian_scope": "UNKNOWN",
       "impact": {
         "impact_type": "SCHEMA_DESTRUCTION",
         "risk_level": "CRITICAL"
@@ -2209,7 +2209,7 @@
           "TARGET_MISMATCH"
         ]
       },
-      "latency_ms": 0.30449999030679464,
+      "latency_ms": 0.28199999360367656,
       "correct": true,
       "error": null
     },
@@ -2238,7 +2238,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.32720000308472663,
+      "latency_ms": 0.35099999513477087,
       "correct": true,
       "error": null
     },
@@ -2267,7 +2267,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.33140000596176833,
+      "latency_ms": 0.30429998878389597,
       "correct": true,
       "error": null
     },
@@ -2298,7 +2298,7 @@
           "FIELD_MISMATCH"
         ]
       },
-      "latency_ms": 0.32810000993777066,
+      "latency_ms": 0.3056999994441867,
       "correct": true,
       "error": null
     },
@@ -2330,7 +2330,7 @@
           "TARGET_MISMATCH"
         ]
       },
-      "latency_ms": 0.32110000029206276,
+      "latency_ms": 0.34410000080242753,
       "correct": true,
       "error": null
     },
@@ -2359,7 +2359,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.3222999948775396,
+      "latency_ms": 0.3065000055357814,
       "correct": true,
       "error": null
     },
@@ -2377,12 +2377,12 @@
       "category": "SCOPE_MISMATCH",
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
-      "risk_score": 7,
-      "risk_level": "HIGH",
-      "guardian_scope": "MULTIPLE_ROWS",
+      "risk_score": 9,
+      "risk_level": "CRITICAL",
+      "guardian_scope": "ALL_ROWS",
       "impact": {
         "impact_type": "DATA_MODIFICATION",
-        "risk_level": "HIGH"
+        "risk_level": "CRITICAL"
       },
       "intent_sql": {
         "status": "MISMATCH",
@@ -2391,7 +2391,7 @@
           "SCOPE_MISMATCH"
         ]
       },
-      "latency_ms": 0.3274000046076253,
+      "latency_ms": 0.2829000004567206,
       "correct": true,
       "error": null
     },
@@ -2422,7 +2422,7 @@
           "FIELD_MISMATCH"
         ]
       },
-      "latency_ms": 1.0129000002052635,
+      "latency_ms": 0.3501999890431762,
       "correct": true,
       "error": null
     },
@@ -2451,7 +2451,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.6861000001663342,
+      "latency_ms": 0.3055000561289489,
       "correct": true,
       "error": null
     },
@@ -2469,12 +2469,12 @@
       "category": "SCOPE_MISMATCH",
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
-      "risk_score": 7,
-      "risk_level": "HIGH",
-      "guardian_scope": "MULTIPLE_ROWS",
+      "risk_score": 9,
+      "risk_level": "CRITICAL",
+      "guardian_scope": "ALL_ROWS",
       "impact": {
         "impact_type": "DATA_MODIFICATION",
-        "risk_level": "HIGH"
+        "risk_level": "CRITICAL"
       },
       "intent_sql": {
         "status": "MISMATCH",
@@ -2483,7 +2483,7 @@
           "SCOPE_MISMATCH"
         ]
       },
-      "latency_ms": 0.5582000012509525,
+      "latency_ms": 0.28549996204674244,
       "correct": true,
       "error": null
     },
@@ -2514,7 +2514,7 @@
           "TARGET_MISMATCH"
         ]
       },
-      "latency_ms": 0.48489999608136714,
+      "latency_ms": 0.3577999887056649,
       "correct": true,
       "error": null
     },
@@ -2545,7 +2545,7 @@
           "OPERATION_MISMATCH"
         ]
       },
-      "latency_ms": 0.3708000003825873,
+      "latency_ms": 0.3027999773621559,
       "correct": true,
       "error": null
     },
@@ -2576,7 +2576,7 @@
           "FIELD_MISMATCH"
         ]
       },
-      "latency_ms": 0.3369000041857362,
+      "latency_ms": 0.3081999602727592,
       "correct": true,
       "error": null
     },
@@ -2605,7 +2605,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.32160000409930944,
+      "latency_ms": 0.39579998701810837,
       "correct": true,
       "error": null
     },
@@ -2634,7 +2634,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.31609999132342637,
+      "latency_ms": 0.3163000219501555,
       "correct": true,
       "error": null
     },
@@ -2663,7 +2663,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 1.1072999914176762,
+      "latency_ms": 0.31350000062957406,
       "correct": true,
       "error": null
     },
@@ -2692,7 +2692,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.8960999984992668,
+      "latency_ms": 0.3543999628163874,
       "correct": true,
       "error": null
     },
@@ -2723,7 +2723,7 @@
           "FIELD_MISMATCH"
         ]
       },
-      "latency_ms": 0.6212000007508323,
+      "latency_ms": 0.3132999991066754,
       "correct": true,
       "error": null
     },
@@ -2752,7 +2752,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.6709000008413568,
+      "latency_ms": 0.30800001695752144,
       "correct": true,
       "error": null
     },
@@ -2781,7 +2781,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.6606999959331006,
+      "latency_ms": 0.36020000698044896,
       "correct": true,
       "error": null
     },
@@ -2813,7 +2813,7 @@
           "SCOPE_MISMATCH"
         ]
       },
-      "latency_ms": 0.49730000318959355,
+      "latency_ms": 0.28979999478906393,
       "correct": true,
       "error": null
     },
@@ -2844,7 +2844,7 @@
           "FIELD_MISMATCH"
         ]
       },
-      "latency_ms": 0.4763999895658344,
+      "latency_ms": 0.31460000900551677,
       "correct": true,
       "error": null
     },
@@ -2873,7 +2873,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.5187999922782183,
+      "latency_ms": 0.4969000001437962,
       "correct": true,
       "error": null
     },
@@ -2902,7 +2902,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.5633999971905723,
+      "latency_ms": 0.3934999695047736,
       "correct": true,
       "error": null
     },
@@ -2920,12 +2920,12 @@
       "category": "COMBINATION",
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
-      "risk_score": 7,
-      "risk_level": "HIGH",
-      "guardian_scope": "MULTIPLE_ROWS",
+      "risk_score": 9,
+      "risk_level": "CRITICAL",
+      "guardian_scope": "ALL_ROWS",
       "impact": {
         "impact_type": "DATA_MODIFICATION",
-        "risk_level": "HIGH"
+        "risk_level": "CRITICAL"
       },
       "intent_sql": {
         "status": "MISMATCH",
@@ -2934,7 +2934,7 @@
           "SCOPE_MISMATCH"
         ]
       },
-      "latency_ms": 0.5633000109810382,
+      "latency_ms": 0.2995000104419887,
       "correct": true,
       "error": null
     },
@@ -2963,7 +2963,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.5399000074248761,
+      "latency_ms": 1.0866999509744346,
       "correct": true,
       "error": null
     },
@@ -2995,7 +2995,7 @@
           "TARGET_MISMATCH"
         ]
       },
-      "latency_ms": 0.5178000137675554,
+      "latency_ms": 0.7717999978922307,
       "correct": true,
       "error": null
     },
@@ -3024,7 +3024,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.480500006233342,
+      "latency_ms": 0.6325999856926501,
       "correct": true,
       "error": null
     },
@@ -3042,12 +3042,12 @@
       "category": "SCOPE_MISMATCH",
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
-      "risk_score": 7,
-      "risk_level": "HIGH",
-      "guardian_scope": "MULTIPLE_ROWS",
+      "risk_score": 9,
+      "risk_level": "CRITICAL",
+      "guardian_scope": "ALL_ROWS",
       "impact": {
         "impact_type": "DATA_MODIFICATION",
-        "risk_level": "HIGH"
+        "risk_level": "CRITICAL"
       },
       "intent_sql": {
         "status": "MISMATCH",
@@ -3056,7 +3056,7 @@
           "SCOPE_MISMATCH"
         ]
       },
-      "latency_ms": 0.4811999970115721,
+      "latency_ms": 0.6667000125162303,
       "correct": true,
       "error": null
     },
@@ -3087,7 +3087,7 @@
           "FIELD_MISMATCH"
         ]
       },
-      "latency_ms": 0.49560000479687005,
+      "latency_ms": 0.4959999932907522,
       "correct": true,
       "error": null
     },
@@ -3116,7 +3116,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.4681999998865649,
+      "latency_ms": 0.4689000197686255,
       "correct": true,
       "error": null
     },
@@ -3145,7 +3145,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.4676999960793182,
+      "latency_ms": 0.34610001603141427,
       "correct": true,
       "error": null
     },
@@ -3177,7 +3177,7 @@
           "FIELD_MISMATCH"
         ]
       },
-      "latency_ms": 1.0731000074883923,
+      "latency_ms": 0.3228000132367015,
       "correct": true,
       "error": null
     },
@@ -3208,7 +3208,7 @@
           "FIELD_MISMATCH"
         ]
       },
-      "latency_ms": 0.6123000057414174,
+      "latency_ms": 0.3185000387020409,
       "correct": true,
       "error": null
     },
@@ -3237,7 +3237,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 2.409699998679571,
+      "latency_ms": 0.3428999916650355,
       "correct": true,
       "error": null
     },
@@ -3266,7 +3266,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 2.0342000061646104,
+      "latency_ms": 0.3100999747402966,
       "correct": true,
       "error": null
     },
@@ -3284,12 +3284,12 @@
       "category": "SCOPE_MISMATCH",
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
-      "risk_score": 7,
-      "risk_level": "HIGH",
-      "guardian_scope": "MULTIPLE_ROWS",
+      "risk_score": 9,
+      "risk_level": "CRITICAL",
+      "guardian_scope": "ALL_ROWS",
       "impact": {
         "impact_type": "DATA_MODIFICATION",
-        "risk_level": "HIGH"
+        "risk_level": "CRITICAL"
       },
       "intent_sql": {
         "status": "MISMATCH",
@@ -3298,7 +3298,7 @@
           "SCOPE_MISMATCH"
         ]
       },
-      "latency_ms": 1.0837000008905306,
+      "latency_ms": 0.28450001263991,
       "correct": true,
       "error": null
     },
@@ -3330,7 +3330,7 @@
           "TARGET_MISMATCH"
         ]
       },
-      "latency_ms": 0.5323000077623874,
+      "latency_ms": 0.304899993352592,
       "correct": true,
       "error": null
     },
@@ -3359,7 +3359,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.3687999997055158,
+      "latency_ms": 0.3449000068940222,
       "correct": true,
       "error": null
     },
@@ -3388,7 +3388,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.36410000757314265,
+      "latency_ms": 0.30129996594041586,
       "correct": true,
       "error": null
     },
@@ -3417,7 +3417,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.32479999936185777,
+      "latency_ms": 0.305499997921288,
       "correct": true,
       "error": null
     },
@@ -3446,7 +3446,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.3188999980920926,
+      "latency_ms": 0.34170004073530436,
       "correct": true,
       "error": null
     },
@@ -3475,7 +3475,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.3345000004628673,
+      "latency_ms": 0.3018999705091119,
       "correct": true,
       "error": null
     },
@@ -3504,7 +3504,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.32809999538585544,
+      "latency_ms": 0.30419998802244663,
       "correct": true,
       "error": null
     },
@@ -3536,7 +3536,7 @@
           "FIELD_MISMATCH"
         ]
       },
-      "latency_ms": 0.32330000249203295,
+      "latency_ms": 0.34639996010810137,
       "correct": true,
       "error": null
     },
@@ -3565,7 +3565,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.31999999191612005,
+      "latency_ms": 0.3086999640800059,
       "correct": true,
       "error": null
     },
@@ -3594,7 +3594,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.3209999995306134,
+      "latency_ms": 0.3016999689862132,
       "correct": true,
       "error": null
     },
@@ -3623,7 +3623,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.3215000033378601,
+      "latency_ms": 0.3396999672986567,
       "correct": true,
       "error": null
     },
@@ -3655,7 +3655,7 @@
           "FIELD_MISMATCH"
         ]
       },
-      "latency_ms": 0.3319999959785491,
+      "latency_ms": 0.3147000097669661,
       "correct": true,
       "error": null
     },
@@ -3686,7 +3686,7 @@
           "OPERATION_MISMATCH"
         ]
       },
-      "latency_ms": 0.3161000058753416,
+      "latency_ms": 0.30339998193085194,
       "correct": true,
       "error": null
     },
@@ -3715,7 +3715,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.3264999977545813,
+      "latency_ms": 0.4466000245884061,
       "correct": true,
       "error": null
     },
@@ -3746,7 +3746,7 @@
           "TARGET_MISMATCH"
         ]
       },
-      "latency_ms": 0.3184000088367611,
+      "latency_ms": 0.31949998810887337,
       "correct": true,
       "error": null
     },
@@ -3777,7 +3777,7 @@
           "FIELD_MISMATCH"
         ]
       },
-      "latency_ms": 0.3193000011378899,
+      "latency_ms": 0.3063000040128827,
       "correct": true,
       "error": null
     },
@@ -3808,7 +3808,7 @@
           "OPERATION_MISMATCH"
         ]
       },
-      "latency_ms": 0.3205999964848161,
+      "latency_ms": 0.3417999832890928,
       "correct": true,
       "error": null
     },
@@ -3840,7 +3840,7 @@
           "FIELD_MISMATCH"
         ]
       },
-      "latency_ms": 0.3245999978389591,
+      "latency_ms": 0.30559999868273735,
       "correct": true,
       "error": null
     },
@@ -3869,7 +3869,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.3161000058753416,
+      "latency_ms": 0.304899993352592,
       "correct": true,
       "error": null
     },
@@ -3898,7 +3898,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.3158999898005277,
+      "latency_ms": 0.34339999547228217,
       "correct": true,
       "error": null
     },
@@ -3927,7 +3927,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 2.284200003487058,
+      "latency_ms": 0.30750001315027475,
       "correct": true,
       "error": null
     },
@@ -3947,7 +3947,7 @@
       "predicted_decision": "BLOCK",
       "risk_score": 10,
       "risk_level": "CRITICAL",
-      "guardian_scope": "MULTIPLE_ROWS",
+      "guardian_scope": "ALL_ROWS",
       "impact": {
         "impact_type": "DATA_DELETION",
         "risk_level": "CRITICAL"
@@ -3956,7 +3956,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.9157000022241846,
+      "latency_ms": 0.2809999859891832,
       "correct": true,
       "error": null
     },
@@ -3988,7 +3988,7 @@
           "TARGET_MISMATCH"
         ]
       },
-      "latency_ms": 0.9646000107750297,
+      "latency_ms": 0.3408000338822603,
       "correct": true,
       "error": null
     },
@@ -4019,7 +4019,7 @@
           "OPERATION_MISMATCH"
         ]
       },
-      "latency_ms": 0.7182999979704618,
+      "latency_ms": 0.3060000017285347,
       "correct": true,
       "error": null
     },
@@ -4050,7 +4050,7 @@
           "FIELD_MISMATCH"
         ]
       },
-      "latency_ms": 0.7381999894278124,
+      "latency_ms": 0.304899993352592,
       "correct": true,
       "error": null
     },
@@ -4079,7 +4079,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.625100001343526,
+      "latency_ms": 0.4324999754317105,
       "correct": true,
       "error": null
     },
@@ -4110,7 +4110,7 @@
           "FIELD_MISMATCH"
         ]
       },
-      "latency_ms": 0.526999996509403,
+      "latency_ms": 0.3420999855734408,
       "correct": true,
       "error": null
     },
@@ -4139,7 +4139,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.36830001045018435,
+      "latency_ms": 0.32130000181496143,
       "correct": true,
       "error": null
     },
@@ -4171,7 +4171,7 @@
           "FIELD_MISMATCH"
         ]
       },
-      "latency_ms": 0.3355999942868948,
+      "latency_ms": 0.3127999952994287,
       "correct": true,
       "error": null
     },
@@ -4203,7 +4203,7 @@
           "TARGET_MISMATCH"
         ]
       },
-      "latency_ms": 0.33070000063162297,
+      "latency_ms": 0.3084000200033188,
       "correct": true,
       "error": null
     },
@@ -4232,7 +4232,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.32639999699313194,
+      "latency_ms": 0.3079000161960721,
       "correct": true,
       "error": null
     },
@@ -4261,7 +4261,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.3171999996993691,
+      "latency_ms": 0.3177000326104462,
       "correct": true,
       "error": null
     },
@@ -4292,7 +4292,7 @@
           "OPERATION_MISMATCH"
         ]
       },
-      "latency_ms": 0.32110000029206276,
+      "latency_ms": 1.067599980160594,
       "correct": true,
       "error": null
     },
@@ -4321,7 +4321,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.32300000020768493,
+      "latency_ms": 0.5258999881334603,
       "correct": true,
       "error": null
     },
@@ -4350,7 +4350,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.32469999860040843,
+      "latency_ms": 0.44570001773536205,
       "correct": true,
       "error": null
     },
@@ -4368,12 +4368,12 @@
       "category": "COMBINATION",
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
-      "risk_score": 7,
-      "risk_level": "HIGH",
-      "guardian_scope": "MULTIPLE_ROWS",
+      "risk_score": 9,
+      "risk_level": "CRITICAL",
+      "guardian_scope": "ALL_ROWS",
       "impact": {
         "impact_type": "DATA_MODIFICATION",
-        "risk_level": "HIGH"
+        "risk_level": "CRITICAL"
       },
       "intent_sql": {
         "status": "MISMATCH",
@@ -4382,7 +4382,7 @@
           "SCOPE_MISMATCH"
         ]
       },
-      "latency_ms": 0.31800000579096377,
+      "latency_ms": 0.584700028412044,
       "correct": true,
       "error": null
     },
@@ -4414,7 +4414,7 @@
           "SCOPE_MISMATCH"
         ]
       },
-      "latency_ms": 0.32210000790655613,
+      "latency_ms": 0.6590999546460807,
       "correct": true,
       "error": null
     },
@@ -4443,7 +4443,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.3495999990263954,
+      "latency_ms": 0.4526999546214938,
       "correct": true,
       "error": null
     },
@@ -4472,7 +4472,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.6736000068485737,
+      "latency_ms": 0.32160000409930944,
       "correct": true,
       "error": null
     },
@@ -4501,7 +4501,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 2.6180999993812293,
+      "latency_ms": 0.30880002304911613,
       "correct": true,
       "error": null
     },
@@ -4533,7 +4533,7 @@
           "SCOPE_MISMATCH"
         ]
       },
-      "latency_ms": 1.0641999979270622,
+      "latency_ms": 0.30830001924186945,
       "correct": true,
       "error": null
     },
@@ -4562,7 +4562,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.458099995739758,
+      "latency_ms": 0.4146000137552619,
       "correct": true,
       "error": null
     },
@@ -4591,7 +4591,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.4250999918440357,
+      "latency_ms": 0.3144000074826181,
       "correct": true,
       "error": null
     },
@@ -4622,7 +4622,7 @@
           "OPERATION_MISMATCH"
         ]
       },
-      "latency_ms": 0.4157000075792894,
+      "latency_ms": 0.3428999916650355,
       "correct": true,
       "error": null
     },
@@ -4651,7 +4651,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.36959999124519527,
+      "latency_ms": 0.30509999487549067,
       "correct": true,
       "error": null
     },
@@ -4683,7 +4683,7 @@
           "TARGET_MISMATCH"
         ]
       },
-      "latency_ms": 0.6840999994892627,
+      "latency_ms": 0.30960002914071083,
       "correct": true,
       "error": null
     },
@@ -4712,7 +4712,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.41760000749491155,
+      "latency_ms": 0.34279999090358615,
       "correct": true,
       "error": null
     },
@@ -4743,7 +4743,7 @@
           "OPERATION_MISMATCH"
         ]
       },
-      "latency_ms": 0.46779999684076756,
+      "latency_ms": 0.3037999849766493,
       "correct": true,
       "error": null
     },
@@ -4772,7 +4772,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.6704999977955595,
+      "latency_ms": 0.30370004242286086,
       "correct": true,
       "error": null
     },
@@ -4803,7 +4803,7 @@
           "FIELD_MISMATCH"
         ]
       },
-      "latency_ms": 0.570699994568713,
+      "latency_ms": 0.3569999826140702,
       "correct": true,
       "error": null
     },
@@ -4832,7 +4832,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.5039999959990382,
+      "latency_ms": 0.3027999773621559,
       "correct": true,
       "error": null
     },
@@ -4863,7 +4863,7 @@
           "OPERATION_MISMATCH"
         ]
       },
-      "latency_ms": 0.4687999899033457,
+      "latency_ms": 0.30209997203201056,
       "correct": true,
       "error": null
     },
@@ -4894,7 +4894,7 @@
           "OPERATION_MISMATCH"
         ]
       },
-      "latency_ms": 0.4641999985324219,
+      "latency_ms": 0.33949996577575803,
       "correct": true,
       "error": null
     },
@@ -4923,7 +4923,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.46830000064801425,
+      "latency_ms": 0.3217999474145472,
       "correct": true,
       "error": null
     },
@@ -4943,7 +4943,7 @@
       "predicted_decision": "BLOCK",
       "risk_score": 10,
       "risk_level": "CRITICAL",
-      "guardian_scope": "MULTIPLE_ROWS",
+      "guardian_scope": "ALL_ROWS",
       "impact": {
         "impact_type": "DATA_DELETION",
         "risk_level": "CRITICAL"
@@ -4952,7 +4952,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.4467999970074743,
+      "latency_ms": 0.28169999131932855,
       "correct": true,
       "error": null
     },
@@ -4983,7 +4983,7 @@
           "FIELD_MISMATCH"
         ]
       },
-      "latency_ms": 0.46270000166259706,
+      "latency_ms": 0.30429998878389597,
       "correct": true,
       "error": null
     },
@@ -5012,7 +5012,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.4766000056406483,
+      "latency_ms": 0.34420000156387687,
       "correct": true,
       "error": null
     },
@@ -5041,7 +5041,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.4645000008167699,
+      "latency_ms": 0.3037999849766493,
       "correct": true,
       "error": null
     },
@@ -5073,7 +5073,7 @@
           "FIELD_MISMATCH"
         ]
       },
-      "latency_ms": 0.46710000606253743,
+      "latency_ms": 0.30499999411404133,
       "correct": true,
       "error": null
     },
@@ -5102,7 +5102,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.46379999548662454,
+      "latency_ms": 0.3398999688215554,
       "correct": true,
       "error": null
     },
@@ -5131,7 +5131,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.4616999940481037,
+      "latency_ms": 0.30010001501068473,
       "correct": true,
       "error": null
     },
@@ -5162,7 +5162,7 @@
           "TARGET_MISMATCH"
         ]
       },
-      "latency_ms": 0.4717999981949106,
+      "latency_ms": 0.3024999750778079,
       "correct": true,
       "error": null
     },
@@ -5193,7 +5193,7 @@
           "OPERATION_MISMATCH"
         ]
       },
-      "latency_ms": 2.033199998550117,
+      "latency_ms": 0.33979996806010604,
       "correct": true,
       "error": null
     },
@@ -5222,7 +5222,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.4833999992115423,
+      "latency_ms": 0.30369998421519995,
       "correct": true,
       "error": null
     },
@@ -5240,12 +5240,12 @@
       "category": "SCOPE_MISMATCH",
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
-      "risk_score": 7,
-      "risk_level": "HIGH",
-      "guardian_scope": "MULTIPLE_ROWS",
+      "risk_score": 9,
+      "risk_level": "CRITICAL",
+      "guardian_scope": "ALL_ROWS",
       "impact": {
         "impact_type": "DATA_MODIFICATION",
-        "risk_level": "HIGH"
+        "risk_level": "CRITICAL"
       },
       "intent_sql": {
         "status": "MISMATCH",
@@ -5254,7 +5254,7 @@
           "SCOPE_MISMATCH"
         ]
       },
-      "latency_ms": 0.3538000019034371,
+      "latency_ms": 0.28190005104988813,
       "correct": true,
       "error": null
     },
@@ -5285,7 +5285,7 @@
           "OPERATION_MISMATCH"
         ]
       },
-      "latency_ms": 0.3552999987732619,
+      "latency_ms": 0.34199998481199145,
       "correct": true,
       "error": null
     },
@@ -5314,7 +5314,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.40550000267103314,
+      "latency_ms": 0.30429998878389597,
       "correct": true,
       "error": null
     },
@@ -5343,7 +5343,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.4121999954804778,
+      "latency_ms": 0.3003000165335834,
       "correct": true,
       "error": null
     },
@@ -5372,7 +5372,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.35700001171790063,
+      "latency_ms": 0.3780000261031091,
       "correct": true,
       "error": null
     },
@@ -5403,7 +5403,7 @@
           "FIELD_MISMATCH"
         ]
       },
-      "latency_ms": 0.3615000023273751,
+      "latency_ms": 0.31830003717914224,
       "correct": true,
       "error": null
     },
@@ -5432,7 +5432,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 1.0087999980896711,
+      "latency_ms": 0.3108999808318913,
       "correct": true,
       "error": null
     },
@@ -5461,7 +5461,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.639899997622706,
+      "latency_ms": 0.39820000529289246,
       "correct": true,
       "error": null
     },
@@ -5490,7 +5490,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.5150999932084233,
+      "latency_ms": 0.31729997135698795,
       "correct": true,
       "error": null
     },
@@ -5519,7 +5519,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.46609999844804406,
+      "latency_ms": 0.305800000205636,
       "correct": true,
       "error": null
     },
@@ -5537,12 +5537,12 @@
       "category": "SCOPE_MISMATCH",
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
-      "risk_score": 7,
-      "risk_level": "HIGH",
-      "guardian_scope": "MULTIPLE_ROWS",
+      "risk_score": 9,
+      "risk_level": "CRITICAL",
+      "guardian_scope": "ALL_ROWS",
       "impact": {
         "impact_type": "DATA_MODIFICATION",
-        "risk_level": "HIGH"
+        "risk_level": "CRITICAL"
       },
       "intent_sql": {
         "status": "MISMATCH",
@@ -5551,7 +5551,7 @@
           "SCOPE_MISMATCH"
         ]
       },
-      "latency_ms": 0.4819000023417175,
+      "latency_ms": 0.3223000094294548,
       "correct": true,
       "error": null
     },
@@ -5580,7 +5580,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 2.4571999965701252,
+      "latency_ms": 0.3053999971598387,
       "correct": true,
       "error": null
     },
@@ -5611,7 +5611,7 @@
           "TARGET_MISMATCH"
         ]
       },
-      "latency_ms": 0.8622000023024157,
+      "latency_ms": 0.3040999872609973,
       "correct": true,
       "error": null
     },
@@ -5631,7 +5631,7 @@
       "predicted_decision": "BLOCK",
       "risk_score": 10,
       "risk_level": "CRITICAL",
-      "guardian_scope": "MULTIPLE_ROWS",
+      "guardian_scope": "UNKNOWN",
       "impact": {
         "impact_type": "SCHEMA_DESTRUCTION",
         "risk_level": "CRITICAL"
@@ -5643,7 +5643,7 @@
           "TARGET_MISMATCH"
         ]
       },
-      "latency_ms": 0.9912999958032742,
+      "latency_ms": 0.7093000458553433,
       "correct": true,
       "error": null
     },
@@ -5674,7 +5674,7 @@
           "FIELD_MISMATCH"
         ]
       },
-      "latency_ms": 0.800499998149462,
+      "latency_ms": 1.2256000190973282,
       "correct": true,
       "error": null
     },
@@ -5703,7 +5703,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.6566000083694234,
+      "latency_ms": 0.8340000058524311,
       "correct": true,
       "error": null
     },
@@ -5721,12 +5721,12 @@
       "category": "COMBINATION",
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
-      "risk_score": 7,
-      "risk_level": "HIGH",
-      "guardian_scope": "MULTIPLE_ROWS",
+      "risk_score": 9,
+      "risk_level": "CRITICAL",
+      "guardian_scope": "ALL_ROWS",
       "impact": {
         "impact_type": "DATA_MODIFICATION",
-        "risk_level": "HIGH"
+        "risk_level": "CRITICAL"
       },
       "intent_sql": {
         "status": "MISMATCH",
@@ -5735,7 +5735,7 @@
           "SCOPE_MISMATCH"
         ]
       },
-      "latency_ms": 1.226500011398457,
+      "latency_ms": 0.5357000045478344,
       "correct": true,
       "error": null
     },
@@ -5764,7 +5764,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.6041000015102327,
+      "latency_ms": 0.48779998905956745,
       "correct": true,
       "error": null
     },
@@ -5795,7 +5795,7 @@
           "OPERATION_MISMATCH"
         ]
       },
-      "latency_ms": 0.6048999930499122,
+      "latency_ms": 0.37919997703284025,
       "correct": true,
       "error": null
     },
@@ -5824,7 +5824,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 1.4260999887483194,
+      "latency_ms": 0.32480002846568823,
       "correct": true,
       "error": null
     },
@@ -5856,7 +5856,7 @@
           "SCOPE_MISMATCH"
         ]
       },
-      "latency_ms": 0.7428999961121008,
+      "latency_ms": 0.29440002981573343,
       "correct": true,
       "error": null
     },
@@ -5885,7 +5885,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.6633000011788681,
+      "latency_ms": 0.35390001721680164,
       "correct": true,
       "error": null
     },
@@ -5916,7 +5916,7 @@
           "TARGET_MISMATCH"
         ]
       },
-      "latency_ms": 0.7919000054243952,
+      "latency_ms": 0.3161000204272568,
       "correct": true,
       "error": null
     },
@@ -5936,7 +5936,7 @@
       "predicted_decision": "BLOCK",
       "risk_score": 10,
       "risk_level": "CRITICAL",
-      "guardian_scope": "MULTIPLE_ROWS",
+      "guardian_scope": "UNKNOWN",
       "impact": {
         "impact_type": "SCHEMA_DESTRUCTION",
         "risk_level": "CRITICAL"
@@ -5948,7 +5948,7 @@
           "TARGET_MISMATCH"
         ]
       },
-      "latency_ms": 0.7062000076984987,
+      "latency_ms": 0.28710003243759274,
       "correct": true,
       "error": null
     },
@@ -5979,7 +5979,7 @@
           "TARGET_MISMATCH"
         ]
       },
-      "latency_ms": 0.7341000018641353,
+      "latency_ms": 0.3513999981805682,
       "correct": true,
       "error": null
     },
@@ -6010,7 +6010,7 @@
           "TARGET_MISMATCH"
         ]
       },
-      "latency_ms": 0.7137999928090721,
+      "latency_ms": 0.31560001662001014,
       "correct": true,
       "error": null
     },
@@ -6042,7 +6042,7 @@
           "SCOPE_MISMATCH"
         ]
       },
-      "latency_ms": 0.7106999983079731,
+      "latency_ms": 0.2893999917432666,
       "correct": true,
       "error": null
     },
@@ -6071,7 +6071,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 45.64029999892227,
+      "latency_ms": 0.3485999768599868,
       "correct": true,
       "error": null
     },
@@ -6102,7 +6102,7 @@
           "OPERATION_MISMATCH"
         ]
       },
-      "latency_ms": 0.6426000036299229,
+      "latency_ms": 0.3128000535070896,
       "correct": true,
       "error": null
     },
@@ -6133,7 +6133,7 @@
           "FIELD_MISMATCH"
         ]
       },
-      "latency_ms": 0.5614999972749501,
+      "latency_ms": 0.32029999420046806,
       "correct": true,
       "error": null
     },
@@ -6162,7 +6162,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 1.4100999978836626,
+      "latency_ms": 0.33570005325600505,
       "correct": true,
       "error": null
     },
@@ -6194,7 +6194,7 @@
           "SCOPE_MISMATCH"
         ]
       },
-      "latency_ms": 0.7836000004317611,
+      "latency_ms": 0.35659997956827283,
       "correct": true,
       "error": null
     },
@@ -6212,12 +6212,12 @@
       "category": "COMBINATION",
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
-      "risk_score": 7,
-      "risk_level": "HIGH",
-      "guardian_scope": "MULTIPLE_ROWS",
+      "risk_score": 9,
+      "risk_level": "CRITICAL",
+      "guardian_scope": "ALL_ROWS",
       "impact": {
         "impact_type": "DATA_MODIFICATION",
-        "risk_level": "HIGH"
+        "risk_level": "CRITICAL"
       },
       "intent_sql": {
         "status": "MISMATCH",
@@ -6226,7 +6226,7 @@
           "SCOPE_MISMATCH"
         ]
       },
-      "latency_ms": 0.6476999988080934,
+      "latency_ms": 0.29419997008517385,
       "correct": true,
       "error": null
     },
@@ -6255,7 +6255,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.684200000250712,
+      "latency_ms": 0.3166000242345035,
       "correct": true,
       "error": null
     },
@@ -6286,7 +6286,7 @@
           "FIELD_MISMATCH"
         ]
       },
-      "latency_ms": 0.5756000027759001,
+      "latency_ms": 0.35180000122636557,
       "correct": true,
       "error": null
     },
@@ -6315,7 +6315,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.5124999879626557,
+      "latency_ms": 0.31269999453797936,
       "correct": true,
       "error": null
     },
@@ -6344,7 +6344,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.4721000004792586,
+      "latency_ms": 0.3114000428467989,
       "correct": true,
       "error": null
     },
@@ -6362,12 +6362,12 @@
       "category": "SCOPE_MISMATCH",
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
-      "risk_score": 7,
-      "risk_level": "HIGH",
-      "guardian_scope": "MULTIPLE_ROWS",
+      "risk_score": 9,
+      "risk_level": "CRITICAL",
+      "guardian_scope": "ALL_ROWS",
       "impact": {
         "impact_type": "DATA_MODIFICATION",
-        "risk_level": "HIGH"
+        "risk_level": "CRITICAL"
       },
       "intent_sql": {
         "status": "MISMATCH",
@@ -6376,7 +6376,7 @@
           "SCOPE_MISMATCH"
         ]
       },
-      "latency_ms": 0.4650000046240166,
+      "latency_ms": 0.3266999847255647,
       "correct": true,
       "error": null
     },
@@ -6405,7 +6405,7 @@
         "status": "MATCH",
         "mismatches": []
       },
-      "latency_ms": 0.4785999917658046,
+      "latency_ms": 0.3144999500364065,
       "correct": true,
       "error": null
     },
@@ -6423,12 +6423,12 @@
       "category": "COMBINATION",
       "expected_decision": "BLOCK",
       "predicted_decision": "BLOCK",
-      "risk_score": 7,
-      "risk_level": "HIGH",
-      "guardian_scope": "MULTIPLE_ROWS",
+      "risk_score": 9,
+      "risk_level": "CRITICAL",
+      "guardian_scope": "ALL_ROWS",
       "impact": {
         "impact_type": "DATA_MODIFICATION",
-        "risk_level": "HIGH"
+        "risk_level": "CRITICAL"
       },
       "intent_sql": {
         "status": "MISMATCH",
@@ -6437,7 +6437,7 @@
           "SCOPE_MISMATCH"
         ]
       },
-      "latency_ms": 0.618900012341328,
+      "latency_ms": 0.2885999856516719,
       "correct": true,
       "error": null
     },
@@ -6468,7 +6468,7 @@
           "OPERATION_MISMATCH"
         ]
       },
-      "latency_ms": 0.6037999992258847,
+      "latency_ms": 0.3454000107012689,
       "correct": true,
       "error": null
     },
@@ -6500,7 +6500,7 @@
           "FIELD_MISMATCH"
         ]
       },
-      "latency_ms": 1.2691000010818243,
+      "latency_ms": 0.3121999907307327,
       "correct": true,
       "error": null
     }

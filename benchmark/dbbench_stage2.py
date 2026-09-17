@@ -1,372 +1,618 @@
+# benchmark/dbbench_stage2.py
+
 import json
 import os
 import re
 import sqlite3
-import time
-
-from google import genai
 import sys
-import os
+import time
+import hashlib
+import statistics
+from pathlib import Path
 
-sys.path.insert(
-    0,
-    os.path.dirname(
-        os.path.dirname(
-            os.path.abspath(__file__)
-        )
-    )
-)
+
+# ============================================================
+# PATH SETUP
+# ============================================================
+
+ROOT = Path(__file__).resolve().parents[1]
+
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+
+# ============================================================
+# DBBENCH LOADER
+# ============================================================
+
 from dbbench_loader import load_dbbench
-from guardian import guardian_check
 
 
 # ============================================================
-# CONFIGURATION
+# GEMINI
 # ============================================================
+
+try:
+    from google import genai
+except ImportError:
+    genai = None
+
 
 MODEL = "gemini-3.6-flash"
 
+# Number of NEW Gemini requests in one run.
+#
+# Keep this small while testing.
 MAX_NEW_CASES = 20
 
-OUTPUT_FILE = os.path.join(
-    os.path.dirname(__file__),
-    "dbbench_stage2_results.json"
-)
-
-API_KEY = os.getenv("GEMINI_API_KEY")
-
-if not API_KEY:
-    raise RuntimeError(
-        "GEMINI_API_KEY is not set."
-    )
-
-client = genai.Client(
-    api_key=API_KEY
+OUTPUT_FILE = (
+    ROOT
+    / "benchmark"
+    / "dbbench_stage2_results_v2.json"
 )
 
 
 # ============================================================
-# GEMINI SQL GENERATION
+# GEMINI CLIENT
 # ============================================================
 
-def generate_sql(task):
+def create_gemini_client():
 
-    table = task["table"]
+    if genai is None:
+        raise RuntimeError(
+            "google-genai is not installed. "
+            "Install it with: pip install google-genai"
+        )
 
-    table_name = table.get(
-        "table_name",
-        ""
+    api_key = os.getenv("GEMINI_API_KEY")
+
+    if not api_key:
+        raise RuntimeError(
+            "GEMINI_API_KEY environment variable is not set."
+        )
+
+    return genai.Client(
+        api_key=api_key
     )
-
-    table_info = table.get(
-        "table_info",
-        {}
-    )
-
-    columns = table_info.get(
-        "columns",
-        []
-    )
-
-    rows = table_info.get(
-        "rows",
-        []
-    )
-
-    schema_text = "\n".join(
-        f"- {column.get('name')} "
-        f"({column.get('type', 'TEXT')})"
-        for column in columns
-    )
-
-    prompt = f"""
-You are a database assistant.
-
-Convert the user's request into exactly ONE SQL query.
-
-USER REQUEST:
-{task["description"]}
-
-TABLE:
-{table_name}
-
-COLUMNS:
-{schema_text}
-
-IMPORTANT:
-- Use the exact table name.
-- Use the exact column names.
-- Return exactly one SQL statement.
-- Return SQL only.
-- Do not use markdown.
-- Do not explain your answer.
-
-For INSERT or UPDATE requests, generate the requested
-modification statement.
-
-For information requests, generate a SELECT statement.
-"""
-
-    start = time.perf_counter()
-
-    response = client.models.generate_content(
-        model=MODEL,
-        contents=prompt
-    )
-
-    latency_ms = (
-        time.perf_counter() - start
-    ) * 1000
-
-    sql = response.text.strip()
-
-    # Remove accidental markdown fences.
-    sql = re.sub(
-        r"^```sql\s*",
-        "",
-        sql,
-        flags=re.IGNORECASE
-    )
-
-    sql = re.sub(
-        r"^```\s*",
-        "",
-        sql
-    )
-
-    sql = re.sub(
-        r"\s*```$",
-        "",
-        sql
-    )
-
-    return sql.strip(), latency_ms
 
 
 # ============================================================
-# SQLITE DATABASE CONSTRUCTION
+# DATABASE CREATION
 # ============================================================
-
-def quote_identifier(name):
-
-    return '"' + str(name).replace(
-        '"',
-        '""'
-    ) + '"'
-
 
 def create_test_database(task):
+    """
+    Create an isolated temporary SQLite database.
 
-    connection = sqlite3.connect(
-        ":memory:"
+    The real GuardianAgent company.db is NEVER touched.
+    """
+
+    conn = sqlite3.connect(":memory:")
+
+    conn.execute(
+        "PRAGMA foreign_keys = ON"
     )
 
-    table = task["table"]
+    table_data = task.get("table")
 
-    table_name = table.get(
-        "table_name",
-        ""
-    )
+    if isinstance(table_data, dict):
+        tables = [table_data]
+    else:
+        tables = table_data or []
 
-    table_info = table.get(
-        "table_info",
-        {}
-    )
+    for table in tables:
 
-    columns = table_info.get(
-        "columns",
-        []
-    )
+        table_name = table["table_name"]
 
-    rows = table_info.get(
-        "rows",
-        []
-    )
-
-    if not table_name or not columns:
-        connection.close()
-
-        raise ValueError(
-            "Invalid DBBench table definition."
+        table_info = table.get(
+            "table_info",
+            {}
         )
 
-    column_definitions = []
-
-    for column in columns:
-
-        name = column.get(
-            "name",
-            ""
+        columns = table_info.get(
+            "columns",
+            []
         )
 
-        column_type = column.get(
-            "type",
-            "TEXT"
+        column_defs = []
+
+        for column in columns:
+
+            name = column["name"]
+
+            dtype = str(
+                column.get(
+                    "type",
+                    "TEXT"
+                )
+            ).upper()
+
+            if dtype in {
+                "INT",
+                "INTEGER",
+                "BIGINT",
+                "SMALLINT",
+                "TINYINT",
+                "MEDIUMINT",
+            }:
+                sqlite_type = "INTEGER"
+
+            elif dtype in {
+                "FLOAT",
+                "DOUBLE",
+                "DECIMAL",
+                "NUMERIC",
+                "REAL",
+            }:
+                sqlite_type = "REAL"
+
+            else:
+                sqlite_type = "TEXT"
+
+            column_defs.append(
+                f"`{name}` {sqlite_type}"
+            )
+
+        if not column_defs:
+            raise ValueError(
+                f"No columns found for table {table_name}"
+            )
+
+        create_sql = (
+            f"CREATE TABLE `{table_name}` "
+            f"({', '.join(column_defs)})"
         )
 
-        if str(column_type).upper() not in {
-            "TEXT",
-            "INT",
-            "INTEGER",
-            "REAL",
-            "FLOAT",
-            "DOUBLE",
-            "NUMERIC"
+        conn.execute(
+            create_sql
+        )
+
+        rows = table_info.get(
+            "rows",
+            []
+        )
+
+        if rows:
+
+            placeholders = ",".join(
+                ["?"] * len(columns)
+            )
+
+            insert_sql = (
+                f"INSERT INTO `{table_name}` "
+                f"VALUES ({placeholders})"
+            )
+
+            for row in rows:
+
+                values = []
+
+                for value in row:
+
+                    if value is None:
+                        values.append(None)
+                    else:
+                        values.append(
+                            str(value)
+                        )
+
+                conn.execute(
+                    insert_sql,
+                    values
+                )
+
+    conn.commit()
+
+    return conn
+
+
+# ============================================================
+# MYSQL → SQLITE SQL ADAPTER
+# ============================================================
+
+def adapt_mysql_sql_to_sqlite(
+    sql,
+    task
+):
+    """
+    DBBench originates from a MySQL environment.
+
+    Some DBBench column names contain spaces, e.g.:
+
+        Presentation of Credentials
+
+    MySQL can accept the reference SQL representation used
+    by DBBench, while SQLite requires the identifier to be
+    quoted.
+
+    This function quotes ONLY known column identifiers.
+
+    It does not modify:
+        'string literals'
+        "already quoted identifiers"
+        `already quoted identifiers`
+    """
+
+    if not sql:
+        return sql
+
+    table_data = task.get(
+        "table"
+    )
+
+    if isinstance(table_data, dict):
+        tables = [table_data]
+    else:
+        tables = table_data or []
+
+    column_names = []
+
+    for table in tables:
+
+        table_info = table.get(
+            "table_info",
+            {}
+        )
+
+        for column in table_info.get(
+            "columns",
+            []
+        ):
+
+            name = column.get(
+                "name"
+            )
+
+            if name:
+                column_names.append(
+                    name
+                )
+
+    column_names = sorted(
+        set(column_names),
+        key=len,
+        reverse=True
+    )
+
+    if not column_names:
+        return sql
+
+    result = []
+
+    i = 0
+    n = len(sql)
+
+    quote = None
+
+    while i < n:
+
+        ch = sql[i]
+
+        # ----------------------------------------------------
+        # Inside quoted string / identifier
+        # ----------------------------------------------------
+
+        if quote is not None:
+
+            result.append(ch)
+
+            if ch == quote:
+
+                # Escaped quote:
+                #
+                # ''
+                # ""
+                # ``
+
+                if (
+                    i + 1 < n
+                    and sql[i + 1] == quote
+                ):
+
+                    result.append(
+                        sql[i + 1]
+                    )
+
+                    i += 2
+
+                    continue
+
+                quote = None
+
+            i += 1
+
+            continue
+
+        # ----------------------------------------------------
+        # Start quoted region
+        # ----------------------------------------------------
+
+        if ch in {
+            "'",
+            '"',
+            "`"
         }:
-            column_type = "TEXT"
 
-        column_definitions.append(
-            f"{quote_identifier(name)} "
-            f"{column_type}"
-        )
+            quote = ch
 
-    create_sql = (
-        f"CREATE TABLE "
-        f"{quote_identifier(table_name)} "
-        f"({', '.join(column_definitions)})"
-    )
+            result.append(ch)
 
-    connection.execute(
-        create_sql
-    )
+            i += 1
 
-    column_names = [
-        column.get("name", "")
-        for column in columns
-    ]
+            continue
 
-    placeholders = ", ".join(
-        "?" for _ in column_names
-    )
+        # ----------------------------------------------------
+        # Try matching a known column
+        # ----------------------------------------------------
 
-    insert_sql = (
-        f"INSERT INTO "
-        f"{quote_identifier(table_name)} "
-        f"({', '.join(quote_identifier(x) for x in column_names)}) "
-        f"VALUES ({placeholders})"
-    )
+        remaining = sql[i:]
 
-    for row in rows:
+        matched = False
 
-        values = list(row)
+        for column in column_names:
 
-        if len(values) < len(column_names):
-            values.extend(
-                [None] *
-                (
-                    len(column_names)
-                    - len(values)
+            if not remaining.startswith(
+                column
+            ):
+                continue
+
+            end = i + len(column)
+
+            before = (
+                sql[i - 1]
+                if i > 0
+                else ""
+            )
+
+            after = (
+                sql[end]
+                if end < n
+                else ""
+            )
+
+            before_ok = (
+                not before
+                or not (
+                    before.isalnum()
+                    or before == "_"
                 )
             )
 
-        if len(values) > len(column_names):
-            values = values[
-                :len(column_names)
-            ]
+            after_ok = (
+                not after
+                or not (
+                    after.isalnum()
+                    or after == "_"
+                )
+            )
 
-        connection.execute(
-            insert_sql,
-            values
-        )
+            if before_ok and after_ok:
 
-    connection.commit()
+                result.append(
+                    f"`{column}`"
+                )
 
-    return connection
+                i = end
+
+                matched = True
+
+                break
+
+        if matched:
+            continue
+
+        result.append(ch)
+
+        i += 1
+
+    return "".join(result)
 
 
 # ============================================================
-# SAFE SQL EXECUTION
+# SQL EXECUTION
 # ============================================================
 
 def execute_generated_sql(
-    connection,
-    sql
+    conn,
+    sql,
+    task=None
 ):
+    """
+    Execute exactly one SQL statement.
 
-    sql_upper = sql.strip().upper()
+    If task is provided, DBBench MySQL-style identifiers are
+    adapted for SQLite first.
+    """
 
-    if not sql_upper:
-        return {
-            "status": "EMPTY_SQL",
-            "rows": [],
-            "error": None
-        }
-
-    # Only allow one statement.
-    statements = [
-        x.strip()
-        for x in sql.split(";")
-        if x.strip()
-    ]
-
-    if len(statements) != 1:
-
-        return {
-            "status": "MULTIPLE_STATEMENTS",
-            "rows": [],
-            "error": (
-                "Multiple SQL statements "
-                "are not evaluated."
-            )
-        }
-
-    statement = statements[0]
+    start = time.perf_counter()
 
     try:
 
-        cursor = connection.cursor()
-
-        cursor.execute(
-            statement
-        )
-
-        if sql_upper.startswith(
-            "SELECT"
-        ):
-
-            rows = cursor.fetchall()
+        if not sql or not sql.strip():
 
             return {
-                "status": "SUCCESS",
-                "rows": rows,
-                "error": None
+                "status": "ERROR",
+                "error": "Empty SQL",
+                "rows": [],
+                "elapsed_ms": 0
             }
 
-        connection.commit()
+        sql = sql.strip()
+
+        # Remove markdown SQL fences.
+        sql = re.sub(
+            r"^```(?:sql)?\s*",
+            "",
+            sql,
+            flags=re.IGNORECASE
+        )
+
+        sql = re.sub(
+            r"\s*```$",
+            "",
+            sql
+        )
+
+        sql = sql.strip()
+
+        # ----------------------------------------------------
+        # Adapt DBBench SQL for SQLite.
+        # ----------------------------------------------------
+
+        if task is not None:
+
+            sql = adapt_mysql_sql_to_sqlite(
+                sql,
+                task
+            )
+
+        # ----------------------------------------------------
+        # Only ONE statement is permitted.
+        # ----------------------------------------------------
+
+        statements = [
+            statement.strip()
+            for statement in sql.split(";")
+            if statement.strip()
+        ]
+
+        if len(statements) != 1:
+
+            return {
+                "status": "ERROR",
+                "error": (
+                    "Multiple SQL statements detected"
+                ),
+                "rows": [],
+                "elapsed_ms": (
+                    time.perf_counter()
+                    - start
+                ) * 1000
+            }
+
+        sql = statements[0]
+
+        cursor = conn.cursor()
+
+        cursor.execute(
+            sql
+        )
+
+        # ----------------------------------------------------
+        # Determine whether the statement returns rows.
+        # ----------------------------------------------------
+
+        is_read = bool(
+            re.match(
+                r"^\s*(SELECT|WITH|PRAGMA|EXPLAIN)",
+                sql,
+                flags=re.IGNORECASE
+            )
+        )
+
+        rows = []
+
+        if is_read:
+
+            fetched = cursor.fetchall()
+
+            rows = [
+                tuple(row)
+                for row in fetched
+            ]
+
+        else:
+
+            conn.commit()
+
+        elapsed_ms = (
+            time.perf_counter()
+            - start
+        ) * 1000
 
         return {
             "status": "SUCCESS",
-            "rows": [],
-            "error": None
+            "error": "",
+            "rows": rows,
+            "elapsed_ms": elapsed_ms
         }
 
-    except Exception as error:
+    except Exception as exc:
+
+        elapsed_ms = (
+            time.perf_counter()
+            - start
+        ) * 1000
 
         return {
-            "status": "EXECUTION_ERROR",
+            "status": "ERROR",
+            "error": str(exc),
             "rows": [],
-            "error": str(error)
+            "elapsed_ms": elapsed_ms
         }
 
 
 # ============================================================
-# RESULT NORMALIZATION
+# DBBENCH VALUE NORMALIZATION
 # ============================================================
 
 def normalize_value(value):
 
     if value is None:
-        return ""
+        return "0"
 
-    value = str(value)
+    if isinstance(value, bytes):
 
+        value = value.decode(
+            "utf-8",
+            errors="replace"
+        )
+
+    value = str(value).strip()
+
+    if value.lower() in {
+        "",
+        "null",
+        "none",
+        "nan"
+    }:
+        return "0"
+
+    # Remove surrounding single quotes.
+    if (
+        len(value) >= 2
+        and value[0] == "'"
+        and value[-1] == "'"
+    ):
+        value = value[1:-1]
+
+    # Remove surrounding double quotes.
+    if (
+        len(value) >= 2
+        and value[0] == '"'
+        and value[-1] == '"'
+    ):
+        value = value[1:-1]
+
+    # DBBench comparison strips %.
+    if value.endswith("%"):
+        value = value[:-1]
+
+    # DBBench comparison ignores numeric comma formatting.
     value = value.replace(
-        "\r\n",
-        "\n"
+        ",",
+        ""
     )
 
-    return value.strip().lower()
+    if value == "":
+        return "0"
 
+    return value
+
+
+# ============================================================
+# READ RESULT NORMALIZATION
+# ============================================================
 
 def normalize_rows(rows):
 
@@ -380,13 +626,13 @@ def normalize_rows(rows):
         ):
             row = [row]
 
-        normalized_row = tuple(
-            normalize_value(value)
-            for value in row
-        )
-
         normalized.append(
-            normalized_row
+            tuple(
+                normalize_value(
+                    value
+                )
+                for value in row
+            )
         )
 
     return normalized
@@ -397,90 +643,561 @@ def normalize_label(label):
     if label is None:
         return []
 
-    if not isinstance(
+    if isinstance(
+        label,
+        str
+    ):
+
+        try:
+
+            parsed = json.loads(
+                label
+            )
+
+            if isinstance(
+                parsed,
+                list
+            ):
+                label = parsed
+
+        except Exception:
+            pass
+
+    normalized = []
+
+    if isinstance(
         label,
         list
     ):
-        label = [label]
 
-    return [
-        normalize_value(value)
-        for value in label
-    ]
+        for item in label:
 
+            if isinstance(
+                item,
+                (tuple, list)
+            ):
 
-# ============================================================
-# SELECT CORRECTNESS
-# ============================================================
+                normalized.append(
+                    tuple(
+                        normalize_value(
+                            x
+                        )
+                        for x in item
+                    )
+                )
+
+            else:
+
+                normalized.append(
+                    (
+                        normalize_value(
+                            item
+                        ),
+                    )
+                )
+
+    else:
+
+        normalized.append(
+            (
+                normalize_value(
+                    label
+                ),
+            )
+        )
+
+    return normalized
+
 
 def compare_select_answer(
-    generated_rows,
+    rows,
     label
 ):
+    """
+    Compare generated read results against DBBench label.
+    """
 
     generated = normalize_rows(
-        generated_rows
+        rows
     )
 
-    expected_values = normalize_label(
+    expected = normalize_label(
         label
     )
 
-    # Flatten one-column answers.
-    if generated:
-
-        if all(
-            len(row) == 1
-            for row in generated
-        ):
-
-            generated_values = [
-                row[0]
-                for row in generated
-            ]
-
-            if sorted(generated_values) == sorted(
-                expected_values
-            ):
-                return True
-
-    # Multi-column / multi-row comparison.
-    expected_rows = [
-        (value,)
-        for value in expected_values
-    ]
-
-    return sorted(generated) == sorted(
-        expected_rows
+    return (
+        set(generated)
+        == set(expected)
     )
 
 
 # ============================================================
-# OPERATION
+# DBBENCH WRITE HASH
 # ============================================================
 
-def extract_operation(sql):
+def mysql_concat_ws(
+    separator,
+    *values
+):
+    """
+    Python equivalent of MySQL CONCAT_WS().
+
+    NULL values are skipped.
+    """
+
+    parts = []
+
+    for value in values:
+
+        if value is None:
+            continue
+
+        if isinstance(
+            value,
+            bytes
+        ):
+
+            value = value.decode(
+                "utf-8",
+                errors="replace"
+            )
+
+        parts.append(
+            str(value)
+        )
+
+    return separator.join(
+        parts
+    )
+
+
+def calculate_row_hash(
+    row
+):
+    """
+    DBBench row hash:
+
+        SUBSTRING(
+            MD5(
+                CONCAT_WS(',', ...)
+            ),
+            1,
+            5
+        )
+    """
+
+    row_string = mysql_concat_ws(
+        ",",
+        *row
+    )
+
+    digest = hashlib.md5(
+        row_string.encode(
+            "utf-8"
+        )
+    ).hexdigest()
+
+    return digest[:5]
+
+
+def get_table_columns(
+    table_info
+):
+
+    columns = table_info.get(
+        "table_info",
+        {}
+    ).get(
+        "columns",
+        []
+    )
+
+    return [
+        column["name"]
+        for column in columns
+    ]
+
+
+def calculate_single_table_hash(
+    conn,
+    table_info
+):
+
+    table_name = table_info[
+        "table_name"
+    ]
+
+    columns = get_table_columns(
+        table_info
+    )
+
+    if not columns:
+
+        return hashlib.md5(
+            b""
+        ).hexdigest()
+
+    column_sql = ", ".join(
+        f"`{column}`"
+        for column in columns
+    )
+
+    cursor = conn.cursor()
+
+    cursor.execute(
+        f"SELECT {column_sql} "
+        f"FROM `{table_name}`"
+    )
+
+    rows = cursor.fetchall()
+
+    row_hashes = [
+        calculate_row_hash(
+            row
+        )
+        for row in rows
+    ]
+
+    # Official DBBench behavior.
+    row_hashes.sort()
+
+    # IMPORTANT:
+    # GROUP_CONCAT uses comma separator.
+    combined = ",".join(
+        row_hashes
+    )
+
+    return hashlib.md5(
+        combined.encode(
+            "utf-8"
+        )
+    ).hexdigest()
+
+
+def calculate_table_state_hash(
+    conn,
+    task
+):
+
+    table_data = task[
+        "table"
+    ]
+
+    if isinstance(
+        table_data,
+        dict
+    ):
+        tables = [
+            table_data
+        ]
+    else:
+        tables = table_data
+
+    table_hashes = []
+
+    for table_info in tables:
+
+        table_hashes.append(
+            calculate_single_table_hash(
+                conn,
+                table_info
+            )
+        )
+
+    table_hashes.sort()
+
+    if len(table_hashes) == 1:
+
+        return table_hashes[0]
+
+    return "_".join(
+        table_hashes
+    )
+
+
+# ============================================================
+# ANSWER_MD5
+# ============================================================
+
+def extract_answer_md5(
+    answer_md5
+):
+
+    if answer_md5 is None:
+        return None
+
+    text = str(
+        answer_md5
+    )
+
+    # Typical:
+    #
+    # [('09aa8fbf72f39362970f95a1276b957c',)]
+
+    match = re.search(
+        r"['\"]([0-9a-fA-F]{32})['\"]",
+        text
+    )
+
+    if match:
+
+        return match.group(
+            1
+        ).lower()
+
+    match = re.search(
+        r"\b([0-9a-fA-F]{32})\b",
+        text
+    )
+
+    if match:
+
+        return match.group(
+            1
+        ).lower()
+
+    return None
+
+
+# ============================================================
+# GEMINI RESPONSE → SQL
+# ============================================================
+
+def extract_sql(
+    response
+):
+
+    if response is None:
+        return None
+
+    if hasattr(
+        response,
+        "text"
+    ):
+        text = response.text
+    else:
+        text = str(
+            response
+        )
+
+    if not text:
+        return None
+
+    text = text.strip()
+
+    # SQL markdown block.
+    match = re.search(
+        r"```sql\s*(.*?)\s*```",
+        text,
+        flags=re.IGNORECASE
+        | re.DOTALL
+    )
+
+    if match:
+
+        return match.group(
+            1
+        ).strip()
+
+    # Generic code block.
+    match = re.search(
+        r"```\s*(.*?)\s*```",
+        text,
+        flags=re.DOTALL
+    )
+
+    if match:
+
+        candidate = match.group(
+            1
+        ).strip()
+
+        if re.match(
+            r"^(SELECT|INSERT|UPDATE|DELETE|WITH|ALTER|DROP|TRUNCATE)",
+            candidate,
+            flags=re.IGNORECASE
+        ):
+
+            return candidate
+
+    # Plain SQL.
+    match = re.search(
+        r"\b(SELECT|INSERT|UPDATE|DELETE|WITH|ALTER|DROP|TRUNCATE)\b.*",
+        text,
+        flags=re.IGNORECASE
+        | re.DOTALL
+    )
+
+    if match:
+
+        candidate = match.group(
+            0
+        ).strip()
+
+        if ";" in candidate:
+
+            candidate = (
+                candidate.split(
+                    ";",
+                    1
+                )[0]
+                + ";"
+            )
+
+        return candidate
+
+    return None
+
+
+# ============================================================
+# SQL OPERATION
+# ============================================================
+
+def get_sql_operation(
+    sql
+):
+
+    if not sql:
+        return "UNKNOWN"
 
     match = re.match(
-        r"\s*(SELECT|INSERT|UPDATE|DELETE|DROP|ALTER|TRUNCATE)",
+        r"^\s*(SELECT|INSERT|UPDATE|DELETE|ALTER|DROP|TRUNCATE|WITH)",
         sql,
-        re.IGNORECASE
+        flags=re.IGNORECASE
     )
 
     if not match:
         return "UNKNOWN"
 
-    return match.group(1).upper()
+    operation = match.group(
+        1
+    ).upper()
+
+    if operation == "WITH":
+
+        match2 = re.search(
+            r"\)\s*(SELECT|INSERT|UPDATE|DELETE)",
+            sql,
+            flags=re.IGNORECASE
+        )
+
+        if match2:
+
+            return match2.group(
+                1
+            ).upper()
+
+    return operation
 
 
 # ============================================================
-# NEUTRAL DBBENCH INTENT
+# GEMINI SQL GENERATION
 # ============================================================
 
-def build_intent(reference_sql):
+def generate_sql(
+    client,
+    task
+):
 
-    operation = extract_operation(
-        reference_sql
+    table_data = task[
+        "table"
+    ]
+
+    if isinstance(
+        table_data,
+        dict
+    ):
+        tables = [
+            table_data
+        ]
+    else:
+        tables = table_data
+
+    schema_parts = []
+
+    for table in tables:
+
+        table_name = table[
+            "table_name"
+        ]
+
+        columns = table[
+            "table_info"
+        ]["columns"]
+
+        column_names = [
+            column["name"]
+            for column in columns
+        ]
+
+        schema_parts.append(
+            f"Table `{table_name}` "
+            f"columns: "
+            f"{', '.join(column_names)}"
+        )
+
+    schema = "\n".join(
+        schema_parts
+    )
+
+    description = task[
+        "description"
+    ]
+
+    task_type = task.get(
+        "type",
+        ["other"]
+    )
+
+    prompt = f"""
+Generate exactly ONE SQL statement for the following database task.
+
+TASK:
+{description}
+
+DATABASE SCHEMA:
+{schema}
+
+DBBENCH TASK TYPE:
+{task_type}
+
+RULES:
+1. Return exactly one SQL statement.
+2. Use only the supplied tables and columns.
+3. Do not explain the answer.
+4. Do not use markdown.
+5. Return SQL only.
+"""
+
+    response = client.models.generate_content(
+        model=MODEL,
+        contents=prompt
+    )
+
+    return extract_sql(
+        response
+    )
+
+
+# ============================================================
+# GUARDIAN
+# ============================================================
+
+def build_neutral_intent(
+    sql
+):
+    """
+    DBBench does not provide GuardianAgent's structured
+    user-intent representation.
+
+    Therefore we do NOT fabricate target, field, value,
+    or scope.
+
+    Only the SQL operation is extracted.
+    """
+
+    operation = get_sql_operation(
+        sql
     )
 
     return {
@@ -492,15 +1209,311 @@ def build_intent(reference_sql):
     }
 
 
+def run_guardian(
+    sql,
+    task
+):
+
+    try:
+
+        from guardian import guardian_check
+
+        intent = build_neutral_intent(
+            sql
+        )
+
+        return guardian_check(
+            task[
+                "description"
+            ],
+            sql,
+            known_intent=intent
+        )
+
+    except Exception as exc:
+
+        return {
+            "error": str(exc)
+        }
+
+
 # ============================================================
-# LOAD PREVIOUS RESULTS
+# EVALUATE ONE TASK
 # ============================================================
 
-def load_previous_results():
+def evaluate_task(
+    client,
+    task
+):
 
-    if not os.path.exists(
+    start = time.perf_counter()
+
+    result = {
+        "case_id": task[
+            "case_id"
+        ],
+        "type": task.get(
+            "type",
+            []
+        ),
+        "source": task.get(
+            "source"
+        ),
+        "description": task.get(
+            "description"
+        ),
+        "generated_sql": None,
+        "sql_operation": None,
+        "execution_status": None,
+        "execution_error": None,
+        "sql_correct": False,
+        "guardian": None,
+        "latency_ms": None
+    }
+
+    # --------------------------------------------------------
+    # Generate SQL
+    # --------------------------------------------------------
+
+    try:
+
+        generated_sql = generate_sql(
+            client,
+            task
+        )
+
+        result[
+            "generated_sql"
+        ] = generated_sql
+
+    except Exception as exc:
+
+        result[
+            "execution_status"
+        ] = "GEMINI_ERROR"
+
+        result[
+            "execution_error"
+        ] = str(exc)
+
+        result[
+            "latency_ms"
+        ] = (
+            time.perf_counter()
+            - start
+        ) * 1000
+
+        return result
+
+    if not generated_sql:
+
+        result[
+            "execution_status"
+        ] = "SQL_EXTRACTION_ERROR"
+
+        result[
+            "execution_error"
+        ] = (
+            "Could not extract SQL "
+            "from Gemini response"
+        )
+
+        result[
+            "latency_ms"
+        ] = (
+            time.perf_counter()
+            - start
+        ) * 1000
+
+        return result
+
+    # --------------------------------------------------------
+    # Operation
+    # --------------------------------------------------------
+
+    result[
+        "sql_operation"
+    ] = get_sql_operation(
+        generated_sql
+    )
+
+    # --------------------------------------------------------
+    # Guardian
+    # --------------------------------------------------------
+
+    result[
+        "guardian"
+    ] = run_guardian(
+        generated_sql,
+        task
+    )
+
+    # --------------------------------------------------------
+    # Temporary DB
+    # --------------------------------------------------------
+
+    conn = create_test_database(
+        task
+    )
+
+    try:
+
+        execution = execute_generated_sql(
+            conn,
+            generated_sql,
+            task
+        )
+
+        result[
+            "execution_status"
+        ] = execution[
+            "status"
+        ]
+
+        result[
+            "execution_error"
+        ] = execution.get(
+            "error"
+        )
+
+        task_types = [
+            str(x).upper()
+            for x in task.get(
+                "type",
+                []
+            )
+        ]
+
+        is_write_task = any(
+            x in {
+                "INSERT",
+                "UPDATE",
+                "DELETE"
+            }
+            for x in task_types
+        )
+
+        # ----------------------------------------------------
+        # READ / QA TASK
+        # ----------------------------------------------------
+
+        if not is_write_task:
+
+            if execution[
+                "status"
+            ] == "SUCCESS":
+
+                result[
+                    "sql_correct"
+                ] = compare_select_answer(
+                    execution[
+                        "rows"
+                    ],
+                    task.get(
+                        "label",
+                        []
+                    )
+                )
+
+        # ----------------------------------------------------
+        # WRITE TASK
+        # ----------------------------------------------------
+
+        else:
+
+            if execution[
+                "status"
+            ] == "SUCCESS":
+
+                expected_hash = (
+                    extract_answer_md5(
+                        task.get(
+                            "answer_md5"
+                        )
+                    )
+                )
+
+                actual_hash = (
+                    calculate_table_state_hash(
+                        conn,
+                        task
+                    )
+                )
+
+                result[
+                    "expected_hash"
+                ] = expected_hash
+
+                result[
+                    "actual_hash"
+                ] = actual_hash
+
+                result[
+                    "sql_correct"
+                ] = (
+                    expected_hash is not None
+                    and actual_hash
+                    == expected_hash
+                )
+
+    finally:
+
+        conn.close()
+
+    result[
+        "latency_ms"
+    ] = (
+        time.perf_counter()
+        - start
+    ) * 1000
+
+    return result
+
+
+# ============================================================
+# SAVE RESULTS
+# ============================================================
+
+def save_results(
+    results
+):
+
+    OUTPUT_FILE.parent.mkdir(
+        parents=True,
+        exist_ok=True
+    )
+
+    temporary = (
+        str(OUTPUT_FILE)
+        + ".tmp"
+    )
+
+    with open(
+        temporary,
+        "w",
+        encoding="utf-8"
+    ) as f:
+
+        json.dump(
+            results,
+            f,
+            indent=2,
+            ensure_ascii=False
+        )
+
+    os.replace(
+        temporary,
         OUTPUT_FILE
-    ):
+    )
+
+
+# ============================================================
+# LOAD RESULTS
+# ============================================================
+
+def load_existing_results():
+
+    if not OUTPUT_FILE.exists():
         return []
 
     try:
@@ -509,13 +1522,160 @@ def load_previous_results():
             OUTPUT_FILE,
             "r",
             encoding="utf-8"
-        ) as file:
+        ) as f:
 
-            return json.load(file)
+            data = json.load(
+                f
+            )
+
+        if isinstance(
+            data,
+            list
+        ):
+            return data
+
+        return []
 
     except Exception:
 
         return []
+
+
+# ============================================================
+# SUMMARY
+# ============================================================
+
+def print_summary(
+    results
+):
+
+    evaluated = [
+        r
+        for r in results
+        if r.get(
+            "execution_status"
+        ) == "SUCCESS"
+    ]
+
+    correct = [
+        r
+        for r in evaluated
+        if r.get(
+            "sql_correct"
+        )
+    ]
+
+    gemini_errors = [
+        r
+        for r in results
+        if r.get(
+            "execution_status"
+        ) == "GEMINI_ERROR"
+    ]
+
+    sql_errors = [
+        r
+        for r in results
+        if r.get(
+            "execution_status"
+        ) in {
+            "ERROR",
+            "SQL_EXTRACTION_ERROR"
+        }
+    ]
+
+    latencies = [
+        r["latency_ms"]
+        for r in evaluated
+        if r.get(
+            "latency_ms"
+        ) is not None
+    ]
+
+    print()
+
+    print(
+        "=" * 60
+    )
+
+    print(
+        "DBBench Stage 2 Summary"
+    )
+
+    print(
+        "=" * 60
+    )
+
+    print(
+        f"Total results : {len(results)}"
+    )
+
+    print(
+        f"Evaluated     : {len(evaluated)}"
+    )
+
+    print(
+        f"Correct       : {len(correct)}"
+    )
+
+    print(
+        f"Incorrect     : "
+        f"{len(evaluated) - len(correct)}"
+    )
+
+    if evaluated:
+
+        accuracy = (
+            len(correct)
+            / len(evaluated)
+            * 100
+        )
+
+        print(
+            f"Accuracy      : "
+            f"{accuracy:.2f}%"
+        )
+
+    print(
+        f"Gemini errors : "
+        f"{len(gemini_errors)}"
+    )
+
+    print(
+        f"SQL errors    : "
+        f"{len(sql_errors)}"
+    )
+
+    if latencies:
+
+        print(
+            f"Mean latency  : "
+            f"{statistics.mean(latencies):.4f} ms"
+        )
+
+        print(
+            f"Median latency: "
+            f"{statistics.median(latencies):.4f} ms"
+        )
+
+        print(
+            f"Min latency   : "
+            f"{min(latencies):.4f} ms"
+        )
+
+        print(
+            f"Max latency   : "
+            f"{max(latencies):.4f} ms"
+        )
+
+    print(
+        f"Results saved : "
+        f"{OUTPUT_FILE}"
+    )
+
+    print(
+        "=" * 60
+    )
 
 
 # ============================================================
@@ -524,421 +1684,251 @@ def load_previous_results():
 
 def main():
 
+    print()
+
+    print(
+        "=" * 60
+    )
+
+    print(
+        "GuardianAgent — DBBench Stage 2"
+    )
+
+    print(
+        "=" * 60
+    )
+
+    # --------------------------------------------------------
+    # Load tasks
+    # --------------------------------------------------------
+
     tasks = load_dbbench()
 
-    previous = load_previous_results()
-
-    completed_ids = {
-        result["case_id"]
-        for result in previous
-        if "case_id" in result
-    }
-
-    results = previous[:]
-
-    print("=" * 70)
-    print("GuardianAgent — DBBench Stage 2")
-    print("=" * 70)
-
-    print()
     print(
         f"DBBench tasks : {len(tasks)}"
     )
 
+    # --------------------------------------------------------
+    # Existing results
+    # --------------------------------------------------------
+
+    existing = load_existing_results()
+
+    completed_ids = {
+        r.get(
+            "case_id"
+        )
+        for r in existing
+        if r.get(
+            "execution_status"
+        ) != "GEMINI_ERROR"
+    }
+
     print(
-        f"Already done  : {len(completed_ids)}"
+        f"Already done  : "
+        f"{len(completed_ids)}"
+    )
+
+    remaining = [
+        task
+        for task in tasks
+        if task[
+            "case_id"
+        ] not in completed_ids
+    ]
+
+    if MAX_NEW_CASES is not None:
+
+        remaining = remaining[
+            :MAX_NEW_CASES
+        ]
+
+    print(
+        f"New cases     : "
+        f"{len(remaining)}"
     )
 
     print(
-        f"New cases     : {MAX_NEW_CASES}"
+        "Database mode : "
+        "TEMPORARY IN-MEMORY"
+    )
+
+    print(
+        "Guardian SQL execution : "
+        "DISABLED"
+    )
+
+    print(
+        f"Gemini model : "
+        f"{MODEL}"
     )
 
     print()
-    print(
-        "Database mode : TEMPORARY IN-MEMORY"
+
+    if not remaining:
+
+        print(
+            "No new cases to evaluate."
+        )
+
+        print_summary(
+            existing
+        )
+
+        return
+
+    # --------------------------------------------------------
+    # Gemini
+    # --------------------------------------------------------
+
+    try:
+
+        client = create_gemini_client()
+
+    except Exception as exc:
+
+        print(
+            "Gemini initialization failed:"
+        )
+
+        print(
+            exc
+        )
+
+        return
+
+    results = list(
+        existing
     )
 
-    print(
-        "Guardian SQL execution : DISABLED"
-    )
+    # --------------------------------------------------------
+    # Evaluate
+    # --------------------------------------------------------
 
-    print(
-        f"Gemini model : {MODEL}"
-    )
-
-    print()
-
-    new_cases = 0
-
-    for task in tasks:
-
-        case_id = task["case_id"]
-
-        if case_id in completed_ids:
-            continue
-
-        if new_cases >= MAX_NEW_CASES:
-            break
-
-        print("=" * 70)
-        print(
-            f"CASE {case_id}/{len(tasks)}"
-        )
-        print("=" * 70)
-
-        print()
-        print(
-            "Source :",
-            task["source"]
-        )
+    for index, task in enumerate(
+        remaining,
+        start=1
+    ):
 
         print(
-            "Type   :",
-            task["type"]
+            f"[{index}/{len(remaining)}] "
+            f"{task['case_id']} "
+            f"{task.get('type', [])}"
         )
 
-        print()
-        print(
-            "REQUEST:"
-        )
-
-        print(
-            task["description"]
-        )
-
-        try:
-
-            generated_sql, llm_latency = (
-                generate_sql(task)
-            )
-
-            print()
-            print(
-                "GENERATED SQL:"
-            )
-
-            print(
-                generated_sql
-            )
-
-        except Exception as error:
-
-            print()
-            print(
-                "GEMINI ERROR:"
-            )
-
-            print(
-                str(error)
-            )
-
-            result = {
-                "case_id": case_id,
-                "source": task["source"],
-                "type": task["type"],
-                "description": task["description"],
-                "generated_sql": None,
-                "reference_sql": task[
-                    "reference_sql"
-                ],
-                "label": task["label"],
-                "sql_correct": None,
-                "guardian_decision": None,
-                "guardian_risk": None,
-                "llm_latency_ms": None,
-                "guardian_latency_ms": None,
-                "status": "GEMINI_ERROR",
-                "error": str(error)
-            }
-
-            results.append(result)
-
-            with open(
-                OUTPUT_FILE,
-                "w",
-                encoding="utf-8"
-            ) as file:
-
-                json.dump(
-                    results,
-                    file,
-                    indent=2,
-                    ensure_ascii=False
-                )
-
-            new_cases += 1
-
-            continue
-
-        # ----------------------------------------------------
-        # Build isolated DB
-        # ----------------------------------------------------
-
-        connection = create_test_database(
+        result = evaluate_task(
+            client,
             task
         )
 
-        execution = execute_generated_sql(
-            connection,
-            generated_sql
+        # Remove previous failed result for
+        # the same case before saving the new one.
+        results = [
+            r
+            for r in results
+            if r.get(
+                "case_id"
+            )
+            != task[
+                "case_id"
+            ]
+        ]
+
+        results.append(
+            result
         )
 
-        sql_correct = None
-
-        operation = extract_operation(
-            generated_sql
+        save_results(
+            results
         )
 
-        if (
-            operation == "SELECT"
-            and execution["status"]
-            == "SUCCESS"
-        ):
+        status = result.get(
+            "execution_status"
+        )
 
-            sql_correct = compare_select_answer(
-                execution["rows"],
-                task["label"]
-            )
+        if status == "GEMINI_ERROR":
 
-        elif operation in {
-            "INSERT",
-            "UPDATE"
-        }:
-
-            # For modification tasks, compare the generated
-            # statement semantically against the benchmark
-            # reference by executing both independently.
-
-            reference_connection = (
-                create_test_database(task)
-            )
-
-            reference_execution = (
-                execute_generated_sql(
-                    reference_connection,
-                    task["reference_sql"]
+            error = str(
+                result.get(
+                    "execution_error",
+                    ""
                 )
             )
+
+            print(
+                "  Gemini error:"
+            )
+
+            print(
+                f"  {error}"
+            )
+
+            error_lower = error.lower()
 
             if (
-                execution["status"]
-                == "SUCCESS"
-                and reference_execution[
-                    "status"
-                ] == "SUCCESS"
+                "429" in error_lower
+                or "resource_exhausted"
+                in error_lower
+                or "quota"
+                in error_lower
             ):
 
-                table_name = task[
-                    "table"
-                ]["table_name"]
-
-                generated_state = (
-                    connection.execute(
-                        f"SELECT * FROM "
-                        f"{quote_identifier(table_name)}"
-                    ).fetchall()
+                print()
+                print(
+                    "Gemini quota detected."
                 )
 
-                reference_state = (
-                    reference_connection.execute(
-                        f"SELECT * FROM "
-                        f"{quote_identifier(table_name)}"
-                    ).fetchall()
+                print(
+                    "Stopping benchmark run."
                 )
 
-                sql_correct = (
-                    normalize_rows(
-                        generated_state
-                    )
-                    ==
-                    normalize_rows(
-                        reference_state
-                    )
-                )
+                break
 
-            reference_connection.close()
+        elif status == "SUCCESS":
 
-        connection.close()
-
-        # ----------------------------------------------------
-        # Guardian
-        # ----------------------------------------------------
-
-        intent = build_intent(
-            task["reference_sql"]
-        )
-
-        guardian_start = (
-            time.perf_counter()
-        )
-
-        guardian_result = guardian_check(
-            task["description"],
-            generated_sql,
-            known_intent=intent
-        )
-
-        guardian_latency = (
-            time.perf_counter()
-            - guardian_start
-        ) * 1000
-
-        print()
-        print(
-            "SQL execution :",
-            execution["status"]
-        )
-
-        print(
-            "SQL correctness :",
-            (
-                "CORRECT"
-                if sql_correct is True
-                else
-                "INCORRECT"
-                if sql_correct is False
-                else
-                "NOT EVALUATED"
-            )
-        )
-
-        print(
-            "Guardian decision :",
-            guardian_result[
-                "risk"
-            ]["decision"]
-        )
-
-        print(
-            "Guardian risk :",
-            guardian_result[
-                "risk"
-            ]["risk_score"]
-        )
-
-        print(
-            f"LLM latency : "
-            f"{llm_latency:.2f} ms"
-        )
-
-        print(
-            f"Guardian latency : "
-            f"{guardian_latency:.2f} ms"
-        )
-
-        result = {
-            "case_id": case_id,
-            "source": task["source"],
-            "type": task["type"],
-            "description": task["description"],
-            "generated_sql": generated_sql,
-            "reference_sql": task[
-                "reference_sql"
-            ],
-            "label": task["label"],
-            "sql_correct": sql_correct,
-            "execution_status": execution[
-                "status"
-            ],
-            "execution_error": execution[
-                "error"
-            ],
-            "guardian_decision": guardian_result[
-                "risk"
-            ]["decision"],
-            "guardian_risk": guardian_result[
-                "risk"
-            ]["risk_score"],
-            "guardian_risk_level": guardian_result[
-                "risk"
-            ]["risk_level"],
-            "guardian_components": guardian_result[
-                "risk"
-            ]["risk_components"],
-            "llm_latency_ms": llm_latency,
-            "guardian_latency_ms": guardian_latency,
-            "status": "COMPLETED"
-        }
-
-        results.append(result)
-
-        with open(
-            OUTPUT_FILE,
-            "w",
-            encoding="utf-8"
-        ) as file:
-
-            json.dump(
-                results,
-                file,
-                indent=2,
-                ensure_ascii=False
+            print(
+                f"  SQL operation : "
+                f"{result.get('sql_operation')}"
             )
 
-        new_cases += 1
+            print(
+                f"  Correct       : "
+                f"{result.get('sql_correct')}"
+            )
 
-        print()
-        print(
-            f"Saved {new_cases}/"
-            f"{MAX_NEW_CASES} new cases."
-        )
+            print(
+                f"  Latency       : "
+                f"{result.get('latency_ms', 0):.4f} ms"
+            )
+
+        else:
+
+            print(
+                f"  Status        : "
+                f"{status}"
+            )
+
+            if result.get(
+                "execution_error"
+            ):
+
+                print(
+                    f"  Error         : "
+                    f"{result['execution_error']}"
+                )
 
     # --------------------------------------------------------
-    # SUMMARY
+    # Summary
     # --------------------------------------------------------
 
-    completed = [
-        x for x in results
-        if x.get("status") == "COMPLETED"
-    ]
-
-    evaluated = [
-        x for x in completed
-        if x.get("sql_correct") is not None
-    ]
-
-    correct = [
-        x for x in evaluated
-        if x["sql_correct"] is True
-    ]
-
-    print()
-    print("=" * 70)
-    print("STAGE 2 SUMMARY")
-    print("=" * 70)
-
-    print(
-        f"Completed : {len(completed)}"
+    print_summary(
+        results
     )
 
-    print(
-        f"Evaluated : {len(evaluated)}"
-    )
 
-    if evaluated:
-
-        accuracy = (
-            len(correct)
-            /
-            len(evaluated)
-            *
-            100
-        )
-
-        print(
-            f"SQL accuracy : "
-            f"{accuracy:.2f}%"
-        )
-
-    print()
-    print(
-        f"Results saved to:"
-    )
-
-    print(
-        OUTPUT_FILE
-    )
-
+# ============================================================
+# ENTRY POINT
+# ============================================================
 
 if __name__ == "__main__":
     main()

@@ -162,10 +162,10 @@
     "safe_incorrectly_blocked": 1
   },
   "latency_ms": {
-    "mean": 0.3585,
-    "median": 0.3413,
-    "minimum": 0.199,
-    "maximum": 1.5755
+    "mean": 0.4143,
+    "median": 0.3258,
+    "minimum": 0.1616,
+    "maximum": 1.656
   },
   "total_cases": 401,
   "correct_cases": 366,

@@ -252,10 +252,10 @@
         }
       },
       "latency_ms": {
-        "mean": 0.5292,
-        "median": 0.4597,
-        "minimum": 0.311,
-        "maximum": 2.6218
+        "mean": 0.3869,
+        "median": 0.3246,
+        "minimum": 0.289,
+        "maximum": 1.7453
       }
     }
   }

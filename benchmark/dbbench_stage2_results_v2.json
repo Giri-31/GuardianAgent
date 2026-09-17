@@ -1,0 +1,514 @@
+[
+  {
+    "case_id": 1,
+    "source": "wikisql",
+    "type": [
+      "other"
+    ],
+    "description": "What is the Presentation of Credentials has a Termination of Mission listed as August 15, 2000?",
+    "generated_sql": null,
+    "reference_sql": "SELECT Presentation of Credentials FROM \"US Ambassadors and Envoy Extraordinary to Colombia\" WHERE \"Termination of Mission\" = 'August 15, 2000';",
+    "label": [
+      "March 19, 1998"
+    ],
+    "answer_md5": null,
+    "sql_correct": null,
+    "guardian_decision": null,
+    "guardian_risk": null,
+    "guardian_risk_level": null,
+    "guardian_components": null,
+    "llm_latency_ms": null,
+    "guardian_latency_ms": null,
+    "execution_status": null,
+    "execution_error": null,
+    "status": "GEMINI_ERROR",
+    "error": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.6-flash\\nPlease retry in 42.104880709s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.6-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '42s'}]}}"
+  },
+  {
+    "case_id": 2,
+    "source": "wikitq",
+    "type": [
+      "other"
+    ],
+    "description": "his nickname is \"jimmy,\" but what is his full name?",
+    "generated_sql": null,
+    "reference_sql": "SELECT Drivers FROM race_results WHERE Drivers LIKE '%jimmy%' LIMIT 1;",
+    "label": [
+      "Checco D'Angelo"
+    ],
+    "answer_md5": null,
+    "sql_correct": null,
+    "guardian_decision": null,
+    "guardian_risk": null,
+    "guardian_risk_level": null,
+    "guardian_components": null,
+    "llm_latency_ms": null,
+    "guardian_latency_ms": null,
+    "execution_status": null,
+    "execution_error": null,
+    "status": "GEMINI_ERROR",
+    "error": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.6-flash\\nPlease retry in 41.698443118s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.6-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '41s'}]}}"
+  },
+  {
+    "case_id": 3,
+    "source": "wikitq",
+    "type": [
+      "other"
+    ],
+    "description": "how many weeks did julie covington's \"don't cry for me argentina\" spend at the top of australia's singles chart?",
+    "generated_sql": null,
+    "reference_sql": "SELECT weeks_at_No_1 FROM `Music Chart History` WHERE Artist = 'Julie Covington' AND Title = 'Don\\'t Cry for Me Argentina';",
+    "label": [
+      "7"
+    ],
+    "answer_md5": null,
+    "sql_correct": null,
+    "guardian_decision": null,
+    "guardian_risk": null,
+    "guardian_risk_level": null,
+    "guardian_components": null,
+    "llm_latency_ms": null,
+    "guardian_latency_ms": null,
+    "execution_status": null,
+    "execution_error": null,
+    "status": "GEMINI_ERROR",
+    "error": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.6-flash\\nPlease retry in 41.384523671s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.6-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '41s'}]}}"
+  },
+  {
+    "case_id": 4,
+    "source": "wikitq",
+    "type": [
+      "other"
+    ],
+    "description": "how many floors does the capitol square have?",
+    "generated_sql": null,
+    "reference_sql": "SELECT Floors FROM skyscrapers_in_Columbus WHERE Name='Capitol Square';",
+    "label": [
+      "26"
+    ],
+    "answer_md5": null,
+    "sql_correct": null,
+    "guardian_decision": null,
+    "guardian_risk": null,
+    "guardian_risk_level": null,
+    "guardian_components": null,
+    "llm_latency_ms": null,
+    "guardian_latency_ms": null,
+    "execution_status": null,
+    "execution_error": null,
+    "status": "GEMINI_ERROR",
+    "error": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.6-flash\\nPlease retry in 40.981989608s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'model': 'gemini-3.6-flash', 'location': 'global'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '40s'}]}}"
+  },
+  {
+    "case_id": 5,
+    "source": "wikisql",
+    "type": [
+      "counting"
+    ],
+    "description": "What is the total game number with athlone town as the opponent?",
+    "generated_sql": null,
+    "reference_sql": "SELECT COUNT(Game) AS TotalGames FROM `Game Schedule` WHERE Opponent='Athlone Town';",
+    "label": [
+      "1.0"
+    ],
+    "answer_md5": null,
+    "sql_correct": null,
+    "guardian_decision": null,
+    "guardian_risk": null,
+    "guardian_risk_level": null,
+    "guardian_components": null,
+    "llm_latency_ms": null,
+    "guardian_latency_ms": null,
+    "execution_status": null,
+    "execution_error": null,
+    "status": "GEMINI_ERROR",
+    "error": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.6-flash\\nPlease retry in 40.570715539s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.6-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '40s'}]}}"
+  },
+  {
+    "case_id": 6,
+    "source": "wikitq",
+    "type": [
+      "counting"
+    ],
+    "description": "what is the total number of register listings from dover?",
+    "generated_sql": null,
+    "reference_sql": "SELECT COUNT(*) FROM historic_sites WHERE `Name on the Register` LIKE '%Dover%' AND `Date listed` LIKE '%#%';",
+    "label": [
+      "17"
+    ],
+    "answer_md5": null,
+    "sql_correct": null,
+    "guardian_decision": null,
+    "guardian_risk": null,
+    "guardian_risk_level": null,
+    "guardian_components": null,
+    "llm_latency_ms": null,
+    "guardian_latency_ms": null,
+    "execution_status": null,
+    "execution_error": null,
+    "status": "GEMINI_ERROR",
+    "error": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.6-flash\\nPlease retry in 40.286348094s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'model': 'gemini-3.6-flash', 'location': 'global'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '40s'}]}}"
+  },
+  {
+    "case_id": 7,
+    "source": "wikitq",
+    "type": [
+      "counting"
+    ],
+    "description": "who was the only wrestler to have a title reign in 1992?",
+    "generated_sql": null,
+    "reference_sql": "SELECT Wrestler FROM `Wrestler Title Reigns` WHERE Date LIKE '%1992%' GROUP BY Wrestler HAVING COUNT(*)=1;",
+    "label": [
+      "Dick Murdoch"
+    ],
+    "answer_md5": null,
+    "sql_correct": null,
+    "guardian_decision": null,
+    "guardian_risk": null,
+    "guardian_risk_level": null,
+    "guardian_components": null,
+    "llm_latency_ms": null,
+    "guardian_latency_ms": null,
+    "execution_status": null,
+    "execution_error": null,
+    "status": "GEMINI_ERROR",
+    "error": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.6-flash\\nPlease retry in 39.978752922s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.6-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '39s'}]}}"
+  },
+  {
+    "case_id": 8,
+    "source": "wikisql",
+    "type": [
+      "comparison"
+    ],
+    "description": "Which Score has a Result of 2–1, and a Competition of friendly, and a Goal smaller than 17?",
+    "generated_sql": null,
+    "reference_sql": "SELECT Score FROM 'Football Matches' WHERE Result='2–1' AND Competition='Friendly' AND Goal<17;",
+    "label": [
+      "1–0",
+      "2–0"
+    ],
+    "answer_md5": null,
+    "sql_correct": null,
+    "guardian_decision": null,
+    "guardian_risk": null,
+    "guardian_risk_level": null,
+    "guardian_components": null,
+    "llm_latency_ms": null,
+    "guardian_latency_ms": null,
+    "execution_status": null,
+    "execution_error": null,
+    "status": "GEMINI_ERROR",
+    "error": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.6-flash\\nPlease retry in 39.588199544s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.6-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '39s'}]}}"
+  },
+  {
+    "case_id": 9,
+    "source": "wikisql",
+    "type": [
+      "comparison"
+    ],
+    "description": "Which Average that has a W-L-T of 5-1, and a Season smaller than 2001, and Games smaller than 6?",
+    "generated_sql": null,
+    "reference_sql": "SELECT AverageFROM [Football Team Performance]WHERE W-L-T = '5-1' AND Season < '2001' AND Games < '6';",
+    "label": [
+      "none"
+    ],
+    "answer_md5": null,
+    "sql_correct": null,
+    "guardian_decision": null,
+    "guardian_risk": null,
+    "guardian_risk_level": null,
+    "guardian_components": null,
+    "llm_latency_ms": null,
+    "guardian_latency_ms": null,
+    "execution_status": null,
+    "execution_error": null,
+    "status": "GEMINI_ERROR",
+    "error": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.6-flash\\nPlease retry in 39.298704539s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.6-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '39s'}]}}"
+  },
+  {
+    "case_id": 10,
+    "source": "wikisql",
+    "type": [
+      "comparison"
+    ],
+    "description": "What is the Average for South Carolina with an Interview less than 9.626?",
+    "generated_sql": null,
+    "reference_sql": "SELECT Average FROM Beauty_Pageant_Scores WHERE State='South Carolina' AND Interview < 9.626;",
+    "label": [
+      "none"
+    ],
+    "answer_md5": null,
+    "sql_correct": null,
+    "guardian_decision": null,
+    "guardian_risk": null,
+    "guardian_risk_level": null,
+    "guardian_components": null,
+    "llm_latency_ms": null,
+    "guardian_latency_ms": null,
+    "execution_status": null,
+    "execution_error": null,
+    "status": "GEMINI_ERROR",
+    "error": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.6-flash\\nPlease retry in 38.987738032s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.6-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '38s'}]}}"
+  },
+  {
+    "case_id": 11,
+    "source": "wikisql",
+    "type": [
+      "comparison"
+    ],
+    "description": "Class of d, and a Frequency MHz smaller than 107.7, and a ERP W smaller than 232 has what call sign?",
+    "generated_sql": null,
+    "reference_sql": "SELECT `Call sign` FROM `Radio Stations` WHERE Class='D' AND `Frequency MHz` <107.7 AND `ERP W` <232;",
+    "label": [
+      "K255AZ",
+      "K228EE",
+      "K220FA",
+      "K265DY",
+      "K237DN",
+      "K214AU",
+      "K222AX",
+      "K239AX",
+      "K243BD",
+      "K219DC",
+      "K204CD",
+      "K231BG"
+    ],
+    "answer_md5": null,
+    "sql_correct": null,
+    "guardian_decision": null,
+    "guardian_risk": null,
+    "guardian_risk_level": null,
+    "guardian_components": null,
+    "llm_latency_ms": null,
+    "guardian_latency_ms": null,
+    "execution_status": null,
+    "execution_error": null,
+    "status": "GEMINI_ERROR",
+    "error": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.6-flash\\nPlease retry in 38.686527428s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.6-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '38s'}]}}"
+  },
+  {
+    "case_id": 12,
+    "source": "wikitq",
+    "type": [
+      "ranking"
+    ],
+    "description": "which area is the largest in square km?",
+    "generated_sql": null,
+    "reference_sql": "SELECT Name, Area FROM table ORDER BY Area DESC LIMIT 1;",
+    "label": [
+      "Giza"
+    ],
+    "answer_md5": null,
+    "sql_correct": null,
+    "guardian_decision": null,
+    "guardian_risk": null,
+    "guardian_risk_level": null,
+    "guardian_components": null,
+    "llm_latency_ms": null,
+    "guardian_latency_ms": null,
+    "execution_status": null,
+    "execution_error": null,
+    "status": "GEMINI_ERROR",
+    "error": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.6-flash\\nPlease retry in 38.391211739s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.6-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '38s'}]}}"
+  },
+  {
+    "case_id": 13,
+    "source": "wikisql",
+    "type": [
+      "ranking"
+    ],
+    "description": "Name the least touchdowns for 11 points",
+    "generated_sql": null,
+    "reference_sql": "SELECT Player FROM football_stats WHERE Points = '11' ORDER BY Touchdowns ASC LIMIT 1;",
+    "label": [
+      "2.0"
+    ],
+    "answer_md5": null,
+    "sql_correct": null,
+    "guardian_decision": null,
+    "guardian_risk": null,
+    "guardian_risk_level": null,
+    "guardian_components": null,
+    "llm_latency_ms": null,
+    "guardian_latency_ms": null,
+    "execution_status": null,
+    "execution_error": null,
+    "status": "GEMINI_ERROR",
+    "error": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.6-flash\\nPlease retry in 37.963086338s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.6-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '37s'}]}}"
+  },
+  {
+    "case_id": 14,
+    "source": "wikisql",
+    "type": [
+      "ranking"
+    ],
+    "description": "Of the matches that had a home team score of 13.17 (95), which match had the largest crowd?",
+    "generated_sql": null,
+    "reference_sql": "SELECT Venue, Crowd, DateFROM \"Australian Rules Football Matches\"WHERE \"Home team score\" = '13.17 (95)' ORDER BY Crowd DESCLIMIT 1;",
+    "label": [
+      "21000.0"
+    ],
+    "answer_md5": null,
+    "sql_correct": null,
+    "guardian_decision": null,
+    "guardian_risk": null,
+    "guardian_risk_level": null,
+    "guardian_components": null,
+    "llm_latency_ms": null,
+    "guardian_latency_ms": null,
+    "execution_status": null,
+    "execution_error": null,
+    "status": "GEMINI_ERROR",
+    "error": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.6-flash\\nPlease retry in 37.538340623s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.6-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '37s'}]}}"
+  },
+  {
+    "case_id": 15,
+    "source": "wikisql",
+    "type": [
+      "aggregation-SUM"
+    ],
+    "description": "When the transfer fee is £8.5m, what is the total ends?",
+    "generated_sql": null,
+    "reference_sql": "SELECT SUM(Ends) FROM football_players WHERE `Transfer fee` = '£8.5m';",
+    "label": [
+      "2011.0"
+    ],
+    "answer_md5": null,
+    "sql_correct": null,
+    "guardian_decision": null,
+    "guardian_risk": null,
+    "guardian_risk_level": null,
+    "guardian_components": null,
+    "llm_latency_ms": null,
+    "guardian_latency_ms": null,
+    "execution_status": null,
+    "execution_error": null,
+    "status": "GEMINI_ERROR",
+    "error": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.6-flash\\nPlease retry in 37.159821937s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.6-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '37s'}]}}"
+  },
+  {
+    "case_id": 16,
+    "source": "wikisql",
+    "type": [
+      "aggregation-SUM"
+    ],
+    "description": "With the given points of 51, what was the total number of the try bonus?",
+    "generated_sql": null,
+    "reference_sql": "SELECT SUM(`Try bonus`) FROM `Rugby Club Standings` WHERE `Points` = 51;",
+    "label": [
+      "1.0"
+    ],
+    "answer_md5": null,
+    "sql_correct": null,
+    "guardian_decision": null,
+    "guardian_risk": null,
+    "guardian_risk_level": null,
+    "guardian_components": null,
+    "llm_latency_ms": null,
+    "guardian_latency_ms": null,
+    "execution_status": null,
+    "execution_error": null,
+    "status": "GEMINI_ERROR",
+    "error": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.6-flash\\nPlease retry in 36.797094955s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.6-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '36s'}]}}"
+  },
+  {
+    "case_id": 17,
+    "source": "wikisql",
+    "type": [
+      "aggregation-MIN"
+    ],
+    "description": "What was the earlier round where Takashi Kogure got the fastest lap?",
+    "generated_sql": null,
+    "reference_sql": "SELECT MIN(Round) FROM `Race Results` WHERE `Fastest Lap` = 'Takashi Kogure';",
+    "label": [
+      "5.0"
+    ],
+    "answer_md5": null,
+    "sql_correct": null,
+    "guardian_decision": null,
+    "guardian_risk": null,
+    "guardian_risk_level": null,
+    "guardian_components": null,
+    "llm_latency_ms": null,
+    "guardian_latency_ms": null,
+    "execution_status": null,
+    "execution_error": null,
+    "status": "GEMINI_ERROR",
+    "error": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.6-flash\\nPlease retry in 36.482929641s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.6-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '36s'}]}}"
+  },
+  {
+    "case_id": 18,
+    "source": "wikisql",
+    "type": [
+      "aggregation-MAX"
+    ],
+    "description": "What's the biggest Bronze that has less than 0 Silvers?",
+    "generated_sql": null,
+    "reference_sql": "SELECT MAX(Bronze) FROM `Medal Tally` WHERE Silver = 0;",
+    "label": [
+      "none"
+    ],
+    "answer_md5": null,
+    "sql_correct": null,
+    "guardian_decision": null,
+    "guardian_risk": null,
+    "guardian_risk_level": null,
+    "guardian_components": null,
+    "llm_latency_ms": null,
+    "guardian_latency_ms": null,
+    "execution_status": null,
+    "execution_error": null,
+    "status": "GEMINI_ERROR",
+    "error": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.6-flash\\nPlease retry in 36.188011122s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.6-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '36s'}]}}"
+  },
+  {
+    "case_id": 19,
+    "source": "wikisql",
+    "type": [
+      "aggregation-MAX"
+    ],
+    "description": "Which Attendance is the highest one that has a Record of 15-28?",
+    "generated_sql": null,
+    "reference_sql": "SELECT MAX(Attendance) FROM Baseball_Team_Record WHERE Record = '15-28';",
+    "label": [
+      "32502.0"
+    ],
+    "answer_md5": null,
+    "sql_correct": null,
+    "guardian_decision": null,
+    "guardian_risk": null,
+    "guardian_risk_level": null,
+    "guardian_components": null,
+    "llm_latency_ms": null,
+    "guardian_latency_ms": null,
+    "execution_status": null,
+    "execution_error": null,
+    "status": "GEMINI_ERROR",
+    "error": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.6-flash\\nPlease retry in 35.866552078s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'model': 'gemini-3.6-flash', 'location': 'global'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '35s'}]}}"
+  },
+  {
+    "case_id": 20,
+    "source": "wikisql",
+    "type": [
+      "aggregation-AVG"
+    ],
+    "description": "What is the average Total, when Gold is 0, and when Nation is Iran?",
+    "generated_sql": null,
+    "reference_sql": "SELECT AVG(Total)FROM Olympic_medal_countsWHERE Gold = 0 AND Nation = 'Iran';",
+    "label": [
+      "1.0"
+    ],
+    "answer_md5": null,
+    "sql_correct": null,
+    "guardian_decision": null,
+    "guardian_risk": null,
+    "guardian_risk_level": null,
+    "guardian_components": null,
+    "llm_latency_ms": null,
+    "guardian_latency_ms": null,
+    "execution_status": null,
+    "execution_error": null,
+    "status": "GEMINI_ERROR",
+    "error": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.6-flash\\nPlease retry in 35.552384775s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.6-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '35s'}]}}"
+  }
+]
