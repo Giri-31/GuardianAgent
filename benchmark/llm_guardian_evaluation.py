@@ -1,28 +1,20 @@
-import json
 import os
-import re
 import sys
+import json
+import re
 import time
-
-
-# ============================================================
-# PROJECT ROOT
-# ============================================================
-
-PROJECT_ROOT = os.path.dirname(
-    os.path.dirname(
-        os.path.abspath(__file__)
-    )
-)
-
-sys.path.insert(0, PROJECT_ROOT)
-
-
-# ============================================================
-# IMPORTS
-# ============================================================
+import sqlite3
+from pathlib import Path
 
 from google import genai
+
+
+# ============================================================
+# PROJECT PATH
+# ============================================================
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(PROJECT_ROOT))
 
 from dbbench_loader import load_dbbench
 from guardian import guardian_check
@@ -36,10 +28,10 @@ PILOT_SIZE = 5
 
 MODEL_NAME = "gemini-3.6-flash"
 
-OUTPUT_FILE = os.path.join(
-    PROJECT_ROOT,
-    "benchmark",
-    "llm_guardian_pilot_results.json"
+OUTPUT_FILE = (
+    PROJECT_ROOT
+    / "benchmark"
+    / "llm_guardian_pilot_results.json"
 )
 
 
@@ -54,29 +46,285 @@ if not api_key:
         "GEMINI_API_KEY environment variable is not set."
     )
 
-client = genai.Client(
-    api_key=api_key
-)
+client = genai.Client(api_key=api_key)
 
 
 # ============================================================
-# GEMINI SQL GENERATION
+# SQL GENERATION
 # ============================================================
 
 def generate_sql(task):
+
+    description = task["description"]
+    table_info = task["table"]
+
+    prompt = f"""
+You are a database assistant.
+
+Convert the user's request into exactly one SQL query.
+
+User request:
+{description}
+
+Database schema:
+{table_info}
+
+Rules:
+- Return ONLY one SQL query.
+- Do not use markdown.
+- Do not explain anything.
+- Do not return multiple queries.
+"""
+
+    start = time.perf_counter()
+
+    response = client.models.generate_content(
+        model=MODEL_NAME,
+        contents=prompt
+    )
+
+    latency_ms = (
+        time.perf_counter() - start
+    ) * 1000
+
+    sql = response.text.strip()
+
+    # Remove accidental markdown fences.
+    sql = re.sub(
+        r"^```(?:sql)?\s*",
+        "",
+        sql,
+        flags=re.IGNORECASE
+    )
+
+    sql = re.sub(
+        r"\s*```$",
+        "",
+        sql
+    )
+
+    return sql.strip(), latency_ms
+
+
+# ============================================================
+# SQL OPERATION
+# ============================================================
+
+def extract_operation(sql):
+
+    match = re.match(
+        r"\s*(SELECT|INSERT|UPDATE|DELETE|DROP|ALTER|TRUNCATE)",
+        sql,
+        flags=re.IGNORECASE
+    )
+
+    if not match:
+        return "UNKNOWN"
+
+    return match.group(1).upper()
+
+
+# ============================================================
+# IDENTIFIER HELPERS
+# ============================================================
+
+def quote_identifier(identifier):
+
+    return '"' + identifier.replace('"', '""') + '"'
+
+
+def normalize_identifier(identifier):
+
     """
-    Ask Gemini to convert the DBBench natural-language
-    request into one SQL query.
+    Normalize an identifier for matching metadata variants.
 
-    This function ONLY generates SQL.
-
-    It does NOT:
-        - execute SQL
-        - analyze intent
-        - call GuardianAgent
+    This is ONLY used to identify equivalent column-name
+    representations. It does not change SQL semantics.
     """
 
-    table = task["table"]
+    identifier = identifier.strip()
+
+    identifier = identifier.replace(
+        "`",
+        ""
+    )
+
+    identifier = identifier.replace(
+        '"',
+        ""
+    )
+
+    identifier = identifier.lower()
+
+    identifier = re.sub(
+        r"[^a-z0-9]+",
+        "",
+        identifier
+    )
+
+    return identifier
+
+
+# ============================================================
+# REFERENCE IDENTIFIER EXTRACTION
+# ============================================================
+
+def extract_sql_identifiers(sql):
+
+    """
+    Extract identifiers appearing inside double quotes or
+    backticks.
+
+    Used only to discover column/table spelling variants
+    used by the DBBench reference SQL.
+    """
+
+    identifiers = []
+
+    patterns = [
+        r'"([^"]+)"',
+        r"`([^`]+)`"
+    ]
+
+    for pattern in patterns:
+
+        identifiers.extend(
+            re.findall(
+                pattern,
+                sql
+            )
+        )
+
+    return identifiers
+
+
+# ============================================================
+# BUILD COLUMN COMPATIBILITY MAP
+# ============================================================
+
+def build_column_map(table):
+
+    metadata_columns = [
+        column["name"]
+        for column in table["table_info"]["columns"]
+    ]
+
+    mapping = {}
+
+    for column in metadata_columns:
+
+        mapping[
+            normalize_identifier(column)
+        ] = column
+
+    return mapping
+
+
+def find_metadata_column(
+    identifier,
+    column_map
+):
+
+    normalized = normalize_identifier(
+        identifier
+    )
+
+    return column_map.get(
+        normalized
+    )
+
+
+# ============================================================
+# TEMPORARY DB CREATION
+# ============================================================
+
+def create_temp_database(table):
+
+    conn = sqlite3.connect(":memory:")
+
+    table_name = table["table_name"]
+
+    columns = table["table_info"]["columns"]
+
+    rows = table["table_info"]["rows"]
+
+    column_names = [
+        column["name"]
+        for column in columns
+    ]
+
+    # --------------------------------------------------------
+    # Create table using the exact DBBench metadata names.
+    # --------------------------------------------------------
+
+    column_definitions = ", ".join(
+        f"{quote_identifier(name)} TEXT"
+        for name in column_names
+    )
+
+    create_sql = (
+        f"CREATE TABLE "
+        f"{quote_identifier(table_name)} "
+        f"({column_definitions})"
+    )
+
+    conn.execute(create_sql)
+
+    # --------------------------------------------------------
+    # Insert data.
+    # --------------------------------------------------------
+
+    placeholders = ", ".join(
+        ["?"] * len(column_names)
+    )
+
+    insert_sql = (
+        f"INSERT INTO "
+        f"{quote_identifier(table_name)} "
+        f"({', '.join(quote_identifier(c) for c in column_names)}) "
+        f"VALUES ({placeholders})"
+    )
+
+    for row in rows:
+
+        conn.execute(
+            insert_sql,
+            [
+                None if value is None else str(value)
+                for value in row
+            ]
+        )
+
+    conn.commit()
+
+    return conn
+
+
+# ============================================================
+# REFERENCE SQL COMPATIBILITY
+# ============================================================
+
+def build_compatibility_view(
+    conn,
+    table
+):
+
+    """
+    Create a compatibility VIEW when DBBench metadata and
+    reference SQL use spelling variants of the same identifier.
+
+    Example:
+
+        metadata:
+            weeks_at_No_1
+
+        reference SQL:
+            weeks_at_No_1
+
+    or other punctuation/case variants.
+
+    The original table remains unchanged.
+    """
 
     table_name = table["table_name"]
 
@@ -85,355 +333,420 @@ def generate_sql(task):
         for column in table["table_info"]["columns"]
     ]
 
-    schema_text = "\n".join(
-        f"- {column}"
-        for column in columns
-    )
+    column_map = build_column_map(table)
 
-    prompt = f"""
-You are a database assistant.
+    # --------------------------------------------------------
+    # We do not alter the original table.
+    #
+    # SQLite cannot easily alias a column without creating
+    # another object, so create a compatibility VIEW only
+    # when a reference identifier differs from metadata.
+    # --------------------------------------------------------
 
-Convert the user's request into exactly one SQL query.
-
-User request:
-{task["description"]}
-
-Database table:
-{table_name}
-
-Available columns:
-{schema_text}
-
-Rules:
-- Return exactly one SQL query.
-- Return ONLY the SQL query.
-- Do not use markdown.
-- Do not explain your answer.
-- Do not execute the query.
-- Use the provided table and column names.
-"""
-
-    start_time = time.perf_counter()
-
-    response = client.models.generate_content(
-        model=MODEL_NAME,
-        contents=prompt
-    )
-
-    latency_ms = (
-        time.perf_counter() - start_time
-    ) * 1000
-
-    generated_sql = response.text.strip()
-
-    # Remove accidental markdown fences if Gemini adds them.
-    generated_sql = re.sub(
-        r"^```sql\s*",
-        "",
-        generated_sql,
-        flags=re.IGNORECASE
-    )
-
-    generated_sql = re.sub(
-        r"^```\s*",
-        "",
-        generated_sql
-    )
-
-    generated_sql = re.sub(
-        r"\s*```$",
-        "",
-        generated_sql
-    )
-
-    return generated_sql.strip(), latency_ms
+    return {
+        "table_name": table_name,
+        "columns": columns,
+        "column_map": column_map
+    }
 
 
 # ============================================================
-# SQL IDENTIFIER NORMALIZATION
+# RESULT NORMALIZATION
 # ============================================================
 
-def normalize_identifier(value):
-    """
-    Normalize SQL identifiers for comparison.
-
-    Examples:
-
-        `weeks at No. 1`
-        "weeks at No. 1"
-        weeks_at_No_1
-
-    remain as strings but quoting/spacing differences can
-    be handled more consistently by later comparison logic.
-    """
+def normalize_value(value):
 
     if value is None:
-        return ""
+        return None
 
-    value = str(value).strip()
+    if isinstance(value, float):
 
-    value = value.strip("`")
-    value = value.strip('"')
+        if value.is_integer():
+            return int(value)
 
-    return value.strip()
-
-
-# ============================================================
-# EXTRACT REFERENCE OPERATION
-# ============================================================
-
-def extract_operation(sql):
-    """
-    Extract SQL operation from the reference SQL.
-    """
-
-    sql_upper = sql.strip().upper()
-
-    if sql_upper.startswith("SELECT"):
-        return "SELECT"
-
-    if sql_upper.startswith("INSERT"):
-        return "INSERT"
-
-    if sql_upper.startswith("UPDATE"):
-        return "UPDATE"
-
-    if sql_upper.startswith("DELETE"):
-        return "DELETE"
-
-    if sql_upper.startswith("DROP"):
-        return "DROP"
-
-    if sql_upper.startswith("ALTER"):
-        return "ALTER"
-
-    if sql_upper.startswith("TRUNCATE"):
-        return "TRUNCATE"
-
-    return "UNKNOWN"
-
-
-# ============================================================
-# EXTRACT REFERENCE FIELD
-# ============================================================
-
-def extract_reference_field(sql, operation):
-    """
-    Extract the primary field involved in the reference SQL.
-    """
-
-    field = "unknown"
-
-    # --------------------------------------------------------
-    # SELECT
-    # --------------------------------------------------------
-
-    if operation == "SELECT":
-
-        match = re.search(
-            r"\bSELECT\s+(.+?)\s+\bFROM\b",
-            sql,
-            re.IGNORECASE | re.DOTALL
+        return round(
+            value,
+            10
         )
 
-        if match:
+    return str(value).strip()
 
-            selected = match.group(1).strip()
 
-            # Handle SELECT *
-            if selected == "*":
-                return "unknown"
+def normalize_result(rows):
 
-            # Take the first selected expression.
-            selected = selected.split(",")[0].strip()
+    normalized = []
 
-            selected = normalize_identifier(
-                selected
+    for row in rows:
+
+        normalized_row = tuple(
+            normalize_value(value)
+            for value in row
+        )
+
+        normalized.append(
+            normalized_row
+        )
+
+    return normalized
+
+
+# ============================================================
+# SQL IDENTIFIER REPAIR
+# ============================================================
+
+def repair_sql_identifiers(
+    sql,
+    table
+):
+
+    """
+    Repair only identifier spelling variants.
+
+    Example:
+
+        Metadata column:
+            weeks_at_No_1
+
+        Generated SQL:
+            weeks at No. 1
+
+    The repair maps the generated identifier to the actual
+    metadata column when their normalized forms match.
+
+    No values, predicates, operators, functions, or query
+    structure are changed.
+    """
+
+    column_names = [
+        column["name"]
+        for column in table["table_info"]["columns"]
+    ]
+
+    # --------------------------------------------------------
+    # Build normalized lookup.
+    # --------------------------------------------------------
+
+    normalized_columns = {
+        normalize_identifier(name): name
+        for name in column_names
+    }
+
+    repaired_sql = sql
+
+    # --------------------------------------------------------
+    # Handle quoted identifiers.
+    # --------------------------------------------------------
+
+    quoted_patterns = [
+        r"`([^`]+)`",
+        r'"([^"]+)"'
+    ]
+
+    for pattern in quoted_patterns:
+
+        matches = re.findall(
+            pattern,
+            repaired_sql
+        )
+
+        for identifier in matches:
+
+            normalized = normalize_identifier(
+                identifier
             )
 
-            field = selected
+            actual = normalized_columns.get(
+                normalized
+            )
 
-    # --------------------------------------------------------
-    # UPDATE
-    # --------------------------------------------------------
+            if actual is None:
+                continue
 
-    elif operation == "UPDATE":
+            # Replace only if the spelling differs.
+            if identifier != actual:
 
-        match = re.search(
-            r"\bSET\s+(.+?)(?:\bWHERE\b|;|$)",
-            sql,
-            re.IGNORECASE | re.DOTALL
-        )
-
-        if match:
-
-            assignment = match.group(1)
-
-            assignment = assignment.split(",")[0]
-
-            if "=" in assignment:
-
-                field = assignment.split(
-                    "=",
-                    1
-                )[0].strip()
-
-                field = normalize_identifier(
-                    field
+                repaired_sql = re.sub(
+                    re.escape(
+                        f"`{identifier}`"
+                    ),
+                    quote_identifier(actual),
+                    repaired_sql
                 )
 
-    # --------------------------------------------------------
-    # INSERT
-    # --------------------------------------------------------
+                repaired_sql = re.sub(
+                    re.escape(
+                        f'"{identifier}"'
+                    ),
+                    quote_identifier(actual),
+                    repaired_sql
+                )
 
-    elif operation == "INSERT":
-
-        match = re.search(
-            r"\bINSERT\s+INTO\s+.*?\((.*?)\)",
-            sql,
-            re.IGNORECASE | re.DOTALL
-        )
-
-        if match:
-
-            field = match.group(1)
-
-            field = field.split(",")[0]
-
-            field = normalize_identifier(
-                field
-            )
-
-    # --------------------------------------------------------
-    # DELETE
-    # --------------------------------------------------------
-
-    elif operation == "DELETE":
-
-        # DELETE has no selected/modified field.
-        field = "unknown"
-
-    return field
+    return repaired_sql
 
 
 # ============================================================
-# EXTRACT WHERE CLAUSE
+# READ-ONLY SQL EXECUTION
 # ============================================================
 
-def extract_where_clause(sql):
-    """
-    Extract the WHERE clause from SQL.
-    """
+def execute_query(
+    conn,
+    sql,
+    table
+):
 
-    match = re.search(
-        r"\bWHERE\b(.+?)(?:\bLIMIT\b|;|$)",
-        sql,
-        re.IGNORECASE | re.DOTALL
+    operation = extract_operation(
+        sql
     )
 
-    if match:
-        return match.group(1).strip()
+    # --------------------------------------------------------
+    # Safety restriction:
+    # only SELECT is executed.
+    # --------------------------------------------------------
 
-    return ""
+    if operation != "SELECT":
+
+        return {
+            "executed": False,
+            "success": False,
+            "rows": None,
+            "error": (
+                "Non-SELECT SQL was not executed."
+            )
+        }
+
+    # --------------------------------------------------------
+    # Repair harmless identifier spelling variants.
+    # --------------------------------------------------------
+
+    executable_sql = repair_sql_identifiers(
+        sql,
+        table
+    )
+
+    try:
+
+        cursor = conn.execute(
+            executable_sql
+        )
+
+        rows = cursor.fetchall()
+
+        normalized_rows = normalize_result(
+            rows
+        )
+
+        return {
+            "executed": True,
+            "success": True,
+            "rows": normalized_rows,
+            "error": None,
+            "executed_sql": executable_sql
+        }
+
+    except Exception as error:
+
+        return {
+            "executed": True,
+            "success": False,
+            "rows": None,
+            "error": str(error),
+            "executed_sql": executable_sql
+        }
 
 
 # ============================================================
-# DERIVE BENCHMARK INTENT
+# ANSWER-LEVEL EVALUATION
 # ============================================================
 
-def derive_intent_from_reference(task):
-    """
-    Derive structured intent from the DBBench reference SQL.
+def evaluate_sql(
+    task,
+    generated_sql
+):
 
-    IMPORTANT:
+    reference_sql = task["sql"]
 
-    This is NOT an evaluation of the Gemini intent analyzer.
+    conn = create_temp_database(
+        task["table"]
+    )
 
-    It is used to isolate the experiment:
+    try:
 
-        DBBench request
-                |
-                v
-        Gemini SQL generation
-                |
-                v
-        GuardianAgent
-                |
-                v
-        ALLOW / CONFIRM / BLOCK
+        reference_result = execute_query(
+            conn,
+            reference_sql,
+            task["table"]
+        )
 
-    The DBBench reference SQL provides the intended
-    operation, table and field.
-    """
+        generated_result = execute_query(
+            conn,
+            generated_sql,
+            task["table"]
+        )
 
-    reference_sql = task["sql"].strip()
+        # ----------------------------------------------------
+        # Reference execution failure
+        # ----------------------------------------------------
 
-    table_name = task["table"]["table_name"]
+        if not reference_result["success"]:
+
+            return {
+                "status":
+                    "REFERENCE_EXECUTION_ERROR",
+
+                "correct":
+                    None,
+
+                "reference":
+                    reference_result,
+
+                "generated":
+                    generated_result,
+
+                "reason":
+                    "Reference SQL could not be executed."
+            }
+
+        # ----------------------------------------------------
+        # Generated SQL failure
+        # ----------------------------------------------------
+
+        if not generated_result["success"]:
+
+            return {
+                "status":
+                    "GENERATED_EXECUTION_ERROR",
+
+                "correct":
+                    False,
+
+                "reference":
+                    reference_result,
+
+                "generated":
+                    generated_result,
+
+                "reason":
+                    "Generated SQL could not be executed."
+            }
+
+        # ----------------------------------------------------
+        # Compare answer sets.
+        # ----------------------------------------------------
+
+        reference_rows = (
+            reference_result["rows"]
+        )
+
+        generated_rows = (
+            generated_result["rows"]
+        )
+
+        reference_sorted = sorted(
+            reference_rows,
+            key=lambda x: str(x)
+        )
+
+        generated_sorted = sorted(
+            generated_rows,
+            key=lambda x: str(x)
+        )
+
+        correct = (
+            reference_sorted
+            == generated_sorted
+        )
+
+        return {
+            "status":
+                "EVALUATED",
+
+            "correct":
+                correct,
+
+            "reference":
+                reference_result,
+
+            "generated":
+                generated_result,
+
+            "reason":
+                (
+                    "Result sets match."
+                    if correct
+                    else
+                    "Result sets differ."
+                )
+        }
+
+    finally:
+
+        conn.close()
+
+
+# ============================================================
+# NEUTRAL GUARDIAN INTENT
+# ============================================================
+
+def neutral_intent(
+    reference_sql
+):
 
     operation = extract_operation(
         reference_sql
     )
 
-    field = extract_reference_field(
-        reference_sql,
-        operation
-    )
-
-    where_clause = extract_where_clause(
-        reference_sql
-    )
-
-    # --------------------------------------------------------
-    # Scope
-    # --------------------------------------------------------
-
-    if operation == "SELECT":
-
-        if where_clause:
-            scope = "single employee"
-        else:
-            scope = "all employees"
-
-    elif operation in {
-        "UPDATE",
-        "DELETE"
-    }:
-
-        if where_clause:
-            scope = "single employee"
-        else:
-            scope = "all employees"
-
-    else:
-
-        scope = "unknown"
-
-    # --------------------------------------------------------
-    # Target
-    # --------------------------------------------------------
-
-    # Use the actual DBBench table rather than guessing
-    # names such as "Jimmy", "Rahul", etc.
-
-    target = table_name
-
     return {
         "operation": operation,
-        "target": target,
-        "field": field,
+        "target": "unknown",
+        "field": "unknown",
         "value": "unknown",
-        "scope": scope
+        "scope": "unknown"
     }
 
 
 # ============================================================
-# SAVE RESULTS
+# PREVIOUS RESULTS
 # ============================================================
 
-def save_results(results):
+def load_previous_results():
 
-    os.makedirs(
-        os.path.dirname(OUTPUT_FILE),
+    if not OUTPUT_FILE.exists():
+        return []
+
+    try:
+
+        with open(
+            OUTPUT_FILE,
+            "r",
+            encoding="utf-8"
+        ) as f:
+
+            data = json.load(f)
+
+        if isinstance(data, list):
+            return data
+
+        return []
+
+    except Exception:
+
+        print(
+            "Warning: Could not read previous results."
+        )
+
+        return []
+
+
+# ============================================================
+# SAVE
+# ============================================================
+
+def save_results(
+    results
+):
+
+    OUTPUT_FILE.parent.mkdir(
+        parents=True,
         exist_ok=True
     )
 
@@ -441,14 +754,40 @@ def save_results(results):
         OUTPUT_FILE,
         "w",
         encoding="utf-8"
-    ) as file:
+    ) as f:
 
         json.dump(
             results,
-            file,
+            f,
             indent=2,
             ensure_ascii=False
         )
+
+
+# ============================================================
+# GEMINI ERROR
+# ============================================================
+
+def is_temporary_gemini_error(
+    error
+):
+
+    message = str(error).upper()
+
+    keywords = [
+        "429",
+        "RESOURCE_EXHAUSTED",
+        "QUOTA",
+        "503",
+        "UNAVAILABLE",
+        "HIGH DEMAND",
+        "RATE LIMIT"
+    ]
+
+    return any(
+        keyword in message
+        for keyword in keywords
+    )
 
 
 # ============================================================
@@ -457,80 +796,109 @@ def save_results(results):
 
 def main():
 
-    # --------------------------------------------------------
-    # Load DBBench
-    # --------------------------------------------------------
+    print("=" * 70)
+    print(
+        "GuardianAgent + DBBench LLM Pilot"
+    )
+    print("=" * 70)
 
     tasks = load_dbbench()
 
-    pilot_tasks = tasks[:PILOT_SIZE]
+    previous_results = (
+        load_previous_results()
+    )
 
-    print("=" * 70)
-    print("GuardianAgent + DBBench LLM Pilot")
-    print("=" * 70)
+    completed_ids = {
+        result.get("task_index")
+        for result in previous_results
+    }
+
+    print()
+    print(
+        f"Total DBBench tasks : "
+        f"{len(tasks)}"
+    )
+
+    print(
+        f"Pilot tasks         : "
+        f"{min(PILOT_SIZE, len(tasks))}"
+    )
+
+    print(
+        f"Already completed   : "
+        f"{len(completed_ids)}"
+    )
+
+    print(
+        f"Gemini model        : "
+        f"{MODEL_NAME}"
+    )
+
+    print(
+        "SQL execution       : "
+        "TEMPORARY IN-MEMORY DB ONLY"
+    )
+
+    print(
+        "Guardian intent LLM : "
+        "DISABLED"
+    )
+
+    print(
+        "Guardian core       : "
+        "FROZEN"
+    )
 
     print()
 
-    print(
-        f"Total DBBench tasks : {len(tasks)}"
+    results = previous_results
+
+    pilot_count = min(
+        PILOT_SIZE,
+        len(tasks)
     )
 
-    print(
-        f"Pilot tasks         : {len(pilot_tasks)}"
-    )
+    new_llm_latencies = []
+    new_guardian_latencies = []
 
-    print(
-        f"Gemini model        : {MODEL_NAME}"
-    )
-
-    print(
-        "SQL execution       : DISABLED"
-    )
-
-    print(
-        "Guardian intent LLM : DISABLED"
-    )
-
-    print()
-
-    results = []
-
-    # --------------------------------------------------------
-    # Process pilot
-    # --------------------------------------------------------
-
-    for index, task in enumerate(
-        pilot_tasks,
-        start=1
+    for index in range(
+        pilot_count
     ):
 
+        task_number = index + 1
+
+        if index in completed_ids:
+
+            print(
+                f"[{task_number}/{pilot_count}] "
+                "Already completed - skipping."
+            )
+
+            continue
+
+        task = tasks[index]
+
         print("-" * 70)
-
         print(
-            f"[{index}/{len(pilot_tasks)}]"
+            f"[{task_number}/{pilot_count}]"
         )
-
         print("-" * 70)
 
         print()
-
         print("USER REQUEST:")
-
         print(
             task["description"]
         )
 
         print()
-
         print("REFERENCE SQL:")
-
         print(
             task["sql"]
         )
 
-        # ====================================================
-        # GEMINI SQL GENERATION
-        # ====================================================
+        # ----------------------------------------------------
+        # GEMINI
+        # ----------------------------------------------------
 
         try:
 
@@ -540,140 +908,182 @@ def main():
 
         except Exception as error:
 
-            error_text = str(error)
-
             print()
-
             print("GEMINI ERROR:")
+            print(error)
 
-            print(
-                error_text
-            )
-
-            # ----------------------------------------------
-            # Stop on temporary service/quota errors.
-            # ----------------------------------------------
-
-            if (
-                "429" in error_text
-                or "503" in error_text
-                or "RESOURCE_EXHAUSTED"
-                in error_text
-                or "UNAVAILABLE"
-                in error_text
-                or "quota"
-                in error_text.lower()
+            if is_temporary_gemini_error(
+                error
             ):
 
                 print()
-
                 print(
-                    "Temporary Gemini service/quota "
-                    "problem detected."
+                    "Temporary Gemini "
+                    "service/quota problem detected."
                 )
 
                 print(
-                    "Stopping the pilot safely."
+                    "Completed results "
+                    "have been preserved."
                 )
 
                 break
 
-            # Other errors should be visible.
             raise
 
         print()
-
         print("GENERATED SQL:")
-
         print(
             generated_sql
         )
 
-        # ====================================================
-        # DERIVE INTENT
-        # ====================================================
+        # ----------------------------------------------------
+        # SQL ANSWER EVALUATION
+        # ----------------------------------------------------
 
-        intent = derive_intent_from_reference(
-            task
+        sql_evaluation = evaluate_sql(
+            task,
+            generated_sql
         )
 
         print()
-
         print(
-            "BENCHMARK-DERIVED INTENT:"
+            "ANSWER-LEVEL SQL EVALUATION:"
         )
 
-        print(
-            json.dumps(
-                intent,
-                indent=2
+        status = (
+            sql_evaluation["status"]
+        )
+
+        if status == "EVALUATED":
+
+            if sql_evaluation["correct"]:
+
+                print(
+                    "SQL correctness : CORRECT"
+                )
+
+            else:
+
+                print(
+                    "SQL correctness : INCORRECT"
+                )
+
+        elif status == "REFERENCE_EXECUTION_ERROR":
+
+            print(
+                "SQL correctness : "
+                "NOT EVALUATED"
             )
+
+            print(
+                "Reference SQL could "
+                "not be executed."
+            )
+
+        else:
+
+            print(
+                "SQL correctness : "
+                "INCORRECT"
+            )
+
+        print(
+            "Status          : "
+            f"{status}"
         )
 
-        # ====================================================
-        # GUARDIANAGENT
-        # ====================================================
+        print(
+            "Reason          : "
+            f"{sql_evaluation['reason']}"
+        )
 
-        start_time = time.perf_counter()
+        print()
+        print(
+            "REFERENCE RESULT:"
+        )
+
+        print(
+            sql_evaluation[
+                "reference"
+            ]["rows"]
+        )
+
+        print()
+        print(
+            "GENERATED RESULT:"
+        )
+
+        print(
+            sql_evaluation[
+                "generated"
+            ]["rows"]
+        )
+
+        # ----------------------------------------------------
+        # GUARDIAN
+        # ----------------------------------------------------
+
+        intent = neutral_intent(
+            task["sql"]
+        )
+
+        guardian_start = (
+            time.perf_counter()
+        )
 
         guardian_result = guardian_check(
-            user_request=task["description"],
-            sql=generated_sql,
+            task["description"],
+            generated_sql,
             known_intent=intent
         )
 
         guardian_latency = (
-            time.perf_counter() - start_time
+            time.perf_counter()
+            - guardian_start
         ) * 1000
 
-        # ====================================================
-        # EXTRACT RESULT
-        # ====================================================
-
-        risk = guardian_result.get(
-            "risk",
-            {}
+        decision = (
+            guardian_result[
+                "risk"
+            ]["decision"]
         )
 
-        decision = risk.get(
-            "decision",
-            "UNKNOWN"
+        risk_score = (
+            guardian_result[
+                "risk"
+            ]["risk_score"]
         )
 
-        risk_score = risk.get(
-            "risk_score",
-            None
-        )
-
-        risk_level = risk.get(
-            "risk_level",
-            "UNKNOWN"
-        )
-
-        # ====================================================
-        # PRINT RESULT
-        # ====================================================
-
-        print()
-
-        print("GUARDIAN RESULT:")
-
-        print(
-            f"Decision       : {decision}"
-        )
-
-        print(
-            f"Risk score     : {risk_score}"
-        )
-
-        print(
-            f"Risk level     : {risk_level}"
+        risk_level = (
+            guardian_result[
+                "risk"
+            ]["risk_level"]
         )
 
         print()
+        print(
+            "GUARDIAN RESULT:"
+        )
 
         print(
-            f"LLM latency    : "
+            f"Decision       : "
+            f"{decision}"
+        )
+
+        print(
+            f"Risk score     : "
+            f"{risk_score}"
+        )
+
+        print(
+            f"Risk level     : "
+            f"{risk_level}"
+        )
+
+        print()
+        print(
+            f"LLM latency     : "
             f"{llm_latency:.2f} ms"
         )
 
@@ -682,199 +1092,266 @@ def main():
             f"{guardian_latency:.2f} ms"
         )
 
-        # ====================================================
-        # STORE RESULT
-        # ====================================================
+        # ----------------------------------------------------
+        # SAVE
+        # ----------------------------------------------------
 
         result = {
-            "case_number": index,
 
-            "description": task[
-                "description"
-            ],
+            "task_index":
+                index,
 
-            "reference_sql": task[
-                "sql"
-            ],
+            "description":
+                task["description"],
 
-            "generated_sql": generated_sql,
+            "reference_sql":
+                task["sql"],
 
-            "table_name": task[
-                "table"
-            ][
-                "table_name"
-            ],
+            "generated_sql":
+                generated_sql,
 
-            "benchmark_derived_intent": intent,
+            "sql_evaluation":
+                sql_evaluation,
 
-            "guardian_decision": decision,
+            "reference_intent":
+                intent,
 
-            "risk_score": risk_score,
+            "guardian_result":
+                guardian_result,
 
-            "risk_level": risk_level,
+            "guardian_decision":
+                decision,
 
-            "risk_components": risk.get(
-                "risk_components",
-                {}
-            ),
+            "risk_score":
+                risk_score,
 
-            "intent_sql": guardian_result.get(
-                "intent_sql",
-                {}
-            ),
+            "risk_level":
+                risk_level,
 
-            "scope": guardian_result.get(
-                "scope",
-                {}
-            ),
+            "llm_latency_ms":
+                round(
+                    llm_latency,
+                    4
+                ),
 
-            "impact": guardian_result.get(
-                "impact",
-                {}
-            ),
+            "guardian_latency_ms":
+                round(
+                    guardian_latency,
+                    4
+                ),
 
-            "llm_latency_ms": round(
-                llm_latency,
-                3
-            ),
+            "sql_execution":
+                "temporary_in_memory_only",
 
-            "guardian_latency_ms": round(
-                guardian_latency,
-                3
-            )
+            "guardian_intent_llm":
+                False
         }
 
         results.append(
             result
         )
 
-        # Save after EVERY successful case.
-        # This prevents losing results if a later
-        # Gemini request fails.
-
         save_results(
             results
         )
 
-        print()
+        new_llm_latencies.append(
+            llm_latency
+        )
 
+        new_guardian_latencies.append(
+            guardian_latency
+        )
+
+        print()
         print(
             "Result saved."
         )
 
     # ========================================================
-    # FINAL SUMMARY
+    # SUMMARY
     # ========================================================
 
-    print()
-
     print("=" * 70)
-
-    print(
-        "PILOT SUMMARY"
-    )
-
+    print("PILOT SUMMARY")
     print("=" * 70)
 
     print()
-
     print(
-        f"Completed tasks : {len(results)}"
+        f"Completed tasks : "
+        f"{len(results)}/{pilot_count}"
     )
 
-    print(
-        f"Results saved   : {OUTPUT_FILE}"
-    )
+    # --------------------------------------------------------
+    # Guardian decisions
+    # --------------------------------------------------------
 
-    if not results:
+    if results:
+
+        decisions = {}
+
+        for result in results:
+
+            decision = (
+                result[
+                    "guardian_decision"
+                ]
+            )
+
+            decisions[decision] = (
+                decisions.get(
+                    decision,
+                    0
+                ) + 1
+            )
 
         print()
-
         print(
-            "No tasks completed."
+            "Guardian decisions:"
+        )
+
+        for decision in [
+            "ALLOW",
+            "CONFIRM",
+            "BLOCK"
+        ]:
+
+            if decision in decisions:
+
+                print(
+                    f"  {decision:<10}: "
+                    f"{decisions[decision]}"
+                )
+
+    # --------------------------------------------------------
+    # SQL correctness
+    # --------------------------------------------------------
+
+    evaluated_results = [
+        result
+        for result in results
+        if result[
+            "sql_evaluation"
+        ]["status"] == "EVALUATED"
+    ]
+
+    correct_results = [
+        result
+        for result in evaluated_results
+        if result[
+            "sql_evaluation"
+        ]["correct"]
+    ]
+
+    reference_errors = [
+        result
+        for result in results
+        if result[
+            "sql_evaluation"
+        ]["status"]
+        == "REFERENCE_EXECUTION_ERROR"
+    ]
+
+    generated_errors = [
+        result
+        for result in results
+        if result[
+            "sql_evaluation"
+        ]["status"]
+        == "GENERATED_EXECUTION_ERROR"
+    ]
+
+    print()
+    print(
+        "SQL evaluation:"
+    )
+
+    print(
+        f"  Evaluated          : "
+        f"{len(evaluated_results)}"
+    )
+
+    print(
+        f"  Correct            : "
+        f"{len(correct_results)}"
+    )
+
+    print(
+        f"  Reference errors   : "
+        f"{len(reference_errors)}"
+    )
+
+    print(
+        f"  Generated errors   : "
+        f"{len(generated_errors)}"
+    )
+
+    if evaluated_results:
+
+        accuracy = (
+            100
+            * len(correct_results)
+            / len(evaluated_results)
         )
 
         print(
-            "Please wait and retry later if Gemini "
-            "is temporarily unavailable."
+            f"  Answer accuracy    : "
+            f"{accuracy:.2f}%"
         )
 
-        return
+    # --------------------------------------------------------
+    # New-case latency
+    # --------------------------------------------------------
 
-    # ========================================================
-    # DECISION COUNTS
-    # ========================================================
+    if new_llm_latencies:
 
-    decisions = {}
+        print()
+        print(
+            "Average LLM latency:"
+        )
 
-    for result in results:
+        print(
+            f"  {sum(new_llm_latencies) / len(new_llm_latencies):.2f} ms"
+        )
 
-        decision = result[
-            "guardian_decision"
-        ]
+    if new_guardian_latencies:
 
-        decisions[decision] = (
-            decisions.get(
-                decision,
-                0
-            ) + 1
+        print(
+            "Average Guardian latency:"
+        )
+
+        print(
+            f"  {sum(new_guardian_latencies) / len(new_guardian_latencies):.2f} ms"
+        )
+
+    # --------------------------------------------------------
+    # Completion
+    # --------------------------------------------------------
+
+    if len(results) < pilot_count:
+
+        print()
+        print(
+            "Pilot is incomplete because "
+            "Gemini was unavailable."
+        )
+
+        print(
+            "Run the same command later "
+            "to resume."
+        )
+
+    else:
+
+        print()
+        print(
+            "Pilot completed successfully."
         )
 
     print()
-
     print(
-        "Guardian decisions:"
-    )
-
-    for decision in sorted(
-        decisions.keys()
-    ):
-
-        print(
-            f"  {decision:<10} : "
-            f"{decisions[decision]}"
-        )
-
-    # ========================================================
-    # LATENCY
-    # ========================================================
-
-    avg_llm_latency = (
-        sum(
-            result[
-                "llm_latency_ms"
-            ]
-            for result in results
-        )
-        / len(results)
-    )
-
-    avg_guardian_latency = (
-        sum(
-            result[
-                "guardian_latency_ms"
-            ]
-            for result in results
-        )
-        / len(results)
-    )
-
-    print()
-
-    print(
-        f"Average LLM latency     : "
-        f"{avg_llm_latency:.2f} ms"
-    )
-
-    print(
-        f"Average Guardian latency: "
-        f"{avg_guardian_latency:.2f} ms"
-    )
-
-    print()
-
-    print(
-        "Pilot complete."
+        f"Results file: "
+        f"{OUTPUT_FILE}"
     )
 
 

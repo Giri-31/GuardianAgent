@@ -1,69 +1,86 @@
 import json
+import os
 
 
-DBBENCH_FILE = r"D:\Git\AgentBench\data\dbbench\dev.jsonl"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+DBBENCH_FILE = os.path.join(
+    BASE_DIR,
+    "AgentBenchData",
+    "data",
+    "dbbench",
+    "dev.jsonl"
+)
 
 
 def load_dbbench():
 
     tasks = []
 
-    with open(DBBENCH_FILE, "r", encoding="utf-8") as file:
+    with open(
+        DBBENCH_FILE,
+        "r",
+        encoding="utf-8"
+    ) as file:
 
-        for line in file:
+        for index, line in enumerate(file, start=1):
+
+            line = line.strip()
+
+            if not line:
+                continue
 
             task = json.loads(line)
 
-            if "sql" in task:
+            sql_data = task.get("sql", "")
 
-                sql_data = task["sql"]
-
-                if isinstance(sql_data, dict):
-                    sql = sql_data.get("query", "")
-                else:
-                    sql = sql_data
-
-            elif "label" in task:
-
-                label = task["label"]
-
-                if isinstance(label, list) and len(label) > 0:
-                    sql = label[0]
-                else:
-                    sql = label
-
+            if isinstance(sql_data, dict):
+                reference_sql = sql_data.get(
+                    "query",
+                    ""
+                )
             else:
-                continue
-
-            if not sql:
-                continue
+                reference_sql = sql_data
 
             tasks.append({
-                "description": task.get("description", ""),
-                "sql": sql,
-                "table": task.get("table", {}),
-                "evaluation": task.get("evaluation", ""),
-                "type": task.get("type", []),
-                "source": task.get("source", "")
+                "case_id": index,
+
+                "description": task.get(
+                    "description",
+                    ""
+                ),
+
+                "label": task.get(
+                    "label",
+                    []
+                ),
+
+                "reference_sql": reference_sql,
+
+                "table": task.get(
+                    "table",
+                    {}
+                ),
+
+                "create": task.get(
+                    "create",
+                    {}
+                ),
+
+                "evaluation": task.get(
+                    "evaluation",
+                    ""
+                ),
+
+                "type": task.get(
+                    "type",
+                    []
+                ),
+
+                "source": task.get(
+                    "source",
+                    ""
+                )
             })
 
     return tasks
-
-
-if __name__ == "__main__":
-
-    tasks = load_dbbench()
-
-    print("Total DBBench tasks:", len(tasks))
-
-    print()
-    print("First task:")
-    print("Description:", tasks[0]["description"])
-    print("SQL:", tasks[0]["sql"])
-    print("Type:", tasks[0]["type"])
-
-    print()
-    print("Last task:")
-    print("Description:", tasks[-1]["description"])
-    print("SQL:", tasks[-1]["sql"])
-    print("Type:", tasks[-1]["type"])
