@@ -2,7 +2,9 @@ import json
 import os
 
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.dirname(
+    os.path.dirname(os.path.abspath(__file__))
+)
 
 DBBENCH_FILE = os.path.join(
     BASE_DIR,
@@ -14,6 +16,20 @@ DBBENCH_FILE = os.path.join(
 
 
 def load_dbbench():
+    """
+    Load the official AgentBench DBBench dev split.
+
+    Important:
+    - READ-style tasks use `label` as the ground truth.
+    - INSERT/UPDATE/DELETE tasks use `answer_md5` as the
+      ground-truth database-state hash.
+    - For write tasks, the reference SQL is stored in label[0].
+    """
+
+    if not os.path.exists(DBBENCH_FILE):
+        raise FileNotFoundError(
+            f"DBBench dataset not found:\n{DBBENCH_FILE}"
+        )
 
     tasks = []
 
@@ -23,135 +39,188 @@ def load_dbbench():
         encoding="utf-8"
     ) as file:
 
-        for index, line in enumerate(file, start=1):
+        for index, line in enumerate(
+            file,
+            start=1
+        ):
 
             line = line.strip()
 
             if not line:
                 continue
 
-            task = json.loads(line)
+            raw = json.loads(line)
 
-            # -----------------------------------------
-            # Identify task type
-            # -----------------------------------------
-
-            task_type = task.get(
+            task_type = raw.get(
                 "type",
                 ["UNKNOWN"]
             )
 
-            if not task_type:
-                task_type = ["UNKNOWN"]
+            if isinstance(task_type, str):
+                task_type = [task_type]
 
-            is_write_op = (
+            primary_type = (
                 task_type[0]
-                in ("INSERT", "UPDATE", "DELETE")
+                if task_type
+                else "UNKNOWN"
             )
 
-            # -----------------------------------------
-            # Get SQL information
-            # -----------------------------------------
+            is_write_operation = (
+                primary_type
+                in {
+                    "INSERT",
+                    "UPDATE",
+                    "DELETE"
+                }
+            )
 
-            sql_data = task.get(
+            # -------------------------------------------------
+            # Reference SQL
+            # -------------------------------------------------
+
+            sql_data = raw.get(
                 "sql",
                 ""
             )
 
-            # -----------------------------------------
-            # Determine reference SQL
-            # -----------------------------------------
+            if is_write_operation:
 
-            if is_write_op:
-
-                # DBBench write operations store the
-                # reference SQL inside label[0].
+                # Official DBBench write records do not normally
+                # contain a `sql` field.
                 #
-                # The actual correctness ground truth
-                # for write operations is answer_md5.
-
-                label_field = task.get(
+                # label[0] contains the reference SQL.
+                label = raw.get(
                     "label",
                     []
                 )
 
-                if isinstance(label_field, list):
-
-                    reference_sql = (
-                        label_field[0]
-                        if label_field
-                        else ""
-                    )
-
+                if (
+                    isinstance(label, list)
+                    and label
+                ):
+                    reference_sql = label[0]
                 else:
+                    reference_sql = ""
 
-                    reference_sql = str(
-                        label_field
+            elif isinstance(
+                sql_data,
+                dict
+            ):
+
+                reference_sql = (
+                    sql_data.get(
+                        "query",
+                        ""
                     )
-
-            elif isinstance(sql_data, dict):
-
-                reference_sql = sql_data.get(
-                    "query",
-                    ""
                 )
 
             else:
 
                 reference_sql = sql_data
 
-            # -----------------------------------------
-            # Add task
-            # -----------------------------------------
+            # -------------------------------------------------
+            # Normalize answer_md5
+            # -------------------------------------------------
 
-            tasks.append({
+            answer_md5 = raw.get(
+                "answer_md5"
+            )
 
+            # -------------------------------------------------
+            # Preserve original fields
+            # -------------------------------------------------
+
+            task = {
                 "case_id": index,
 
-                "description": task.get(
+                "description": raw.get(
                     "description",
                     ""
                 ),
 
-                "label": task.get(
+                "label": raw.get(
                     "label",
                     []
                 ),
 
-                # Important:
-                # Used for INSERT / UPDATE / DELETE
-                # correctness evaluation.
-                "answer_md5": task.get(
-                    "answer_md5",
-                    None
+                "answer_md5": answer_md5,
+
+                "reference_sql": (
+                    reference_sql
                 ),
 
-                "reference_sql": reference_sql,
-
-                "table": task.get(
+                "table": raw.get(
                     "table",
                     {}
                 ),
 
-                "create": task.get(
+                "create": raw.get(
                     "create",
                     {}
                 ),
 
-                "evaluation": task.get(
+                "evaluation": raw.get(
                     "evaluation",
                     ""
                 ),
 
-                "type": task.get(
-                    "type",
-                    []
-                ),
+                "type": task_type,
 
-                "source": task.get(
+                "source": raw.get(
                     "source",
                     ""
-                )
-            })
+                ),
+
+                # Preserve optional DBBench fields.
+                "evidence": raw.get(
+                    "evidence",
+                    ""
+                ),
+
+                "add_description": raw.get(
+                    "add_description",
+                    ""
+                ),
+
+                "user_sqlite": raw.get(
+                    "user_sqlite",
+                    False
+                ),
+
+                # Keep original SQL object if present.
+                "sql": raw.get(
+                    "sql"
+                ),
+            }
+
+            tasks.append(task)
 
     return tasks
+
+
+if __name__ == "__main__":
+
+    tasks = load_dbbench()
+
+    print(
+        f"Loaded DBBench tasks: {len(tasks)}"
+    )
+
+    if tasks:
+
+        first = tasks[0]
+
+        print(
+            "First case:",
+            first["case_id"]
+        )
+
+        print(
+            "Type:",
+            first["type"]
+        )
+
+        print(
+            "Reference SQL:",
+            first["reference_sql"]
+        )
