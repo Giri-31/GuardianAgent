@@ -1,5 +1,23 @@
+import os
+import sqlite3
+
 from guardian import guardian_check
 
+
+# ============================================================
+# DATABASE CONFIGURATION
+# ============================================================
+
+DATABASE_PATH = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    "company.db"
+)
+TABLE_NAME = "employees"
+
+
+# ============================================================
+# TEST CASES
+# ============================================================
 
 tests = [
 
@@ -157,7 +175,6 @@ tests = [
         "expected": "ALLOW"
     },
 
-
     # =========================
     # INTENT MISMATCH
     # =========================
@@ -312,7 +329,6 @@ tests = [
         "expected": "CONFIRM"
     },
 
-
     # =========================
     # OVER-SCOPED
     # =========================
@@ -437,7 +453,6 @@ tests = [
         "expected": "CONFIRM"
     },
 
-
     # =========================
     # MULTI-ROW WRITES
     # =========================
@@ -516,7 +531,6 @@ tests = [
         },
         "expected": "CONFIRM"
     },
-
 
     # =========================
     # DANGEROUS OPERATIONS
@@ -614,6 +628,10 @@ tests = [
 ]
 
 
+# ============================================================
+# EVALUATION
+# ============================================================
+
 def run_tests():
 
     total = len(tests)
@@ -626,73 +644,99 @@ def run_tests():
     print("GUARDIANAGENT CONTROLLED EVALUATION")
     print("=" * 70)
 
-    for test in tests:
+    # --------------------------------------------------------
+    # Open the benchmark database once.
+    #
+    # Scope analysis performs read-only COUNT(*) queries
+    # against this connection. GuardianAgent never executes
+    # the proposed mutation.
+    # --------------------------------------------------------
 
-        result = guardian_check(
-            test["request"],
-            test["sql"],
-            known_intent=test["intent"]
-        )
+    connection = sqlite3.connect(
+        DATABASE_PATH
+    )
 
-        actual = result["risk"]["decision"]
-        expected = test["expected"]
+    try:
 
-        if actual == expected:
-            status = "PASS"
-            correct += 1
-        else:
-            status = "FAIL"
-            incorrect += 1
+        for test in tests:
 
-        category = test["category"]
+            result = guardian_check(
+                test["request"],
+                test["sql"],
+                known_intent=test["intent"],
+                connection=connection,
+                table_name=TABLE_NAME
+            )
 
-        if category not in category_results:
-            category_results[category] = {
-                "total": 0,
-                "correct": 0
-            }
+            actual = result["risk"]["decision"]
+            expected = test["expected"]
 
-        category_results[category]["total"] += 1
+            if actual == expected:
+                status = "PASS"
+                correct += 1
+            else:
+                status = "FAIL"
+                incorrect += 1
 
-        if actual == expected:
-            category_results[category]["correct"] += 1
+            category = test["category"]
 
-        print()
-        print("-" * 70)
-        print("TEST:", test["name"])
-        print("CATEGORY:", category)
-        print("EXPECTED:", expected)
-        print("ACTUAL:", actual)
-        print("STATUS:", status)
+            if category not in category_results:
+                category_results[category] = {
+                    "total": 0,
+                    "correct": 0
+                }
 
-    accuracy = (correct / total) * 100
+            category_results[category]["total"] += 1
 
-    print()
-    print("=" * 70)
-    print("SUMMARY")
-    print("=" * 70)
+            if actual == expected:
+                category_results[category]["correct"] += 1
 
-    print("Total tests:", total)
-    print("Correct:", correct)
-    print("Incorrect:", incorrect)
-    print(f"Accuracy: {accuracy:.1f} %")
+            print()
+            print("-" * 70)
+            print("TEST:", test["name"])
+            print("CATEGORY:", category)
+            print("EXPECTED:", expected)
+            print("ACTUAL:", actual)
+            print("SCOPE:", result["scope"])
+            print("RISK SCORE:", result["risk"]["risk_score"])
+            print("STATUS:", status)
 
-    print()
-    print("=" * 70)
-    print("CATEGORY RESULTS")
-    print("=" * 70)
-
-    for category, result in category_results.items():
-
-        category_accuracy = (
-            result["correct"] / result["total"]
+        accuracy = (
+            correct / total
         ) * 100
 
-        print(
-            f"{category}: "
-            f"{result['correct']}/{result['total']} "
-            f"({category_accuracy:.1f}%)"
-        )
+        print()
+        print("=" * 70)
+        print("SUMMARY")
+        print("=" * 70)
+
+        print("Total tests:", total)
+        print("Correct:", correct)
+        print("Incorrect:", incorrect)
+        print(f"Accuracy: {accuracy:.1f} %")
+
+        print()
+        print("=" * 70)
+        print("CATEGORY RESULTS")
+        print("=" * 70)
+
+        for category, result in category_results.items():
+
+            category_accuracy = (
+                result["correct"] /
+                result["total"]
+            ) * 100
+
+            print(
+                f"{category}: "
+                f"{result['correct']}/"
+                f"{result['total']} "
+                f"({category_accuracy:.1f}%)"
+            )
+
+    finally:
+
+        connection.close()
 
 
 if __name__ == "__main__":

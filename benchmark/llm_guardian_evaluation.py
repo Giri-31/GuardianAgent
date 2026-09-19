@@ -4,6 +4,8 @@ import json
 import re
 import time
 import sqlite3
+import threading
+from collections import deque
 from pathlib import Path
 
 from google import genai
@@ -24,15 +26,21 @@ from guardian import guardian_check
 # CONFIGURATION
 # ============================================================
 
-PILOT_SIZE = 5
+PILOT_SIZE = 60  # Run all DBBench tasks
 
-MODEL_NAME = "gemini-3.6-flash"
+MODEL_NAME = os.getenv("GEMINI_MODEL", "gemini-3.8-flash")
 
 OUTPUT_FILE = (
     PROJECT_ROOT
     / "benchmark"
-    / "llm_guardian_pilot_results.json"
+    / "llm_guardian_full_results.json"
 )
+
+# Gemini free-tier hard limits (conservative, never exceed)
+# https://ai.google.dev/gemini-api/docs/rate-limits
+RPM_LIMIT = 15   # requests per minute  (free tier: 15 RPM)
+RPD_LIMIT = 200  # requests per day     (free tier: 200 RPD)
+MIN_INTERVAL_S = 60.0 / RPM_LIMIT  # = 4.0 s minimum between requests
 
 
 # ============================================================
@@ -47,6 +55,132 @@ if not api_key:
     )
 
 client = genai.Client(api_key=api_key)
+
+
+# ============================================================
+# RATE LIMITER  (RPM + RPD — Gemini free tier)
+# ============================================================
+
+class RateLimiter:
+    """
+    Thread-safe sliding-window rate limiter.
+
+    Enforces two independent limits:
+      - RPM  : at most `rpm` calls per 60-second window
+      - RPD  : at most `rpd` calls per calendar day
+
+    Call `wait()` immediately before every Gemini API request.
+    """
+
+    def __init__(self, rpm: int = RPM_LIMIT, rpd: int = RPD_LIMIT):
+        self._rpm = rpm
+        self._rpd = rpd
+        self._lock = threading.Lock()
+        # Sliding window of timestamps for RPM enforcement
+        self._rpm_window: deque = deque()
+        # Counter for RPD enforcement (resets at midnight local time)
+        self._rpd_date: str = ""
+        self._rpd_count: int = 0
+
+    def _today(self) -> str:
+        return time.strftime("%Y-%m-%d")
+
+    def wait(self):
+        """Block until it is safe to issue one more API request."""
+        with self._lock:
+            now = time.monotonic()
+
+            # ---- RPD check ----
+            today = self._today()
+            if today != self._rpd_date:
+                self._rpd_date = today
+                self._rpd_count = 0
+            if self._rpd_count >= self._rpd:
+                # Quota exhausted for today; pause until midnight
+                midnight = (
+                    time.mktime(
+                        time.strptime(
+                            time.strftime("%Y-%m-%d 00:00:00"),
+                            "%Y-%m-%d %H:%M:%S"
+                        )
+                    )
+                    + 86400
+                )
+                secs = max(0, midnight - time.time())
+                print(
+                    f"\n[RateLimiter] Daily quota ({self._rpd} RPD) "
+                    f"reached. Sleeping {secs:.0f}s until midnight..."
+                )
+                sys.stdout.flush()
+                time.sleep(secs + 5)  # 5-second buffer
+                self._rpd_date = self._today()
+                self._rpd_count = 0
+                now = time.monotonic()
+
+            # ---- RPM sliding-window check ----
+            window_start = now - 60.0
+            # Drop timestamps older than 60 s
+            while self._rpm_window and self._rpm_window[0] < window_start:
+                self._rpm_window.popleft()
+
+            if len(self._rpm_window) >= self._rpm:
+                # Must wait until the oldest request leaves the window
+                oldest = self._rpm_window[0]
+                sleep_for = (oldest + 60.0) - now + 0.2  # +200 ms buffer
+                if sleep_for > 0:
+                    print(
+                        f"\n[RateLimiter] RPM limit ({self._rpm}) reached. "
+                        f"Sleeping {sleep_for:.1f}s..."
+                    )
+                    sys.stdout.flush()
+                    time.sleep(sleep_for)
+                    now = time.monotonic()
+                    # Re-prune after sleep
+                    window_start = now - 60.0
+                    while (
+                        self._rpm_window
+                        and self._rpm_window[0] < window_start
+                    ):
+                        self._rpm_window.popleft()
+
+            # Enforce minimum inter-request interval to stay below RPM
+            if self._rpm_window:
+                since_last = now - self._rpm_window[-1]
+                if since_last < MIN_INTERVAL_S:
+                    time.sleep(MIN_INTERVAL_S - since_last)
+                    now = time.monotonic()
+
+            # Record this request
+            self._rpm_window.append(now)
+            self._rpd_count += 1
+
+
+_rate_limiter = RateLimiter()
+
+
+def _safe_text(response):
+    """
+    Safely extract text from a Gemini response.
+
+    Accessing response.text raises an exception when the model
+    returns no output (e.g. safety filter block).  This helper
+    extracts text via the candidates list first.
+    """
+    try:
+        text = response.text
+        if text:
+            return text.strip()
+    except Exception:
+        pass
+    try:
+        for candidate in (response.candidates or []):
+            for part in (candidate.content.parts or []):
+                t = getattr(part, "text", None)
+                if t:
+                    return t.strip()
+    except Exception:
+        pass
+    return ""
 
 
 # ============================================================
@@ -78,16 +212,61 @@ Rules:
 
     start = time.perf_counter()
 
-    response = client.models.generate_content(
-        model=MODEL_NAME,
-        contents=prompt
-    )
+    max_retries = 8
+    response = None
+    for attempt in range(max_retries):
+        try:
+            _rate_limiter.wait()   # Honour RPM / RPD limits before every call
+            response = client.models.generate_content(
+                model=MODEL_NAME,
+                contents=prompt
+            )
+            break
+        except Exception as error:
+            err_str = str(error).upper()
+            is_quota_day = "RPD" in err_str or "DAY" in err_str
+            is_temporary = is_temporary_gemini_error(error)
+
+            if is_quota_day:
+                # Daily quota hit; wait for midnight then retry once
+                midnight = (
+                    time.mktime(
+                        time.strptime(
+                            time.strftime("%Y-%m-%d 00:00:00"),
+                            "%Y-%m-%d %H:%M:%S"
+                        )
+                    )
+                    + 86400
+                )
+                secs = max(60, midnight - time.time() + 10)
+                print(
+                    f"\n[Gemini] Daily quota exhausted. "
+                    f"Sleeping {secs:.0f}s until midnight..."
+                )
+                sys.stdout.flush()
+                time.sleep(secs)
+            elif is_temporary and attempt < max_retries - 1:
+                # Exponential backoff: 5, 10, 20, 40, 80, 160 s
+                wait_sec = min(5 * (2 ** attempt), 160)
+                print(
+                    f"\n[Gemini retry {attempt + 1}/{max_retries}] "
+                    f"{error}. Backing off {wait_sec}s..."
+                )
+                sys.stdout.flush()
+                time.sleep(wait_sec)
+            else:
+                raise
 
     latency_ms = (
         time.perf_counter() - start
     ) * 1000
 
-    sql = response.text.strip()
+    sql = _safe_text(response)
+
+    if not sql:
+        # Return an empty string — the caller handles this as a
+        # generation failure and skips the task gracefully.
+        return "", latency_ms
 
     # Remove accidental markdown fences.
     sql = re.sub(
@@ -485,6 +664,156 @@ def repair_sql_identifiers(
 
 
 # ============================================================
+# REFERENCE SQL REPAIR
+# Fixes known systematic bugs in the DBBench dataset's own
+# reference SQL so that it can be executed for comparison.
+# Only structural/syntactic problems are corrected; query
+# semantics, predicates, and values are never changed.
+# ============================================================
+
+def repair_reference_sql(sql: str, table: dict) -> str:
+    """
+    Repair dataset-level bugs in reference SQL so it can be
+    executed.  The repairs target 8 confirmed broken patterns:
+
+    1. Missing space between SELECT column and FROM keyword
+       e.g.  "SELECT AverageFROM [...]" -> "SELECT Average FROM [...]"
+
+    2. Missing space between closing bracket/word and WHERE
+       e.g.  "[TableName]WHERE" -> "[TableName] WHERE"
+
+    3. Missing space between ORDER BY direction and LIMIT
+       e.g.  "ORDER BY x DESCLIMIT 1" -> "ORDER BY x DESC LIMIT 1"
+
+    4. Missing space between aggregate/column and FROM
+       e.g.  "SELECT AVG(Total)FROM" -> "SELECT AVG(Total) FROM"
+
+    5. Bad single-quote escaping in string literals
+       SQLite uses '' not \' to represent an apostrophe.
+       e.g.  "Don\'t" -> "Don't" (two single-quotes)
+
+    6. Unquoted multi-word column name in SELECT list
+       e.g.  SELECT Presentation of Credentials FROM
+       The column is identified using the table's metadata,
+       then wrapped in double-quotes.
+
+    7. Square-bracket table names -> double-quoted table names
+       SQLite supports [] in some versions but double-quotes
+       are safer.  e.g.  [Football Team Performance] -> "Football Team Performance"
+
+    8. Reserved-word table names (e.g. "table") replaced
+       with the actual metadata table name.
+    """
+    if not sql:
+        return sql
+
+    repaired = sql
+
+    # ----------------------------------------------------------------
+    # 1 & 4.  Missing space before FROM, WHERE (abutting words)
+    # ----------------------------------------------------------------
+    repaired = re.sub(
+        r'(\w|\)|`|")FROM\s',
+        lambda m: m.group(0)[0] + ' FROM ',
+        repaired
+    )
+    repaired = re.sub(
+        r'(\w|\)|`|")WHERE\s',
+        lambda m: m.group(0)[0] + ' WHERE ',
+        repaired
+    )
+
+    # ----------------------------------------------------------------
+    # 2.  Square-bracket immediately followed by WHERE
+    #     e.g.  [Football Team Performance]WHERE
+    # ----------------------------------------------------------------
+    repaired = re.sub(
+        r'(\])WHERE\s',
+        ']  WHERE ',
+        repaired
+    )
+
+    # ----------------------------------------------------------------
+    # 3.  DESCLIMIT / ASCLIMIT  (missing space before LIMIT)
+    # ----------------------------------------------------------------
+    repaired = re.sub(
+        r'\bDESCLIMIT\b',
+        'DESC LIMIT',
+        repaired,
+        flags=re.IGNORECASE
+    )
+    repaired = re.sub(
+        r'\bASCLIMIT\b',
+        'ASC LIMIT',
+        repaired,
+        flags=re.IGNORECASE
+    )
+
+    # ----------------------------------------------------------------
+    # 5.  Fix bad apostrophe escaping:  \' -> ''
+    #     DBBench sometimes stores the escape as a literal backslash
+    #     followed by a quote inside a Python string, producing two
+    #     chars: 0x5C 0x27.  SQLite wants 0x27 0x27.
+    # ----------------------------------------------------------------
+    repaired = repaired.replace("\\'"  , "''")
+
+    # ----------------------------------------------------------------
+    # 7.  Square-bracket identifiers -> double-quoted identifiers
+    #     e.g.  [Football Team Performance] -> "Football Team Performance"
+    # ----------------------------------------------------------------
+    repaired = re.sub(
+        r'\[([^\]]+)\]',
+        lambda m: '"' + m.group(1).replace('"', '""') + '"',
+        repaired
+    )
+
+    # ----------------------------------------------------------------
+    # 8.  Reserved-word table name "table" -> actual metadata name
+    # ----------------------------------------------------------------
+    actual_table = table.get("table_name", "")
+    if actual_table:
+        repaired = re.sub(
+            r'\bFROM\s+table\b',
+            f'FROM "{actual_table}"',
+            repaired,
+            flags=re.IGNORECASE
+        )
+        repaired = re.sub(
+            r'\bJOIN\s+table\b',
+            f'JOIN "{actual_table}"',
+            repaired,
+            flags=re.IGNORECASE
+        )
+
+    # ----------------------------------------------------------------
+    # 6.  Unquoted multi-word column in SELECT list
+    #     Detect by trying to match unquoted bare-word sequences
+    #     that together match a known column name.
+    # ----------------------------------------------------------------
+    col_names = [
+        col["name"]
+        for col in table.get("table_info", {}).get("columns", [])
+        if " " in col["name"]  # only multi-word columns need this
+    ]
+    for col in col_names:
+        # Build a regex that matches the bare (unquoted) column name
+        # in SELECT or ORDER BY or WHERE positions.
+        bare_pattern = re.compile(
+            r'(?<![`"\'\w])' + re.escape(col) + r'(?![`"\w])',
+            re.IGNORECASE
+        )
+        if bare_pattern.search(repaired):
+            # Check it is not already inside quotes
+            # by seeing if the raw match is present
+            repaired = bare_pattern.sub(
+                '"' + col.replace('"', '""') + '"',
+                repaired
+            )
+
+    return repaired
+
+
+# ============================================================
 # READ-ONLY SQL EXECUTION
 # ============================================================
 
@@ -558,12 +887,31 @@ def execute_query(
 # ANSWER-LEVEL EVALUATION
 # ============================================================
 
+def get_task_sql(task, repair: bool = True):
+    """Extract the reference SQL from a task dict.
+
+    When repair=True (the default) the reference SQL is passed
+    through repair_reference_sql() so that dataset-level bugs
+    (typos, missing spaces, bad escapes) are fixed before the
+    SQL is executed for answer comparison.
+    """
+    sql = task.get("reference_sql")
+    if not sql:
+        sql = task.get("sql")
+    if isinstance(sql, dict):
+        sql = sql.get("query", "")
+    sql = str(sql or "")
+    if repair and sql and "table" in task:
+        sql = repair_reference_sql(sql, task["table"])
+    return sql
+
+
 def evaluate_sql(
     task,
     generated_sql
 ):
 
-    reference_sql = task["sql"]
+    reference_sql = get_task_sql(task)
 
     conn = create_temp_database(
         task["table"]
@@ -890,10 +1238,12 @@ def main():
             task["description"]
         )
 
+        ref_sql = get_task_sql(task)
+
         print()
         print("REFERENCE SQL:")
         print(
-            task["sql"]
+            ref_sql
         )
 
         # ----------------------------------------------------
@@ -1025,7 +1375,7 @@ def main():
         # ----------------------------------------------------
 
         intent = neutral_intent(
-            task["sql"]
+            ref_sql
         )
 
         guardian_start = (
@@ -1105,7 +1455,7 @@ def main():
                 task["description"],
 
             "reference_sql":
-                task["sql"],
+                ref_sql,
 
             "generated_sql":
                 generated_sql,
@@ -1167,6 +1517,9 @@ def main():
         print(
             "Result saved."
         )
+        sys.stdout.flush()
+        # Rate limiting is already handled inside generate_sql() via
+        # _rate_limiter.wait().  No extra sleep needed here.
 
     # ========================================================
     # SUMMARY

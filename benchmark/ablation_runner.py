@@ -315,8 +315,7 @@ def ablated_guardian(
 
         intent_sql = check_intent_sql(
             intent,
-            sql_info,
-            scope
+            sql
         )
 
         # Remove scope mismatch from the consistency
@@ -360,8 +359,7 @@ def ablated_guardian(
 
         intent_sql = check_intent_sql(
             intent,
-            sql_info,
-            scope
+            sql
         )
 
         # Neutral LOW impact removes the contribution

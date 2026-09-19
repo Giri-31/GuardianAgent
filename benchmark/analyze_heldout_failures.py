@@ -1,5 +1,10 @@
 import json
+import sys
 from pathlib import Path
+
+# Ensure UTF-8 output on Windows consoles that default to cp1252
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 
 # ============================================================
@@ -203,7 +208,7 @@ def main():
 
     print()
     print("=" * 80)
-    print("EXPECTED → PREDICTED ERRORS")
+    print("EXPECTED -> PREDICTED ERRORS")
     print("=" * 80)
 
     for (
@@ -214,7 +219,7 @@ def main():
     ):
 
         print(
-            f"{expected:<10} → "
+            f"{expected:<10} -> "
             f"{predicted:<10} : "
             f"{count}"
         )

@@ -1,32 +1,154 @@
-from google import genai
+"""
+guardian.py
+
+GuardianAgent: Consequence-Aware Safety Verification
+for LLM-Generated Database Actions.
+
+Pipeline
+--------
+User Request
+    |
+    v
+Intent Analysis
+    |
+    v
+Generated SQL
+    |
+    v
+SQL Analysis
+    |
+    +----> Scope Analysis
+    |
+    +----> Impact Analysis
+    |
+    +----> Intent-SQL Consistency
+    |
+    v
+Risk Engine
+    |
+    +----> ALLOW
+    +----> CONFIRM
+    +----> BLOCK
+    |
+    v
+Database Execution
+
+Important execution policy
+--------------------------
+ALLOW   -> execute automatically
+CONFIRM -> require explicit user confirmation
+BLOCK   -> never execute
+
+The safety gateway is schema-independent when supplied with an
+external database connection and table name.
+
+The original company.db / employees demo is retained only for
+backward compatibility and demonstration.
+"""
+
 import os
 import sqlite3
 
 from sql_analyzer import analyze_sql
 from intent_analyzer import analyze_intent
-from risk_engine import calculate_risk
 from intent_sql_checker import check_intent_sql
+from risk_engine import calculate_risk
+from scope_analyzer import analyze_scope
+
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DEFAULT_DATABASE = os.path.join(BASE_DIR, "company.db")
+DEFAULT_TABLE = "employees"
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.8-flash")
 
 
 # ============================================================
-# Gemini Client
+# GEMINI CLIENT
 # ============================================================
 
-client = genai.Client(
-    api_key=os.getenv("GEMINI_API_KEY")
-)
+def _get_gemini_client():
+    """
+    Create the Gemini client only when SQL generation is requested.
+
+    This prevents importing guardian.py from requiring a valid
+    Gemini API key.
+
+    The safety gateway itself does not require Gemini.
+    """
+
+    try:
+
+        from google import genai
+
+    except ImportError as exc:
+
+        raise RuntimeError(
+            "google-genai is required for SQL generation."
+        ) from exc
+
+    api_key = os.getenv(
+        "GEMINI_API_KEY"
+    )
+
+    if not api_key:
+
+        raise RuntimeError(
+            "GEMINI_API_KEY is not set."
+        )
+
+    return genai.Client(
+        api_key=api_key
+    )
+
+
+def _safe_text(response):
+    """
+    Safely extract text from a Gemini response.
+
+    Accessing response.text raises an exception when the model
+    returns no output (e.g. safety filter block).  This helper
+    extracts text via the candidates list first so that callers
+    can handle empty responses without crashing.
+    """
+
+    try:
+        text = response.text
+        if text:
+            return text.strip()
+    except Exception:
+        pass
+
+    try:
+        for candidate in (response.candidates or []):
+            for part in (candidate.content.parts or []):
+                t = getattr(part, "text", None)
+                if t:
+                    return t.strip()
+    except Exception:
+        pass
+
+    return ""
 
 
 # ============================================================
-# SQL Generation
+# SQL GENERATION
 # ============================================================
 
 def generate_sql(user_request):
     """
-    Generate SQL for the original GuardianAgent demo
-    using the company.db employees schema.
+    Generate SQL for the original GuardianAgent demo.
 
-    DBBench uses its own SQL-generation pipeline.
+    This function is intentionally separate from the safety
+    verification pipeline.
+
+    The demo uses:
+
+        company.db
+        employees
+
+    External database integrations should supply their own
+    SQL-generation mechanism and pass the generated SQL into
+    guardian_check().
     """
 
     prompt = f"""
@@ -52,25 +174,39 @@ Do not use markdown.
 Do not explain anything.
 """
 
+    client = _get_gemini_client()
+
     response = client.models.generate_content(
-        model="gemini-3.6-flash",
+        model=GEMINI_MODEL,
         contents=prompt
     )
 
-    return response.text.strip()
+    text = _safe_text(response)
+
+    if not text:
+
+        raise RuntimeError(
+            "Gemini returned an empty SQL response. "
+            "The request may have been blocked by safety filters."
+        )
+
+    return text
 
 
 # ============================================================
-# Safe Scope Analysis
+# SCOPE ANALYSIS
 # ============================================================
 
 def analyze_scope_safely(
     sql,
     connection=None,
-    table_name="employees"
+    table_name=DEFAULT_TABLE
 ):
     """
-    Estimate how many database rows a SQL statement targets.
+    Estimate the number of rows affected/read by SQL.
+
+    This function delegates to the reusable scope_analyzer
+    module.
 
     Scope categories:
 
@@ -80,261 +216,68 @@ def analyze_scope_safely(
         ALL_ROWS
         UNKNOWN
 
-    The input SQL is NOT directly executed.
+    Safety property
+    ---------------
+    The SQL statement itself is never executed as a mutation.
+
+    For filtered statements, scope_analyzer may execute a
+    read-only COUNT(*) query against the supplied database.
 
     Parameters
     ----------
     sql:
-        SQL statement being analyzed.
+        SQL statement to analyze.
 
     connection:
-        Optional SQLite database connection.
+        Optional SQLite connection.
 
-        If None:
-            company.db is opened.
+        If supplied, that database is used.
 
-        If provided:
-            the supplied database is used.
+        If omitted, company.db is used for backward-compatible
+        GuardianAgent experiments.
 
     table_name:
-        Table against which the scope should be evaluated.
+        Table against which row scope is evaluated.
 
-        Defaults to employees so existing GuardianAgent
-        experiments remain unchanged.
+        Defaults to employees only for the original demo.
     """
 
-    import re
+    # If no connection was supplied, try to open the default database
+    # so that filtered queries get proper row counts instead of UNKNOWN.
+    if connection is None and os.path.isfile(DEFAULT_DATABASE):
+        _conn = None
+        try:
+            _conn = sqlite3.connect(DEFAULT_DATABASE)
+            # Auto-infer table name from SQL when using defaults
+            _table = table_name
+            if _table == DEFAULT_TABLE:
+                _sql_info = analyze_sql(sql)
+                _detected = _sql_info.get("table")
+                if _detected:
+                    _table = _detected
+            return analyze_scope(
+                sql,
+                connection=_conn,
+                table_name=_table
+            )
+        except Exception:
+            pass
+        finally:
+            if _conn is not None:
+                try:
+                    _conn.close()
+                except Exception:
+                    pass
 
-    if not sql:
-        return "UNKNOWN"
-
-    sql_clean = str(
-        sql
-    ).strip()
-
-    if not sql_clean:
-        return "UNKNOWN"
-
-    sql_upper = sql_clean.upper()
-
-    owns_connection = (
-        connection is None
+    return analyze_scope(
+        sql,
+        connection=connection,
+        table_name=table_name
     )
-
-    # --------------------------------------------------------
-    # Existing GuardianAgent behavior
-    # --------------------------------------------------------
-
-    if owns_connection:
-
-        connection = sqlite3.connect(
-            "company.db"
-        )
-
-    cursor = connection.cursor()
-
-    # --------------------------------------------------------
-    # Quote table identifier safely
-    # --------------------------------------------------------
-
-    def quote_identifier(name):
-
-        return (
-            '"'
-            + str(name).replace(
-                '"',
-                '""'
-            )
-            + '"'
-        )
-
-    qualified_table = quote_identifier(
-        table_name
-    )
-
-    try:
-
-        # ====================================================
-        # INSERT
-        # ====================================================
-
-        if sql_upper.startswith(
-            "INSERT"
-        ):
-
-            values_match = re.search(
-                r"\bVALUES\b(.+)",
-                sql_clean,
-                re.IGNORECASE |
-                re.DOTALL
-            )
-
-            if not values_match:
-                return "UNKNOWN"
-
-            values_part = (
-                values_match
-                .group(1)
-                .rstrip(";")
-                .strip()
-            )
-
-            # Count simple VALUES tuples.
-            #
-            # Example:
-            #
-            # VALUES ('A', 10)
-            #
-            # -> ONE_ROW
-            #
-            # VALUES ('A',10), ('B',20)
-            #
-            # -> MULTIPLE_ROWS
-
-            tuples = re.findall(
-                r"\([^()]*\)",
-                values_part
-            )
-
-            if len(tuples) == 1:
-                return "ONE_ROW"
-
-            if len(tuples) > 1:
-                return "MULTIPLE_ROWS"
-
-            return "UNKNOWN"
-
-        # ====================================================
-        # SELECT / UPDATE / DELETE without WHERE
-        # ====================================================
-
-        if "WHERE" not in sql_upper:
-
-            # ------------------------------------------------
-            # SELECT without WHERE
-            # ------------------------------------------------
-
-            if sql_upper.startswith(
-                "SELECT"
-            ):
-
-                cursor.execute(
-                    "SELECT COUNT(*) FROM "
-                    + qualified_table
-                )
-
-                row_count = (
-                    cursor.fetchone()[0]
-                )
-
-                if row_count == 0:
-                    return "ZERO_ROWS"
-
-                if row_count == 1:
-                    return "ONE_ROW"
-
-                return "MULTIPLE_ROWS"
-
-            # ------------------------------------------------
-            # UPDATE / DELETE without WHERE
-            # ------------------------------------------------
-
-            if sql_upper.startswith(
-                (
-                    "UPDATE",
-                    "DELETE"
-                )
-            ):
-
-                return "ALL_ROWS"
-
-            return "UNKNOWN"
-
-        # ====================================================
-        # Extract WHERE condition
-        # ====================================================
-
-        where_match = re.search(
-            r"\bWHERE\b(.+?)(?:;|$)",
-            sql_clean,
-            re.IGNORECASE |
-            re.DOTALL
-        )
-
-        if not where_match:
-            return "UNKNOWN"
-
-        where_condition = (
-            where_match
-            .group(1)
-            .strip()
-        )
-
-        # ----------------------------------------------------
-        # Remove simple table aliases
-        #
-        # e.name
-        # employees.name
-        #
-        # becomes:
-        #
-        # name
-        # ----------------------------------------------------
-
-        where_condition = re.sub(
-            r"\b[a-zA-Z_][a-zA-Z0-9_]*\.",
-            "",
-            where_condition
-        )
-
-        # ====================================================
-        # Count matching rows
-        # ====================================================
-
-        count_query = (
-            "SELECT COUNT(*) FROM "
-            + qualified_table
-            + " WHERE "
-            + where_condition
-        )
-
-        cursor.execute(
-            count_query
-        )
-
-        row_count = (
-            cursor.fetchone()[0]
-        )
-
-        # ====================================================
-        # Convert count to scope
-        # ====================================================
-
-        if row_count == 0:
-            return "ZERO_ROWS"
-
-        if row_count == 1:
-            return "ONE_ROW"
-
-        return "MULTIPLE_ROWS"
-
-    except Exception:
-
-        return "UNKNOWN"
-
-    finally:
-
-        if owns_connection:
-
-            try:
-                connection.close()
-
-            except Exception:
-                pass
 
 
 # ============================================================
-# Database Impact Analysis
+# DATABASE IMPACT ANALYSIS
 # ============================================================
 
 def analyze_impact(
@@ -342,31 +285,37 @@ def analyze_impact(
     scope
 ):
     """
-    Estimate the potential impact of a SQL statement.
+    Estimate potential database impact.
 
     This function is schema-independent.
 
     It does NOT:
 
-        - know any table names
-        - know any column names
-        - connect to company.db
+        - know table names
+        - know column names
         - execute SQL
+        - modify the database
 
-    It uses:
+    It uses only:
 
         SQL operation
-        estimated scope
+        observed scope
     """
 
     sql_info = analyze_sql(
         sql
     )
 
-    operation = sql_info.get(
-        "operation",
-        "UNKNOWN"
-    )
+    operation = str(
+        sql_info.get(
+            "operation",
+            "UNKNOWN"
+        )
+    ).upper()
+
+    scope = str(
+        scope
+    ).upper()
 
     # ========================================================
     # SELECT
@@ -387,19 +336,19 @@ def analyze_impact(
 
         if scope == "MULTIPLE_ROWS":
 
-            risk = "HIGH"
+            risk_level = "HIGH"
 
         elif scope == "ONE_ROW":
 
-            risk = "MEDIUM"
+            risk_level = "MEDIUM"
 
         else:
 
-            risk = "MEDIUM"
+            risk_level = "MEDIUM"
 
         return {
             "impact_type": "DATA_CREATION",
-            "risk_level": risk
+            "risk_level": risk_level
         }
 
     # ========================================================
@@ -408,29 +357,29 @@ def analyze_impact(
 
     if operation == "UPDATE":
 
-        if scope == "ONE_ROW":
+        if scope == "ZERO_ROWS":
 
-            risk = "MEDIUM"
+            risk_level = "LOW"
+
+        elif scope == "ONE_ROW":
+
+            risk_level = "MEDIUM"
 
         elif scope == "MULTIPLE_ROWS":
 
-            risk = "HIGH"
-
-        elif scope == "ZERO_ROWS":
-
-            risk = "LOW"
+            risk_level = "HIGH"
 
         elif scope == "ALL_ROWS":
 
-            risk = "CRITICAL"
+            risk_level = "CRITICAL"
 
         else:
 
-            risk = "HIGH"
+            risk_level = "HIGH"
 
         return {
             "impact_type": "DATA_MODIFICATION",
-            "risk_level": risk
+            "risk_level": risk_level
         }
 
     # ========================================================
@@ -441,19 +390,19 @@ def analyze_impact(
 
         if scope == "ZERO_ROWS":
 
-            risk = "LOW"
+            risk_level = "LOW"
 
         elif scope == "ONE_ROW":
 
-            risk = "HIGH"
+            risk_level = "HIGH"
 
         else:
 
-            risk = "CRITICAL"
+            risk_level = "CRITICAL"
 
         return {
             "impact_type": "DATA_DELETION",
-            "risk_level": risk
+            "risk_level": risk_level
         }
 
     # ========================================================
@@ -500,7 +449,7 @@ def analyze_impact(
 
 
 # ============================================================
-# Main Guardian Check
+# MAIN GUARDIAN CHECK
 # ============================================================
 
 def guardian_check(
@@ -508,34 +457,58 @@ def guardian_check(
     sql,
     known_intent=None,
     connection=None,
-    table_name="employees"
+    table_name=DEFAULT_TABLE
 ):
     """
-    Main GuardianAgent safety gateway.
+    Run the complete GuardianAgent safety pipeline.
 
-    Existing usage:
+    Parameters
+    ----------
+    user_request:
+        Original natural-language user request.
 
-        guardian_check(
-            request,
-            sql,
-            known_intent=intent
-        )
+    sql:
+        SQL generated by an upstream SQL agent.
 
-    continues to use:
+    known_intent:
+        Optional precomputed intent.
 
-        company.db
-        employees
+        If provided, GuardianAgent uses it directly.
+        Otherwise analyze_intent() is called.
 
-    DBBench can provide:
+    connection:
+        Optional database connection.
 
-        connection=<DB connection>
-        table_name=<DBBench table>
+        Used for scope analysis.
 
-    so Guardian does not assume the company.db schema.
+    table_name:
+        Table used for scope analysis.
+
+        The default exists only for the original company.db
+        demonstration.
+
+    Returns
+    -------
+    dict
+
+        {
+            "intent": ...,
+            "sql_info": ...,
+            "scope": ...,
+            "impact": ...,
+            "intent_sql": ...,
+            "risk": ...
+        }
+
+    Important
+    ---------
+    This function ONLY analyzes the proposed SQL.
+
+    It does not execute the SQL.
     """
 
     # ========================================================
-    # 1. Intent Analysis
+    # 1. INTENT ANALYSIS
     # ========================================================
 
     if known_intent is not None:
@@ -549,7 +522,7 @@ def guardian_check(
         )
 
     # ========================================================
-    # 2. SQL Analysis
+    # 2. SQL ANALYSIS
     # ========================================================
 
     sql_info = analyze_sql(
@@ -557,7 +530,7 @@ def guardian_check(
     )
 
     # ========================================================
-    # 3. Scope Analysis
+    # 3. SCOPE ANALYSIS
     # ========================================================
 
     scope = analyze_scope_safely(
@@ -567,7 +540,7 @@ def guardian_check(
     )
 
     # ========================================================
-    # 4. Database Impact
+    # 4. IMPACT ANALYSIS
     # ========================================================
 
     impact = analyze_impact(
@@ -576,29 +549,29 @@ def guardian_check(
     )
 
     # ========================================================
-    # 5. Intent-SQL Consistency
+    # 5. INTENT-SQL CONSISTENCY
     # ========================================================
 
     intent_sql_result = check_intent_sql(
         intent,
-        sql_info,
-        scope
+        sql,
+        
     )
 
     # ========================================================
-    # 6. Risk Engine
+    # 6. RISK ENGINE
     # ========================================================
 
     risk = calculate_risk(
-        intent,
-        sql_info,
-        scope,
-        impact,
-        intent_sql_result
+        intent=intent,
+        sql_info=sql_info,
+        scope=scope,
+        impact=impact,
+        intent_sql_result=intent_sql_result
     )
 
     # ========================================================
-    # Final Guardian Result
+    # 7. COMPLETE RESULT
     # ========================================================
 
     return {
@@ -617,62 +590,115 @@ def guardian_check(
 
 
 # ============================================================
-# Original Database Execution
+# DATABASE EXECUTION
 # ============================================================
 
-def execute_query(sql):
+def execute_query(
+    sql,
+    connection=None
+):
+    """
+    Execute SQL after Guardian has permitted execution.
 
-    connection = sqlite3.connect(
-        "company.db"
+    Parameters
+    ----------
+    sql:
+        SQL statement.
+
+    connection:
+        Optional SQLite connection.
+
+        If omitted, company.db is opened for backward-compatible
+        demo execution.
+
+    Important
+    ---------
+    This function itself does not perform Guardian verification.
+
+    Call execute_with_guardian() when the SQL originates from an
+    untrusted or LLM-generated source.
+    """
+
+    owns_connection = (
+        connection is None
     )
 
-    cursor = connection.cursor()
+    if owns_connection:
 
-    cursor.execute(
-        sql
-    )
+        connection = sqlite3.connect(
+            DEFAULT_DATABASE
+        )
 
-    if sql.strip().upper().startswith(
-        "SELECT"
-    ):
+    try:
 
-        result = cursor.fetchall()
+        cursor = connection.cursor()
 
-    else:
+        cursor.execute(
+            sql
+        )
 
-        connection.commit()
+        operation = analyze_sql(
+            sql
+        ).get(
+            "operation",
+            "UNKNOWN"
+        )
 
-        result = []
+        if operation == "SELECT":
 
-    connection.close()
+            result = cursor.fetchall()
 
-    return result
+        else:
+
+            connection.commit()
+
+            result = []
+
+        return result
+
+    finally:
+
+        if owns_connection:
+
+            connection.close()
 
 
 # ============================================================
-# Execute With Guardian
+# EXECUTION GATE
 # ============================================================
 
 def execute_with_guardian(
     user_request,
-    sql
+    sql,
+    known_intent=None,
+    connection=None,
+    table_name=DEFAULT_TABLE
 ):
     """
-    Original interactive GuardianAgent execution flow.
+    Analyze SQL with GuardianAgent and enforce the resulting
+    execution decision.
 
+    Execution policy
+    ----------------
     ALLOW:
         execute automatically.
 
     CONFIRM:
-        ask the user.
+        request explicit user confirmation.
 
     BLOCK:
         do not execute.
+
+    This function is the execution boundary between the
+    safety gateway and the database.
     """
 
     result = guardian_check(
-        user_request,
-        sql
+        user_request=user_request,
+        sql=sql,
+        known_intent=known_intent,
+        connection=connection,
+        table_name=table_name
     )
 
     decision = (
@@ -694,7 +720,12 @@ def execute_with_guardian(
             "SQL BLOCKED."
         )
 
-        return None
+        return {
+            "executed": False,
+            "decision": "BLOCK",
+            "result": result,
+            "data": None
+        }
 
     # ========================================================
     # CONFIRM
@@ -708,41 +739,145 @@ def execute_with_guardian(
 
         answer = input(
             "Do you want to execute this SQL? (yes/no): "
-        )
+        ).strip().lower()
 
-        if answer.lower() != "yes":
+        if answer != "yes":
 
             print(
                 "SQL execution cancelled."
             )
 
-            return None
+            return {
+                "executed": False,
+                "decision": "CONFIRM",
+                "result": result,
+                "data": None
+            }
 
     # ========================================================
     # ALLOW
     # ========================================================
 
-    if decision == "ALLOW":
+    elif decision == "ALLOW":
 
         print(
             "SQL automatically allowed."
         )
 
     # ========================================================
-    # Execute
+    # UNKNOWN DECISION
+    # ========================================================
+
+    else:
+
+        print(
+            "Unknown Guardian decision. "
+            "SQL execution cancelled."
+        )
+
+        return {
+            "executed": False,
+            "decision": decision,
+            "result": result,
+            "data": None
+        }
+
+    # ========================================================
+    # EXECUTION
     # ========================================================
 
     print(
         "Executing SQL..."
     )
 
-    return execute_query(
-        sql
-    )
+    try:
+
+        data = execute_query(
+            sql,
+            connection=connection
+        )
+
+        return {
+            "executed": True,
+            "decision": decision,
+            "result": result,
+            "data": data
+        }
+
+    except Exception as exc:
+
+        return {
+            "executed": False,
+            "decision": decision,
+            "result": result,
+            "data": None,
+            "execution_error": str(exc)
+        }
 
 
 # ============================================================
-# Main Demo
+# DISPLAY HELPER
+# ============================================================
+
+def print_guardian_result(result):
+    """
+    Print a structured Guardian result for debugging and
+    experiments.
+    """
+
+    print()
+    print("=" * 70)
+    print("GUARDIANAGENT ANALYSIS")
+    print("=" * 70)
+
+    print()
+    print("INTENT")
+    print("-" * 70)
+    print(
+        result["intent"]
+    )
+
+    print()
+    print("SQL ANALYSIS")
+    print("-" * 70)
+    print(
+        result["sql_info"]
+    )
+
+    print()
+    print("SCOPE")
+    print("-" * 70)
+    print(
+        result["scope"]
+    )
+
+    print()
+    print("IMPACT")
+    print("-" * 70)
+    print(
+        result["impact"]
+    )
+
+    print()
+    print("INTENT-SQL CONSISTENCY")
+    print("-" * 70)
+    print(
+        result["intent_sql"]
+    )
+
+    print()
+    print("RISK")
+    print("-" * 70)
+    print(
+        result["risk"]
+    )
+
+    print()
+    print("=" * 70)
+
+
+# ============================================================
+# MAIN DEMO
 # ============================================================
 
 if __name__ == "__main__":
@@ -751,15 +886,19 @@ if __name__ == "__main__":
         "Change Arun's salary to 70000."
     )
 
-    sql = generate_sql(
-        user_request
-    )
-
     print(
         "\nUSER REQUEST:"
     )
 
     print(
+        user_request
+    )
+
+    # --------------------------------------------------------
+    # Generate SQL using the original demo LLM pipeline.
+    # --------------------------------------------------------
+
+    sql = generate_sql(
         user_request
     )
 
@@ -771,18 +910,39 @@ if __name__ == "__main__":
         sql
     )
 
-    result = execute_with_guardian(
-        user_request,
-        sql
+    # --------------------------------------------------------
+    # Analyze before execution.
+    # --------------------------------------------------------
+
+    analysis = guardian_check(
+        user_request=user_request,
+        sql=sql
     )
 
-    if result is not None:
+    print_guardian_result(
+        analysis
+    )
+
+    # --------------------------------------------------------
+    # Enforce Guardian decision.
+    # --------------------------------------------------------
+
+    execution = execute_with_guardian(
+        user_request=user_request,
+        sql=sql
+    )
+
+    # --------------------------------------------------------
+    # Display returned data.
+    # --------------------------------------------------------
+
+    if execution["executed"]:
 
         print(
             "\nRESULT:"
         )
 
-        for row in result:
+        for row in execution["data"]:
 
             print(
                 row

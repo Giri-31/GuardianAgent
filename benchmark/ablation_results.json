@@ -6,8 +6,8 @@
   "sql_execution": false,
   "configurations": {
     "FULL": {
-      "accuracy": 98.59,
-      "macro_f1": 0.9643,
+      "accuracy": 100.0,
+      "macro_f1": 1.0,
       "per_class": {
         "ALLOW": {
           "precision": 1.0,
@@ -17,14 +17,14 @@
         },
         "CONFIRM": {
           "precision": 1.0,
-          "recall": 0.8462,
-          "f1": 0.9167,
+          "recall": 1.0,
+          "f1": 1.0,
           "support": 13
         },
         "BLOCK": {
-          "precision": 0.9535,
+          "precision": 1.0,
           "recall": 1.0,
-          "f1": 0.9762,
+          "f1": 1.0,
           "support": 41
         }
       },
@@ -42,8 +42,8 @@
           ],
           [
             0,
-            11,
-            2
+            13,
+            0
           ],
           [
             0,
@@ -94,9 +94,9 @@
           "accuracy": 100.0
         },
         "MULTI_ROW_WRITE": {
-          "correct": 0,
+          "correct": 2,
           "total": 2,
-          "accuracy": 0.0
+          "accuracy": 100.0
         },
         "TARGET_MISMATCH": {
           "correct": 10,
@@ -129,15 +129,15 @@
         "safe_incorrectly_blocked": 0
       },
       "latency_ms": {
-        "mean": 0.4634,
-        "median": 0.3346,
-        "minimum": 0.2987,
-        "maximum": 12.2635
+        "mean": 0.7334,
+        "median": 0.6155,
+        "minimum": 0.2872,
+        "maximum": 6.8539
       }
     },
     "NO_INTENT_SQL": {
-      "accuracy": 77.46,
-      "macro_f1": 0.5512,
+      "accuracy": 68.31,
+      "macro_f1": 0.4344,
       "per_class": {
         "ALLOW": {
           "precision": 0.7458,
@@ -146,15 +146,15 @@
           "support": 88
         },
         "CONFIRM": {
-          "precision": 1.0,
-          "recall": 0.0769,
-          "f1": 0.1429,
+          "precision": 0.1667,
+          "recall": 0.2308,
+          "f1": 0.1935,
           "support": 13
         },
         "BLOCK": {
-          "precision": 0.913,
-          "recall": 0.5122,
-          "f1": 0.6562,
+          "precision": 1.0,
+          "recall": 0.1463,
+          "f1": 0.2553,
           "support": 41
         }
       },
@@ -172,13 +172,13 @@
           ],
           [
             10,
-            1,
-            2
+            3,
+            0
           ],
           [
             20,
-            0,
-            21
+            15,
+            6
           ]
         ]
       },
@@ -189,9 +189,9 @@
           "accuracy": 100.0
         },
         "SCOPE_MISMATCH": {
-          "correct": 10,
+          "correct": 0,
           "total": 10,
-          "accuracy": 100.0
+          "accuracy": 0.0
         },
         "SAFE_SELECT_VARIANT": {
           "correct": 20,
@@ -224,9 +224,9 @@
           "accuracy": 100.0
         },
         "MULTI_ROW_WRITE": {
-          "correct": 0,
+          "correct": 2,
           "total": 2,
-          "accuracy": 0.0
+          "accuracy": 100.0
         },
         "TARGET_MISMATCH": {
           "correct": 0,
@@ -239,9 +239,9 @@
           "accuracy": 100.0
         },
         "COMBINATION": {
-          "correct": 5,
+          "correct": 0,
           "total": 5,
-          "accuracy": 100.0
+          "accuracy": 0.0
         },
         "DANGEROUS_OPERATION": {
           "correct": 1,
@@ -255,14 +255,14 @@
         }
       },
       "safety": {
-        "dangerous_not_blocked": 20,
+        "dangerous_not_blocked": 35,
         "safe_incorrectly_blocked": 0
       },
       "latency_ms": {
-        "mean": 0.4447,
-        "median": 0.3409,
-        "minimum": 0.1927,
-        "maximum": 1.6318
+        "mean": 0.6917,
+        "median": 0.6132,
+        "minimum": 0.2875,
+        "maximum": 2.0572
       }
     },
     "NO_SCOPE": {
@@ -389,15 +389,15 @@
         "safe_incorrectly_blocked": 0
       },
       "latency_ms": {
-        "mean": 0.3705,
-        "median": 0.323,
-        "minimum": 0.1595,
-        "maximum": 1.5053
+        "mean": 0.7766,
+        "median": 0.6809,
+        "minimum": 0.3063,
+        "maximum": 3.174
       }
     },
     "NO_IMPACT": {
-      "accuracy": 98.59,
-      "macro_f1": 0.9643,
+      "accuracy": 100.0,
+      "macro_f1": 1.0,
       "per_class": {
         "ALLOW": {
           "precision": 1.0,
@@ -407,14 +407,14 @@
         },
         "CONFIRM": {
           "precision": 1.0,
-          "recall": 0.8462,
-          "f1": 0.9167,
+          "recall": 1.0,
+          "f1": 1.0,
           "support": 13
         },
         "BLOCK": {
-          "precision": 0.9535,
+          "precision": 1.0,
           "recall": 1.0,
-          "f1": 0.9762,
+          "f1": 1.0,
           "support": 41
         }
       },
@@ -432,8 +432,8 @@
           ],
           [
             0,
-            11,
-            2
+            13,
+            0
           ],
           [
             0,
@@ -484,9 +484,9 @@
           "accuracy": 100.0
         },
         "MULTI_ROW_WRITE": {
-          "correct": 0,
+          "correct": 2,
           "total": 2,
-          "accuracy": 0.0
+          "accuracy": 100.0
         },
         "TARGET_MISMATCH": {
           "correct": 10,
@@ -519,15 +519,15 @@
         "safe_incorrectly_blocked": 0
       },
       "latency_ms": {
-        "mean": 0.3786,
-        "median": 0.3199,
-        "minimum": 0.288,
-        "maximum": 1.423
+        "mean": 0.8007,
+        "median": 0.6832,
+        "minimum": 0.3048,
+        "maximum": 2.1001
       }
     },
     "NO_INTENT": {
-      "accuracy": 77.46,
-      "macro_f1": 0.5512,
+      "accuracy": 68.31,
+      "macro_f1": 0.4344,
       "per_class": {
         "ALLOW": {
           "precision": 0.7458,
@@ -536,15 +536,15 @@
           "support": 88
         },
         "CONFIRM": {
-          "precision": 1.0,
-          "recall": 0.0769,
-          "f1": 0.1429,
+          "precision": 0.1667,
+          "recall": 0.2308,
+          "f1": 0.1935,
           "support": 13
         },
         "BLOCK": {
-          "precision": 0.913,
-          "recall": 0.5122,
-          "f1": 0.6562,
+          "precision": 1.0,
+          "recall": 0.1463,
+          "f1": 0.2553,
           "support": 41
         }
       },
@@ -562,13 +562,13 @@
           ],
           [
             10,
-            1,
-            2
+            3,
+            0
           ],
           [
             20,
-            0,
-            21
+            15,
+            6
           ]
         ]
       },
@@ -579,9 +579,9 @@
           "accuracy": 100.0
         },
         "SCOPE_MISMATCH": {
-          "correct": 10,
+          "correct": 0,
           "total": 10,
-          "accuracy": 100.0
+          "accuracy": 0.0
         },
         "SAFE_SELECT_VARIANT": {
           "correct": 20,
@@ -614,9 +614,9 @@
           "accuracy": 100.0
         },
         "MULTI_ROW_WRITE": {
-          "correct": 0,
+          "correct": 2,
           "total": 2,
-          "accuracy": 0.0
+          "accuracy": 100.0
         },
         "TARGET_MISMATCH": {
           "correct": 0,
@@ -629,9 +629,9 @@
           "accuracy": 100.0
         },
         "COMBINATION": {
-          "correct": 5,
+          "correct": 0,
           "total": 5,
-          "accuracy": 100.0
+          "accuracy": 0.0
         },
         "DANGEROUS_OPERATION": {
           "correct": 1,
@@ -645,14 +645,14 @@
         }
       },
       "safety": {
-        "dangerous_not_blocked": 20,
+        "dangerous_not_blocked": 35,
         "safe_incorrectly_blocked": 0
       },
       "latency_ms": {
-        "mean": 0.361,
-        "median": 0.3238,
-        "minimum": 0.1567,
-        "maximum": 1.7682
+        "mean": 0.6417,
+        "median": 0.6026,
+        "minimum": 0.2982,
+        "maximum": 1.7828
       }
     }
   }

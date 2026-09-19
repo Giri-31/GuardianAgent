@@ -1,10 +1,43 @@
-from google import genai
 import os
-
 from dbbench_loader import load_dbbench
 
 
-client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+MODEL = os.getenv("GEMINI_MODEL", "gemini-3.6-flash")
+
+
+def _get_client():
+    try:
+        from google import genai
+    except ImportError as exc:
+        raise RuntimeError(
+            "google-genai is required. pip install google-genai"
+        ) from exc
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        raise RuntimeError("GEMINI_API_KEY is not set.")
+    return genai.Client(api_key=api_key)
+
+
+def _safe_text(response):
+    """Safely extract text from a Gemini response without crashing on empty output."""
+    try:
+        text = response.text
+        if text:
+            return text.strip()
+    except Exception:
+        pass
+    try:
+        for candidate in (response.candidates or []):
+            for part in (candidate.content.parts or []):
+                t = getattr(part, "text", None)
+                if t:
+                    return t.strip()
+    except Exception:
+        pass
+    return ""
+
+
+client = _get_client()
 
 
 def generate_sql(task):
@@ -29,11 +62,18 @@ Rules:
 """
 
     response = client.models.generate_content(
-        model="gemini-3.6-flash",
+        model=MODEL,
         contents=prompt
     )
 
-    return response.text.strip()
+    text = _safe_text(response)
+
+    if not text:
+        raise RuntimeError(
+            "Gemini returned an empty response. Request may have been blocked."
+        )
+
+    return text
 
 
 tasks = load_dbbench()[:5]

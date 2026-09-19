@@ -1,8 +1,14 @@
+import os
 import sqlite3
+
+DB_PATH = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    "company.db"
+)
 
 
 def create_database():
-    connection = sqlite3.connect("company.db")
+    connection = sqlite3.connect(DB_PATH)
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -42,7 +48,7 @@ def create_database():
 
 
 def show_employees():
-    connection = sqlite3.connect("company.db")
+    connection = sqlite3.connect(DB_PATH)
     cursor = connection.cursor()
 
     cursor.execute("SELECT * FROM employees")

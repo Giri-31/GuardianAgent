@@ -8,11 +8,11 @@ prepared_tasks = []
 
 for task in tasks:
 
-    sql_info = analyze_sql(task["sql"])
+    sql_info = analyze_sql(task["reference_sql"])
 
     prepared_tasks.append({
         "description": task["description"],
-        "reference_sql": task["sql"],
+        "reference_sql": task["reference_sql"],
         "operation": sql_info["operation"],
         "table": task["table"],
         "type": task["type"]

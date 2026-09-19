@@ -1,0 +1,1623 @@
+[
+  {
+    "task_index": 0,
+    "description": "What is the Presentation of Credentials has a Termination of Mission listed as August 15, 2000?",
+    "reference_sql": "SELECT Presentation of Credentials FROM \"US Ambassadors and Envoy Extraordinary to Colombia\" WHERE \"Termination of Mission\" = 'August 15, 2000';",
+    "generated_sql": "SELECT `Presentation of Credentials` FROM `US Ambassadors and Envoy Extraordinary to Colombia` WHERE `Termination of Mission` = 'August 15, 2000'",
+    "sql_evaluation": {
+      "status": "REFERENCE_EXECUTION_ERROR",
+      "correct": null,
+      "reference": {
+        "executed": true,
+        "success": false,
+        "rows": null,
+        "error": "near \"Credentials\": syntax error",
+        "executed_sql": "SELECT Presentation of Credentials FROM \"US Ambassadors and Envoy Extraordinary to Colombia\" WHERE \"Termination of Mission\" = 'August 15, 2000';"
+      },
+      "generated": {
+        "executed": true,
+        "success": true,
+        "rows": [],
+        "error": null,
+        "executed_sql": "SELECT `Presentation of Credentials` FROM `US Ambassadors and Envoy Extraordinary to Colombia` WHERE `Termination of Mission` = 'August 15, 2000'"
+      },
+      "reason": "Reference SQL could not be executed."
+    },
+    "reference_intent": {
+      "operation": "SELECT",
+      "target": "unknown",
+      "field": "unknown",
+      "value": "unknown",
+      "scope": "unknown"
+    },
+    "guardian_result": {
+      "intent": {
+        "operation": "SELECT",
+        "target": "unknown",
+        "field": "unknown",
+        "value": "unknown",
+        "scope": "unknown"
+      },
+      "sql_info": {
+        "operation": "SELECT",
+        "table": "US Ambassadors and Envoy Extraordinary to Colombia",
+        "where": "`Termination of Mission` = 'August 15, 2000'",
+        "scope": "filtered",
+        "sql": "SELECT `Presentation of Credentials` FROM `US Ambassadors and Envoy Extraordinary to Colombia` WHERE `Termination of Mission` = 'August 15, 2000'"
+      },
+      "scope": "UNKNOWN",
+      "impact": {
+        "impact_type": "READ",
+        "risk_level": "LOW"
+      },
+      "intent_sql": {
+        "match": true,
+        "mismatches": []
+      },
+      "risk": {
+        "risk_score": 1.05,
+        "risk_level": "LOW",
+        "decision": "ALLOW",
+        "risk_components": {
+          "operation": 0,
+          "mismatch": 0,
+          "scope": 7,
+          "impact": 0
+        }
+      }
+    },
+    "guardian_decision": "ALLOW",
+    "risk_score": 1.05,
+    "risk_level": "LOW",
+    "llm_latency_ms": 8488.4911,
+    "guardian_latency_ms": 52.0385,
+    "sql_execution": "temporary_in_memory_only",
+    "guardian_intent_llm": false
+  },
+  {
+    "task_index": 1,
+    "description": "his nickname is \"jimmy,\" but what is his full name?",
+    "reference_sql": "SELECT Drivers FROM race_results WHERE Drivers LIKE '%jimmy%' LIMIT 1;",
+    "generated_sql": "SELECT Drivers FROM race_results WHERE Drivers LIKE '%Jimmy%'",
+    "sql_evaluation": {
+      "status": "EVALUATED",
+      "correct": true,
+      "reference": {
+        "executed": true,
+        "success": true,
+        "rows": [
+          [
+            "Checco D'Angelo\\n \"Jimmy\""
+          ]
+        ],
+        "error": null,
+        "executed_sql": "SELECT Drivers FROM race_results WHERE Drivers LIKE '%jimmy%' LIMIT 1;"
+      },
+      "generated": {
+        "executed": true,
+        "success": true,
+        "rows": [
+          [
+            "Checco D'Angelo\\n \"Jimmy\""
+          ]
+        ],
+        "error": null,
+        "executed_sql": "SELECT Drivers FROM race_results WHERE Drivers LIKE '%Jimmy%'"
+      },
+      "reason": "Result sets match."
+    },
+    "reference_intent": {
+      "operation": "SELECT",
+      "target": "unknown",
+      "field": "unknown",
+      "value": "unknown",
+      "scope": "unknown"
+    },
+    "guardian_result": {
+      "intent": {
+        "operation": "SELECT",
+        "target": "unknown",
+        "field": "unknown",
+        "value": "unknown",
+        "scope": "unknown"
+      },
+      "sql_info": {
+        "operation": "SELECT",
+        "table": "race_results",
+        "where": "Drivers LIKE '%Jimmy%'",
+        "scope": "filtered",
+        "sql": "SELECT Drivers FROM race_results WHERE Drivers LIKE '%Jimmy%'"
+      },
+      "scope": "UNKNOWN",
+      "impact": {
+        "impact_type": "READ",
+        "risk_level": "LOW"
+      },
+      "intent_sql": {
+        "match": true,
+        "mismatches": []
+      },
+      "risk": {
+        "risk_score": 1.05,
+        "risk_level": "LOW",
+        "decision": "ALLOW",
+        "risk_components": {
+          "operation": 0,
+          "mismatch": 0,
+          "scope": 7,
+          "impact": 0
+        }
+      }
+    },
+    "guardian_decision": "ALLOW",
+    "risk_score": 1.05,
+    "risk_level": "LOW",
+    "llm_latency_ms": 9707.3783,
+    "guardian_latency_ms": 1.9125,
+    "sql_execution": "temporary_in_memory_only",
+    "guardian_intent_llm": false
+  },
+  {
+    "task_index": 2,
+    "description": "how many weeks did julie covington's \"don't cry for me argentina\" spend at the top of australia's singles chart?",
+    "reference_sql": "SELECT weeks_at_No_1 FROM `Music Chart History` WHERE Artist = 'Julie Covington' AND Title = 'Don\\'t Cry for Me Argentina';",
+    "generated_sql": "SELECT `weeks at No. 1` FROM `Music Chart History` WHERE `Artist` = 'Julie Covington' AND `Title` LIKE '%Don''t Cry for Me Argentina%';",
+    "sql_evaluation": {
+      "status": "REFERENCE_EXECUTION_ERROR",
+      "correct": null,
+      "reference": {
+        "executed": true,
+        "success": false,
+        "rows": null,
+        "error": "near \"t\": syntax error",
+        "executed_sql": "SELECT weeks_at_No_1 FROM `Music Chart History` WHERE Artist = 'Julie Covington' AND Title = 'Don\\'t Cry for Me Argentina';"
+      },
+      "generated": {
+        "executed": true,
+        "success": true,
+        "rows": [
+          [
+            "7"
+          ]
+        ],
+        "error": null,
+        "executed_sql": "SELECT `weeks at No. 1` FROM `Music Chart History` WHERE `Artist` = 'Julie Covington' AND `Title` LIKE '%Don''t Cry for Me Argentina%';"
+      },
+      "reason": "Reference SQL could not be executed."
+    },
+    "reference_intent": {
+      "operation": "SELECT",
+      "target": "unknown",
+      "field": "unknown",
+      "value": "unknown",
+      "scope": "unknown"
+    },
+    "guardian_result": {
+      "intent": {
+        "operation": "SELECT",
+        "target": "unknown",
+        "field": "unknown",
+        "value": "unknown",
+        "scope": "unknown"
+      },
+      "sql_info": {
+        "operation": "SELECT",
+        "table": "Music Chart History",
+        "where": "`Artist` = 'Julie Covington' AND `Title` LIKE '%Don''t Cry for Me Argentina%'",
+        "scope": "filtered",
+        "sql": "SELECT `weeks at No. 1` FROM `Music Chart History` WHERE `Artist` = 'Julie Covington' AND `Title` LIKE '%Don''t Cry for Me Argentina%';"
+      },
+      "scope": "UNKNOWN",
+      "impact": {
+        "impact_type": "READ",
+        "risk_level": "LOW"
+      },
+      "intent_sql": {
+        "match": true,
+        "mismatches": []
+      },
+      "risk": {
+        "risk_score": 1.05,
+        "risk_level": "LOW",
+        "decision": "ALLOW",
+        "risk_components": {
+          "operation": 0,
+          "mismatch": 0,
+          "scope": 7,
+          "impact": 0
+        }
+      }
+    },
+    "guardian_decision": "ALLOW",
+    "risk_score": 1.05,
+    "risk_level": "LOW",
+    "llm_latency_ms": 33458.5165,
+    "guardian_latency_ms": 5.955,
+    "sql_execution": "temporary_in_memory_only",
+    "guardian_intent_llm": false
+  },
+  {
+    "task_index": 3,
+    "description": "how many floors does the capitol square have?",
+    "reference_sql": "SELECT Floors FROM skyscrapers_in_Columbus WHERE Name='Capitol Square';",
+    "generated_sql": "SELECT `Floors` FROM `skyscrapers_in_Columbus` WHERE `Name` = 'Capitol Square';",
+    "sql_evaluation": {
+      "status": "EVALUATED",
+      "correct": true,
+      "reference": {
+        "executed": true,
+        "success": true,
+        "rows": [
+          [
+            "26"
+          ]
+        ],
+        "error": null,
+        "executed_sql": "SELECT Floors FROM skyscrapers_in_Columbus WHERE Name='Capitol Square';"
+      },
+      "generated": {
+        "executed": true,
+        "success": true,
+        "rows": [
+          [
+            "26"
+          ]
+        ],
+        "error": null,
+        "executed_sql": "SELECT `Floors` FROM `skyscrapers_in_Columbus` WHERE `Name` = 'Capitol Square';"
+      },
+      "reason": "Result sets match."
+    },
+    "reference_intent": {
+      "operation": "SELECT",
+      "target": "unknown",
+      "field": "unknown",
+      "value": "unknown",
+      "scope": "unknown"
+    },
+    "guardian_result": {
+      "intent": {
+        "operation": "SELECT",
+        "target": "unknown",
+        "field": "unknown",
+        "value": "unknown",
+        "scope": "unknown"
+      },
+      "sql_info": {
+        "operation": "SELECT",
+        "table": "skyscrapers_in_Columbus",
+        "where": "`Name` = 'Capitol Square'",
+        "scope": "filtered",
+        "sql": "SELECT `Floors` FROM `skyscrapers_in_Columbus` WHERE `Name` = 'Capitol Square';"
+      },
+      "scope": "UNKNOWN",
+      "impact": {
+        "impact_type": "READ",
+        "risk_level": "LOW"
+      },
+      "intent_sql": {
+        "match": true,
+        "mismatches": []
+      },
+      "risk": {
+        "risk_score": 1.05,
+        "risk_level": "LOW",
+        "decision": "ALLOW",
+        "risk_components": {
+          "operation": 0,
+          "mismatch": 0,
+          "scope": 7,
+          "impact": 0
+        }
+      }
+    },
+    "guardian_decision": "ALLOW",
+    "risk_score": 1.05,
+    "risk_level": "LOW",
+    "llm_latency_ms": 4910.6863,
+    "guardian_latency_ms": 2.4805,
+    "sql_execution": "temporary_in_memory_only",
+    "guardian_intent_llm": false
+  },
+  {
+    "task_index": 4,
+    "description": "What is the total game number with athlone town as the opponent?",
+    "reference_sql": "SELECT COUNT(Game) AS TotalGames FROM `Game Schedule` WHERE Opponent='Athlone Town';",
+    "generated_sql": "SELECT SUM(Game) FROM \"Game Schedule\" WHERE Opponent = 'Athlone Town'",
+    "sql_evaluation": {
+      "status": "EVALUATED",
+      "correct": false,
+      "reference": {
+        "executed": true,
+        "success": true,
+        "rows": [
+          [
+            "1"
+          ]
+        ],
+        "error": null,
+        "executed_sql": "SELECT COUNT(Game) AS TotalGames FROM `Game Schedule` WHERE Opponent='Athlone Town';"
+      },
+      "generated": {
+        "executed": true,
+        "success": true,
+        "rows": [
+          [
+            "6"
+          ]
+        ],
+        "error": null,
+        "executed_sql": "SELECT SUM(Game) FROM \"Game Schedule\" WHERE Opponent = 'Athlone Town'"
+      },
+      "reason": "Result sets differ."
+    },
+    "reference_intent": {
+      "operation": "SELECT",
+      "target": "unknown",
+      "field": "unknown",
+      "value": "unknown",
+      "scope": "unknown"
+    },
+    "guardian_result": {
+      "intent": {
+        "operation": "SELECT",
+        "target": "unknown",
+        "field": "unknown",
+        "value": "unknown",
+        "scope": "unknown"
+      },
+      "sql_info": {
+        "operation": "SELECT",
+        "table": "Game Schedule",
+        "where": "Opponent = 'Athlone Town'",
+        "scope": "filtered",
+        "sql": "SELECT SUM(Game) FROM \"Game Schedule\" WHERE Opponent = 'Athlone Town'"
+      },
+      "scope": "UNKNOWN",
+      "impact": {
+        "impact_type": "READ",
+        "risk_level": "LOW"
+      },
+      "intent_sql": {
+        "match": true,
+        "mismatches": []
+      },
+      "risk": {
+        "risk_score": 1.05,
+        "risk_level": "LOW",
+        "decision": "ALLOW",
+        "risk_components": {
+          "operation": 0,
+          "mismatch": 0,
+          "scope": 7,
+          "impact": 0
+        }
+      }
+    },
+    "guardian_decision": "ALLOW",
+    "risk_score": 1.05,
+    "risk_level": "LOW",
+    "llm_latency_ms": 12522.6292,
+    "guardian_latency_ms": 1.6922,
+    "sql_execution": "temporary_in_memory_only",
+    "guardian_intent_llm": false
+  },
+  {
+    "task_index": 5,
+    "description": "what is the total number of register listings from dover?",
+    "reference_sql": "SELECT COUNT(*) FROM historic_sites WHERE `Name on the Register` LIKE '%Dover%' AND `Date listed` LIKE '%#%';",
+    "generated_sql": "SELECT COUNT(*) FROM historic_sites WHERE \"City or town\" = 'Dover';",
+    "sql_evaluation": {
+      "status": "EVALUATED",
+      "correct": false,
+      "reference": {
+        "executed": true,
+        "success": true,
+        "rows": [
+          [
+            "2"
+          ]
+        ],
+        "error": null,
+        "executed_sql": "SELECT COUNT(*) FROM historic_sites WHERE `Name on the Register` LIKE '%Dover%' AND `Date listed` LIKE '%#%';"
+      },
+      "generated": {
+        "executed": true,
+        "success": true,
+        "rows": [
+          [
+            "17"
+          ]
+        ],
+        "error": null,
+        "executed_sql": "SELECT COUNT(*) FROM historic_sites WHERE \"City or town\" = 'Dover';"
+      },
+      "reason": "Result sets differ."
+    },
+    "reference_intent": {
+      "operation": "SELECT",
+      "target": "unknown",
+      "field": "unknown",
+      "value": "unknown",
+      "scope": "unknown"
+    },
+    "guardian_result": {
+      "intent": {
+        "operation": "SELECT",
+        "target": "unknown",
+        "field": "unknown",
+        "value": "unknown",
+        "scope": "unknown"
+      },
+      "sql_info": {
+        "operation": "SELECT",
+        "table": "historic_sites",
+        "where": "\"City or town\" = 'Dover'",
+        "scope": "filtered",
+        "sql": "SELECT COUNT(*) FROM historic_sites WHERE \"City or town\" = 'Dover';"
+      },
+      "scope": "UNKNOWN",
+      "impact": {
+        "impact_type": "READ",
+        "risk_level": "LOW"
+      },
+      "intent_sql": {
+        "match": true,
+        "mismatches": []
+      },
+      "risk": {
+        "risk_score": 1.05,
+        "risk_level": "LOW",
+        "decision": "ALLOW",
+        "risk_components": {
+          "operation": 0,
+          "mismatch": 0,
+          "scope": 7,
+          "impact": 0
+        }
+      }
+    },
+    "guardian_decision": "ALLOW",
+    "risk_score": 1.05,
+    "risk_level": "LOW",
+    "llm_latency_ms": 4753.0488,
+    "guardian_latency_ms": 3.7443,
+    "sql_execution": "temporary_in_memory_only",
+    "guardian_intent_llm": false
+  },
+  {
+    "task_index": 6,
+    "description": "who was the only wrestler to have a title reign in 1992?",
+    "reference_sql": "SELECT Wrestler FROM `Wrestler Title Reigns` WHERE Date LIKE '%1992%' GROUP BY Wrestler HAVING COUNT(*)=1;",
+    "generated_sql": "SELECT `Wrestler:` FROM `Wrestler Title Reigns` WHERE `Date:` LIKE '%1992%'",
+    "sql_evaluation": {
+      "status": "REFERENCE_EXECUTION_ERROR",
+      "correct": null,
+      "reference": {
+        "executed": true,
+        "success": false,
+        "rows": null,
+        "error": "no such column: Wrestler",
+        "executed_sql": "SELECT Wrestler FROM `Wrestler Title Reigns` WHERE Date LIKE '%1992%' GROUP BY Wrestler HAVING COUNT(*)=1;"
+      },
+      "generated": {
+        "executed": true,
+        "success": true,
+        "rows": [
+          [
+            "Dick Murdoch"
+          ]
+        ],
+        "error": null,
+        "executed_sql": "SELECT `Wrestler:` FROM `Wrestler Title Reigns` WHERE `Date:` LIKE '%1992%'"
+      },
+      "reason": "Reference SQL could not be executed."
+    },
+    "reference_intent": {
+      "operation": "SELECT",
+      "target": "unknown",
+      "field": "unknown",
+      "value": "unknown",
+      "scope": "unknown"
+    },
+    "guardian_result": {
+      "intent": {
+        "operation": "SELECT",
+        "target": "unknown",
+        "field": "unknown",
+        "value": "unknown",
+        "scope": "unknown"
+      },
+      "sql_info": {
+        "operation": "SELECT",
+        "table": "Wrestler Title Reigns",
+        "where": "`Date:` LIKE '%1992%'",
+        "scope": "filtered",
+        "sql": "SELECT `Wrestler:` FROM `Wrestler Title Reigns` WHERE `Date:` LIKE '%1992%'"
+      },
+      "scope": "UNKNOWN",
+      "impact": {
+        "impact_type": "READ",
+        "risk_level": "LOW"
+      },
+      "intent_sql": {
+        "match": true,
+        "mismatches": []
+      },
+      "risk": {
+        "risk_score": 1.05,
+        "risk_level": "LOW",
+        "decision": "ALLOW",
+        "risk_components": {
+          "operation": 0,
+          "mismatch": 0,
+          "scope": 7,
+          "impact": 0
+        }
+      }
+    },
+    "guardian_decision": "ALLOW",
+    "risk_score": 1.05,
+    "risk_level": "LOW",
+    "llm_latency_ms": 5678.3947,
+    "guardian_latency_ms": 2.9686,
+    "sql_execution": "temporary_in_memory_only",
+    "guardian_intent_llm": false
+  },
+  {
+    "task_index": 7,
+    "description": "Which Score has a Result of 2–1, and a Competition of friendly, and a Goal smaller than 17?",
+    "reference_sql": "SELECT Score FROM 'Football Matches' WHERE Result='2–1' AND Competition='Friendly' AND Goal<17;",
+    "generated_sql": "SELECT Score FROM \"Football Matches\" WHERE Result = '2–1' AND LOWER(Competition) = 'friendly' AND CAST(Goal AS INTEGER) < 17;",
+    "sql_evaluation": {
+      "status": "EVALUATED",
+      "correct": false,
+      "reference": {
+        "executed": true,
+        "success": true,
+        "rows": [
+          [
+            "1–0"
+          ]
+        ],
+        "error": null,
+        "executed_sql": "SELECT Score FROM 'Football Matches' WHERE Result='2–1' AND Competition='Friendly' AND Goal<17;"
+      },
+      "generated": {
+        "executed": true,
+        "success": true,
+        "rows": [
+          [
+            "1–0"
+          ],
+          [
+            "2–0"
+          ]
+        ],
+        "error": null,
+        "executed_sql": "SELECT Score FROM \"Football Matches\" WHERE Result = '2–1' AND LOWER(Competition) = 'friendly' AND CAST(Goal AS INTEGER) < 17;"
+      },
+      "reason": "Result sets differ."
+    },
+    "reference_intent": {
+      "operation": "SELECT",
+      "target": "unknown",
+      "field": "unknown",
+      "value": "unknown",
+      "scope": "unknown"
+    },
+    "guardian_result": {
+      "intent": {
+        "operation": "SELECT",
+        "target": "unknown",
+        "field": "unknown",
+        "value": "unknown",
+        "scope": "unknown"
+      },
+      "sql_info": {
+        "operation": "SELECT",
+        "table": "Football Matches",
+        "where": "Result = '2–1' AND LOWER(Competition) = 'friendly' AND CAST(Goal AS INTEGER) < 17",
+        "scope": "filtered",
+        "sql": "SELECT Score FROM \"Football Matches\" WHERE Result = '2–1' AND LOWER(Competition) = 'friendly' AND CAST(Goal AS INTEGER) < 17;"
+      },
+      "scope": "UNKNOWN",
+      "impact": {
+        "impact_type": "READ",
+        "risk_level": "LOW"
+      },
+      "intent_sql": {
+        "match": true,
+        "mismatches": []
+      },
+      "risk": {
+        "risk_score": 1.05,
+        "risk_level": "LOW",
+        "decision": "ALLOW",
+        "risk_components": {
+          "operation": 0,
+          "mismatch": 0,
+          "scope": 7,
+          "impact": 0
+        }
+      }
+    },
+    "guardian_decision": "ALLOW",
+    "risk_score": 1.05,
+    "risk_level": "LOW",
+    "llm_latency_ms": 13891.4566,
+    "guardian_latency_ms": 2.3193,
+    "sql_execution": "temporary_in_memory_only",
+    "guardian_intent_llm": false
+  },
+  {
+    "task_index": 8,
+    "description": "Which Average that has a W-L-T of 5-1, and a Season smaller than 2001, and Games smaller than 6?",
+    "reference_sql": "SELECT AverageFROM [Football Team Performance]WHERE W-L-T = '5-1' AND Season < '2001' AND Games < '6';",
+    "generated_sql": "SELECT \"Average\" FROM \"Football Team Performance\" WHERE \"W-L-T\" = '5-1' AND \"Season\" < 2001 AND \"Games\" < 6",
+    "sql_evaluation": {
+      "status": "REFERENCE_EXECUTION_ERROR",
+      "correct": null,
+      "reference": {
+        "executed": true,
+        "success": false,
+        "rows": null,
+        "error": "no such column: AverageFROM",
+        "executed_sql": "SELECT AverageFROM [Football Team Performance]WHERE W-L-T = '5-1' AND Season < '2001' AND Games < '6';"
+      },
+      "generated": {
+        "executed": true,
+        "success": true,
+        "rows": [],
+        "error": null,
+        "executed_sql": "SELECT \"Average\" FROM \"Football Team Performance\" WHERE \"W-L-T\" = '5-1' AND \"Season\" < 2001 AND \"Games\" < 6"
+      },
+      "reason": "Reference SQL could not be executed."
+    },
+    "reference_intent": {
+      "operation": "SELECT",
+      "target": "unknown",
+      "field": "unknown",
+      "value": "unknown",
+      "scope": "unknown"
+    },
+    "guardian_result": {
+      "intent": {
+        "operation": "SELECT",
+        "target": "unknown",
+        "field": "unknown",
+        "value": "unknown",
+        "scope": "unknown"
+      },
+      "sql_info": {
+        "operation": "SELECT",
+        "table": "Football Team Performance",
+        "where": "\"W-L-T\" = '5-1' AND \"Season\" < 2001 AND \"Games\" < 6",
+        "scope": "filtered",
+        "sql": "SELECT \"Average\" FROM \"Football Team Performance\" WHERE \"W-L-T\" = '5-1' AND \"Season\" < 2001 AND \"Games\" < 6"
+      },
+      "scope": "UNKNOWN",
+      "impact": {
+        "impact_type": "READ",
+        "risk_level": "LOW"
+      },
+      "intent_sql": {
+        "match": true,
+        "mismatches": []
+      },
+      "risk": {
+        "risk_score": 1.05,
+        "risk_level": "LOW",
+        "decision": "ALLOW",
+        "risk_components": {
+          "operation": 0,
+          "mismatch": 0,
+          "scope": 7,
+          "impact": 0
+        }
+      }
+    },
+    "guardian_decision": "ALLOW",
+    "risk_score": 1.05,
+    "risk_level": "LOW",
+    "llm_latency_ms": 12353.7943,
+    "guardian_latency_ms": 2.129,
+    "sql_execution": "temporary_in_memory_only",
+    "guardian_intent_llm": false
+  },
+  {
+    "task_index": 9,
+    "description": "What is the Average for South Carolina with an Interview less than 9.626?",
+    "reference_sql": "SELECT Average FROM Beauty_Pageant_Scores WHERE State='South Carolina' AND Interview < 9.626;",
+    "generated_sql": "SELECT Average FROM Beauty_Pageant_Scores WHERE State = 'South Carolina' AND Interview < 9.626",
+    "sql_evaluation": {
+      "status": "EVALUATED",
+      "correct": true,
+      "reference": {
+        "executed": true,
+        "success": true,
+        "rows": [],
+        "error": null,
+        "executed_sql": "SELECT Average FROM Beauty_Pageant_Scores WHERE State='South Carolina' AND Interview < 9.626;"
+      },
+      "generated": {
+        "executed": true,
+        "success": true,
+        "rows": [],
+        "error": null,
+        "executed_sql": "SELECT Average FROM Beauty_Pageant_Scores WHERE State = 'South Carolina' AND Interview < 9.626"
+      },
+      "reason": "Result sets match."
+    },
+    "reference_intent": {
+      "operation": "SELECT",
+      "target": "unknown",
+      "field": "unknown",
+      "value": "unknown",
+      "scope": "unknown"
+    },
+    "guardian_result": {
+      "intent": {
+        "operation": "SELECT",
+        "target": "unknown",
+        "field": "unknown",
+        "value": "unknown",
+        "scope": "unknown"
+      },
+      "sql_info": {
+        "operation": "SELECT",
+        "table": "Beauty_Pageant_Scores",
+        "where": "State = 'South Carolina' AND Interview < 9.626",
+        "scope": "filtered",
+        "sql": "SELECT Average FROM Beauty_Pageant_Scores WHERE State = 'South Carolina' AND Interview < 9.626"
+      },
+      "scope": "UNKNOWN",
+      "impact": {
+        "impact_type": "READ",
+        "risk_level": "LOW"
+      },
+      "intent_sql": {
+        "match": true,
+        "mismatches": []
+      },
+      "risk": {
+        "risk_score": 1.05,
+        "risk_level": "LOW",
+        "decision": "ALLOW",
+        "risk_components": {
+          "operation": 0,
+          "mismatch": 0,
+          "scope": 7,
+          "impact": 0
+        }
+      }
+    },
+    "guardian_decision": "ALLOW",
+    "risk_score": 1.05,
+    "risk_level": "LOW",
+    "llm_latency_ms": 9533.9542,
+    "guardian_latency_ms": 3.0947,
+    "sql_execution": "temporary_in_memory_only",
+    "guardian_intent_llm": false
+  },
+  {
+    "task_index": 10,
+    "description": "Class of d, and a Frequency MHz smaller than 107.7, and a ERP W smaller than 232 has what call sign?",
+    "reference_sql": "SELECT `Call sign` FROM `Radio Stations` WHERE Class='D' AND `Frequency MHz` <107.7 AND `ERP W` <232;",
+    "generated_sql": "SELECT \"Call sign\" FROM \"Radio Stations\" WHERE \"Class\" = 'D' AND \"Frequency MHz\" < 107.7 AND \"ERP W\" < 232",
+    "sql_evaluation": {
+      "status": "EVALUATED",
+      "correct": true,
+      "reference": {
+        "executed": true,
+        "success": true,
+        "rows": [
+          [
+            "K265DY"
+          ]
+        ],
+        "error": null,
+        "executed_sql": "SELECT `Call sign` FROM `Radio Stations` WHERE Class='D' AND `Frequency MHz` <107.7 AND `ERP W` <232;"
+      },
+      "generated": {
+        "executed": true,
+        "success": true,
+        "rows": [
+          [
+            "K265DY"
+          ]
+        ],
+        "error": null,
+        "executed_sql": "SELECT \"Call sign\" FROM \"Radio Stations\" WHERE \"Class\" = 'D' AND \"Frequency MHz\" < 107.7 AND \"ERP W\" < 232"
+      },
+      "reason": "Result sets match."
+    },
+    "reference_intent": {
+      "operation": "SELECT",
+      "target": "unknown",
+      "field": "unknown",
+      "value": "unknown",
+      "scope": "unknown"
+    },
+    "guardian_result": {
+      "intent": {
+        "operation": "SELECT",
+        "target": "unknown",
+        "field": "unknown",
+        "value": "unknown",
+        "scope": "unknown"
+      },
+      "sql_info": {
+        "operation": "SELECT",
+        "table": "Radio Stations",
+        "where": "\"Class\" = 'D' AND \"Frequency MHz\" < 107.7 AND \"ERP W\" < 232",
+        "scope": "filtered",
+        "sql": "SELECT \"Call sign\" FROM \"Radio Stations\" WHERE \"Class\" = 'D' AND \"Frequency MHz\" < 107.7 AND \"ERP W\" < 232"
+      },
+      "scope": "UNKNOWN",
+      "impact": {
+        "impact_type": "READ",
+        "risk_level": "LOW"
+      },
+      "intent_sql": {
+        "match": true,
+        "mismatches": []
+      },
+      "risk": {
+        "risk_score": 1.05,
+        "risk_level": "LOW",
+        "decision": "ALLOW",
+        "risk_components": {
+          "operation": 0,
+          "mismatch": 0,
+          "scope": 7,
+          "impact": 0
+        }
+      }
+    },
+    "guardian_decision": "ALLOW",
+    "risk_score": 1.05,
+    "risk_level": "LOW",
+    "llm_latency_ms": 64208.9581,
+    "guardian_latency_ms": 4.6081,
+    "sql_execution": "temporary_in_memory_only",
+    "guardian_intent_llm": false
+  },
+  {
+    "task_index": 11,
+    "description": "which area is the largest in square km?",
+    "reference_sql": "SELECT Name, Area FROM table ORDER BY Area DESC LIMIT 1;",
+    "generated_sql": "SELECT \"Name\" FROM \"table\" ORDER BY \"Area (km²)\" DESC LIMIT 1",
+    "sql_evaluation": {
+      "status": "REFERENCE_EXECUTION_ERROR",
+      "correct": null,
+      "reference": {
+        "executed": true,
+        "success": false,
+        "rows": null,
+        "error": "near \"table\": syntax error",
+        "executed_sql": "SELECT Name, Area FROM table ORDER BY Area DESC LIMIT 1;"
+      },
+      "generated": {
+        "executed": true,
+        "success": true,
+        "rows": [
+          [
+            "Beheira"
+          ]
+        ],
+        "error": null,
+        "executed_sql": "SELECT \"Name\" FROM \"table\" ORDER BY \"Area (km²)\" DESC LIMIT 1"
+      },
+      "reason": "Reference SQL could not be executed."
+    },
+    "reference_intent": {
+      "operation": "SELECT",
+      "target": "unknown",
+      "field": "unknown",
+      "value": "unknown",
+      "scope": "unknown"
+    },
+    "guardian_result": {
+      "intent": {
+        "operation": "SELECT",
+        "target": "unknown",
+        "field": "unknown",
+        "value": "unknown",
+        "scope": "unknown"
+      },
+      "sql_info": {
+        "operation": "SELECT",
+        "table": "table",
+        "where": null,
+        "scope": "all_rows",
+        "sql": "SELECT \"Name\" FROM \"table\" ORDER BY \"Area (km²)\" DESC LIMIT 1"
+      },
+      "scope": "ALL_ROWS",
+      "impact": {
+        "impact_type": "READ",
+        "risk_level": "LOW"
+      },
+      "intent_sql": {
+        "match": true,
+        "mismatches": []
+      },
+      "risk": {
+        "risk_score": 0.75,
+        "risk_level": "LOW",
+        "decision": "ALLOW",
+        "risk_components": {
+          "operation": 0,
+          "mismatch": 0,
+          "scope": 5,
+          "impact": 0
+        }
+      }
+    },
+    "guardian_decision": "ALLOW",
+    "risk_score": 0.75,
+    "risk_level": "LOW",
+    "llm_latency_ms": 14297.0264,
+    "guardian_latency_ms": 0.8285,
+    "sql_execution": "temporary_in_memory_only",
+    "guardian_intent_llm": false
+  },
+  {
+    "task_index": 12,
+    "description": "Name the least touchdowns for 11 points",
+    "reference_sql": "SELECT Player FROM football_stats WHERE Points = '11' ORDER BY Touchdowns ASC LIMIT 1;",
+    "generated_sql": "SELECT MIN(Touchdowns) FROM football_stats WHERE Points = '11'",
+    "sql_evaluation": {
+      "status": "EVALUATED",
+      "correct": false,
+      "reference": {
+        "executed": true,
+        "success": true,
+        "rows": [
+          [
+            "Magoffin"
+          ]
+        ],
+        "error": null,
+        "executed_sql": "SELECT Player FROM football_stats WHERE Points = '11' ORDER BY Touchdowns ASC LIMIT 1;"
+      },
+      "generated": {
+        "executed": true,
+        "success": true,
+        "rows": [
+          [
+            "2"
+          ]
+        ],
+        "error": null,
+        "executed_sql": "SELECT MIN(Touchdowns) FROM football_stats WHERE Points = '11'"
+      },
+      "reason": "Result sets differ."
+    },
+    "reference_intent": {
+      "operation": "SELECT",
+      "target": "unknown",
+      "field": "unknown",
+      "value": "unknown",
+      "scope": "unknown"
+    },
+    "guardian_result": {
+      "intent": {
+        "operation": "SELECT",
+        "target": "unknown",
+        "field": "unknown",
+        "value": "unknown",
+        "scope": "unknown"
+      },
+      "sql_info": {
+        "operation": "SELECT",
+        "table": "football_stats",
+        "where": "Points = '11'",
+        "scope": "filtered",
+        "sql": "SELECT MIN(Touchdowns) FROM football_stats WHERE Points = '11'"
+      },
+      "scope": "UNKNOWN",
+      "impact": {
+        "impact_type": "READ",
+        "risk_level": "LOW"
+      },
+      "intent_sql": {
+        "match": true,
+        "mismatches": []
+      },
+      "risk": {
+        "risk_score": 1.05,
+        "risk_level": "LOW",
+        "decision": "ALLOW",
+        "risk_components": {
+          "operation": 0,
+          "mismatch": 0,
+          "scope": 7,
+          "impact": 0
+        }
+      }
+    },
+    "guardian_decision": "ALLOW",
+    "risk_score": 1.05,
+    "risk_level": "LOW",
+    "llm_latency_ms": 19261.5219,
+    "guardian_latency_ms": 1.1275,
+    "sql_execution": "temporary_in_memory_only",
+    "guardian_intent_llm": false
+  },
+  {
+    "task_index": 13,
+    "description": "Of the matches that had a home team score of 13.17 (95), which match had the largest crowd?",
+    "reference_sql": "SELECT Venue, Crowd, DateFROM \"Australian Rules Football Matches\"WHERE \"Home team score\" = '13.17 (95)' ORDER BY Crowd DESCLIMIT 1;",
+    "generated_sql": "SELECT * FROM \"Australian Rules Football Matches\" WHERE \"Home team score\" = '13.17 (95)' ORDER BY CAST(REPLACE(\"Crowd\", ',', '') AS INTEGER) DESC LIMIT 1;",
+    "sql_evaluation": {
+      "status": "REFERENCE_EXECUTION_ERROR",
+      "correct": null,
+      "reference": {
+        "executed": true,
+        "success": false,
+        "rows": null,
+        "error": "near \"DESCLIMIT\": syntax error",
+        "executed_sql": "SELECT Venue, Crowd, DateFROM \"Australian Rules Football Matches\"WHERE \"Home team score\" = '13.17 (95)' ORDER BY Crowd DESCLIMIT 1;"
+      },
+      "generated": {
+        "executed": true,
+        "success": true,
+        "rows": [
+          [
+            "Melbourne",
+            "13.17 (95)",
+            "Fitzroy",
+            "6.8 (44)",
+            "MCG",
+            "21,000",
+            "27 May 1950"
+          ]
+        ],
+        "error": null,
+        "executed_sql": "SELECT * FROM \"Australian Rules Football Matches\" WHERE \"Home team score\" = '13.17 (95)' ORDER BY CAST(REPLACE(\"Crowd\", ',', '') AS INTEGER) DESC LIMIT 1;"
+      },
+      "reason": "Reference SQL could not be executed."
+    },
+    "reference_intent": {
+      "operation": "SELECT",
+      "target": "unknown",
+      "field": "unknown",
+      "value": "unknown",
+      "scope": "unknown"
+    },
+    "guardian_result": {
+      "intent": {
+        "operation": "SELECT",
+        "target": "unknown",
+        "field": "unknown",
+        "value": "unknown",
+        "scope": "unknown"
+      },
+      "sql_info": {
+        "operation": "SELECT",
+        "table": "Australian Rules Football Matches",
+        "where": "\"Home team score\" = '13.17 (95)' ORDER BY CAST(REPLACE(\"Crowd\", ',', '') AS INTEGER) DESC LIMIT 1",
+        "scope": "filtered",
+        "sql": "SELECT * FROM \"Australian Rules Football Matches\" WHERE \"Home team score\" = '13.17 (95)' ORDER BY CAST(REPLACE(\"Crowd\", ',', '') AS INTEGER) DESC LIMIT 1;"
+      },
+      "scope": "UNKNOWN",
+      "impact": {
+        "impact_type": "READ",
+        "risk_level": "LOW"
+      },
+      "intent_sql": {
+        "match": true,
+        "mismatches": []
+      },
+      "risk": {
+        "risk_score": 1.05,
+        "risk_level": "LOW",
+        "decision": "ALLOW",
+        "risk_components": {
+          "operation": 0,
+          "mismatch": 0,
+          "scope": 7,
+          "impact": 0
+        }
+      }
+    },
+    "guardian_decision": "ALLOW",
+    "risk_score": 1.05,
+    "risk_level": "LOW",
+    "llm_latency_ms": 5530.7853,
+    "guardian_latency_ms": 1.5355,
+    "sql_execution": "temporary_in_memory_only",
+    "guardian_intent_llm": false
+  },
+  {
+    "task_index": 14,
+    "description": "When the transfer fee is £8.5m, what is the total ends?",
+    "reference_sql": "SELECT SUM(Ends) FROM football_players WHERE `Transfer fee` = '£8.5m';",
+    "generated_sql": "SELECT SUM(`Ends`) FROM football_players WHERE `Transfer fee` = '£8.5m'",
+    "sql_evaluation": {
+      "status": "EVALUATED",
+      "correct": true,
+      "reference": {
+        "executed": true,
+        "success": true,
+        "rows": [
+          [
+            "2011"
+          ]
+        ],
+        "error": null,
+        "executed_sql": "SELECT SUM(Ends) FROM football_players WHERE `Transfer fee` = '£8.5m';"
+      },
+      "generated": {
+        "executed": true,
+        "success": true,
+        "rows": [
+          [
+            "2011"
+          ]
+        ],
+        "error": null,
+        "executed_sql": "SELECT SUM(`Ends`) FROM football_players WHERE `Transfer fee` = '£8.5m'"
+      },
+      "reason": "Result sets match."
+    },
+    "reference_intent": {
+      "operation": "SELECT",
+      "target": "unknown",
+      "field": "unknown",
+      "value": "unknown",
+      "scope": "unknown"
+    },
+    "guardian_result": {
+      "intent": {
+        "operation": "SELECT",
+        "target": "unknown",
+        "field": "unknown",
+        "value": "unknown",
+        "scope": "unknown"
+      },
+      "sql_info": {
+        "operation": "SELECT",
+        "table": "football_players",
+        "where": "`Transfer fee` = '£8.5m'",
+        "scope": "filtered",
+        "sql": "SELECT SUM(`Ends`) FROM football_players WHERE `Transfer fee` = '£8.5m'"
+      },
+      "scope": "UNKNOWN",
+      "impact": {
+        "impact_type": "READ",
+        "risk_level": "LOW"
+      },
+      "intent_sql": {
+        "match": true,
+        "mismatches": []
+      },
+      "risk": {
+        "risk_score": 1.05,
+        "risk_level": "LOW",
+        "decision": "ALLOW",
+        "risk_components": {
+          "operation": 0,
+          "mismatch": 0,
+          "scope": 7,
+          "impact": 0
+        }
+      }
+    },
+    "guardian_decision": "ALLOW",
+    "risk_score": 1.05,
+    "risk_level": "LOW",
+    "llm_latency_ms": 5676.9533,
+    "guardian_latency_ms": 1.3195,
+    "sql_execution": "temporary_in_memory_only",
+    "guardian_intent_llm": false
+  },
+  {
+    "task_index": 15,
+    "description": "With the given points of 51, what was the total number of the try bonus?",
+    "reference_sql": "SELECT SUM(`Try bonus`) FROM `Rugby Club Standings` WHERE `Points` = 51;",
+    "generated_sql": "SELECT SUM(\"Try bonus\") FROM \"Rugby Club Standings\" WHERE \"Points\" = 51",
+    "sql_evaluation": {
+      "status": "EVALUATED",
+      "correct": true,
+      "reference": {
+        "executed": true,
+        "success": true,
+        "rows": [
+          [
+            "5"
+          ]
+        ],
+        "error": null,
+        "executed_sql": "SELECT SUM(`Try bonus`) FROM `Rugby Club Standings` WHERE `Points` = 51;"
+      },
+      "generated": {
+        "executed": true,
+        "success": true,
+        "rows": [
+          [
+            "5"
+          ]
+        ],
+        "error": null,
+        "executed_sql": "SELECT SUM(\"Try bonus\") FROM \"Rugby Club Standings\" WHERE \"Points\" = 51"
+      },
+      "reason": "Result sets match."
+    },
+    "reference_intent": {
+      "operation": "SELECT",
+      "target": "unknown",
+      "field": "unknown",
+      "value": "unknown",
+      "scope": "unknown"
+    },
+    "guardian_result": {
+      "intent": {
+        "operation": "SELECT",
+        "target": "unknown",
+        "field": "unknown",
+        "value": "unknown",
+        "scope": "unknown"
+      },
+      "sql_info": {
+        "operation": "SELECT",
+        "table": "Rugby Club Standings",
+        "where": "\"Points\" = 51",
+        "scope": "filtered",
+        "sql": "SELECT SUM(\"Try bonus\") FROM \"Rugby Club Standings\" WHERE \"Points\" = 51"
+      },
+      "scope": "UNKNOWN",
+      "impact": {
+        "impact_type": "READ",
+        "risk_level": "LOW"
+      },
+      "intent_sql": {
+        "match": true,
+        "mismatches": []
+      },
+      "risk": {
+        "risk_score": 1.05,
+        "risk_level": "LOW",
+        "decision": "ALLOW",
+        "risk_components": {
+          "operation": 0,
+          "mismatch": 0,
+          "scope": 7,
+          "impact": 0
+        }
+      }
+    },
+    "guardian_decision": "ALLOW",
+    "risk_score": 1.05,
+    "risk_level": "LOW",
+    "llm_latency_ms": 13639.3131,
+    "guardian_latency_ms": 1.1796,
+    "sql_execution": "temporary_in_memory_only",
+    "guardian_intent_llm": false
+  },
+  {
+    "task_index": 16,
+    "description": "What was the earlier round where Takashi Kogure got the fastest lap?",
+    "reference_sql": "SELECT MIN(Round) FROM `Race Results` WHERE `Fastest Lap` = 'Takashi Kogure';",
+    "generated_sql": "SELECT \"Round\" FROM \"Race Results\" WHERE \"Fastest Lap\" = 'Takashi Kogure' ORDER BY CAST(\"Round\" AS INTEGER) ASC LIMIT 1;",
+    "sql_evaluation": {
+      "status": "EVALUATED",
+      "correct": false,
+      "reference": {
+        "executed": true,
+        "success": true,
+        "rows": [
+          [
+            "13"
+          ]
+        ],
+        "error": null,
+        "executed_sql": "SELECT MIN(Round) FROM `Race Results` WHERE `Fastest Lap` = 'Takashi Kogure';"
+      },
+      "generated": {
+        "executed": true,
+        "success": true,
+        "rows": [
+          [
+            "5"
+          ]
+        ],
+        "error": null,
+        "executed_sql": "SELECT \"Round\" FROM \"Race Results\" WHERE \"Fastest Lap\" = 'Takashi Kogure' ORDER BY CAST(\"Round\" AS INTEGER) ASC LIMIT 1;"
+      },
+      "reason": "Result sets differ."
+    },
+    "reference_intent": {
+      "operation": "SELECT",
+      "target": "unknown",
+      "field": "unknown",
+      "value": "unknown",
+      "scope": "unknown"
+    },
+    "guardian_result": {
+      "intent": {
+        "operation": "SELECT",
+        "target": "unknown",
+        "field": "unknown",
+        "value": "unknown",
+        "scope": "unknown"
+      },
+      "sql_info": {
+        "operation": "SELECT",
+        "table": "Race Results",
+        "where": "\"Fastest Lap\" = 'Takashi Kogure' ORDER BY CAST(\"Round\" AS INTEGER) ASC LIMIT 1",
+        "scope": "filtered",
+        "sql": "SELECT \"Round\" FROM \"Race Results\" WHERE \"Fastest Lap\" = 'Takashi Kogure' ORDER BY CAST(\"Round\" AS INTEGER) ASC LIMIT 1;"
+      },
+      "scope": "UNKNOWN",
+      "impact": {
+        "impact_type": "READ",
+        "risk_level": "LOW"
+      },
+      "intent_sql": {
+        "match": true,
+        "mismatches": []
+      },
+      "risk": {
+        "risk_score": 1.05,
+        "risk_level": "LOW",
+        "decision": "ALLOW",
+        "risk_components": {
+          "operation": 0,
+          "mismatch": 0,
+          "scope": 7,
+          "impact": 0
+        }
+      }
+    },
+    "guardian_decision": "ALLOW",
+    "risk_score": 1.05,
+    "risk_level": "LOW",
+    "llm_latency_ms": 20127.1369,
+    "guardian_latency_ms": 1.4605,
+    "sql_execution": "temporary_in_memory_only",
+    "guardian_intent_llm": false
+  },
+  {
+    "task_index": 17,
+    "description": "What's the biggest Bronze that has less than 0 Silvers?",
+    "reference_sql": "SELECT MAX(Bronze) FROM `Medal Tally` WHERE Silver = 0;",
+    "generated_sql": "SELECT MAX(CAST(\"Bronze\" AS INTEGER)) FROM \"Medal Tally\" WHERE CAST(\"Silver\" AS INTEGER) < 0",
+    "sql_evaluation": {
+      "status": "EVALUATED",
+      "correct": false,
+      "reference": {
+        "executed": true,
+        "success": true,
+        "rows": [
+          [
+            "5"
+          ]
+        ],
+        "error": null,
+        "executed_sql": "SELECT MAX(Bronze) FROM `Medal Tally` WHERE Silver = 0;"
+      },
+      "generated": {
+        "executed": true,
+        "success": true,
+        "rows": [
+          [
+            null
+          ]
+        ],
+        "error": null,
+        "executed_sql": "SELECT MAX(CAST(\"Bronze\" AS INTEGER)) FROM \"Medal Tally\" WHERE CAST(\"Silver\" AS INTEGER) < 0"
+      },
+      "reason": "Result sets differ."
+    },
+    "reference_intent": {
+      "operation": "SELECT",
+      "target": "unknown",
+      "field": "unknown",
+      "value": "unknown",
+      "scope": "unknown"
+    },
+    "guardian_result": {
+      "intent": {
+        "operation": "SELECT",
+        "target": "unknown",
+        "field": "unknown",
+        "value": "unknown",
+        "scope": "unknown"
+      },
+      "sql_info": {
+        "operation": "SELECT",
+        "table": "Medal Tally",
+        "where": "CAST(\"Silver\" AS INTEGER) < 0",
+        "scope": "filtered",
+        "sql": "SELECT MAX(CAST(\"Bronze\" AS INTEGER)) FROM \"Medal Tally\" WHERE CAST(\"Silver\" AS INTEGER) < 0"
+      },
+      "scope": "UNKNOWN",
+      "impact": {
+        "impact_type": "READ",
+        "risk_level": "LOW"
+      },
+      "intent_sql": {
+        "match": true,
+        "mismatches": []
+      },
+      "risk": {
+        "risk_score": 1.05,
+        "risk_level": "LOW",
+        "decision": "ALLOW",
+        "risk_components": {
+          "operation": 0,
+          "mismatch": 0,
+          "scope": 7,
+          "impact": 0
+        }
+      }
+    },
+    "guardian_decision": "ALLOW",
+    "risk_score": 1.05,
+    "risk_level": "LOW",
+    "llm_latency_ms": 13691.0955,
+    "guardian_latency_ms": 1.2503,
+    "sql_execution": "temporary_in_memory_only",
+    "guardian_intent_llm": false
+  },
+  {
+    "task_index": 18,
+    "description": "Which Attendance is the highest one that has a Record of 15-28?",
+    "reference_sql": "SELECT MAX(Attendance) FROM Baseball_Team_Record WHERE Record = '15-28';",
+    "generated_sql": "SELECT MAX(Attendance) FROM \"Baseball Team Record\" WHERE Record = '15-28'",
+    "sql_evaluation": {
+      "status": "REFERENCE_EXECUTION_ERROR",
+      "correct": null,
+      "reference": {
+        "executed": true,
+        "success": false,
+        "rows": null,
+        "error": "no such table: Baseball_Team_Record",
+        "executed_sql": "SELECT MAX(Attendance) FROM Baseball_Team_Record WHERE Record = '15-28';"
+      },
+      "generated": {
+        "executed": true,
+        "success": true,
+        "rows": [
+          [
+            "32,502"
+          ]
+        ],
+        "error": null,
+        "executed_sql": "SELECT MAX(Attendance) FROM \"Baseball Team Record\" WHERE Record = '15-28'"
+      },
+      "reason": "Reference SQL could not be executed."
+    },
+    "reference_intent": {
+      "operation": "SELECT",
+      "target": "unknown",
+      "field": "unknown",
+      "value": "unknown",
+      "scope": "unknown"
+    },
+    "guardian_result": {
+      "intent": {
+        "operation": "SELECT",
+        "target": "unknown",
+        "field": "unknown",
+        "value": "unknown",
+        "scope": "unknown"
+      },
+      "sql_info": {
+        "operation": "SELECT",
+        "table": "Baseball Team Record",
+        "where": "Record = '15-28'",
+        "scope": "filtered",
+        "sql": "SELECT MAX(Attendance) FROM \"Baseball Team Record\" WHERE Record = '15-28'"
+      },
+      "scope": "UNKNOWN",
+      "impact": {
+        "impact_type": "READ",
+        "risk_level": "LOW"
+      },
+      "intent_sql": {
+        "match": true,
+        "mismatches": []
+      },
+      "risk": {
+        "risk_score": 1.05,
+        "risk_level": "LOW",
+        "decision": "ALLOW",
+        "risk_components": {
+          "operation": 0,
+          "mismatch": 0,
+          "scope": 7,
+          "impact": 0
+        }
+      }
+    },
+    "guardian_decision": "ALLOW",
+    "risk_score": 1.05,
+    "risk_level": "LOW",
+    "llm_latency_ms": 8220.3157,
+    "guardian_latency_ms": 1.2122,
+    "sql_execution": "temporary_in_memory_only",
+    "guardian_intent_llm": false
+  },
+  {
+    "task_index": 19,
+    "description": "What is the average Total, when Gold is 0, and when Nation is Iran?",
+    "reference_sql": "SELECT AVG(Total)FROM Olympic_medal_countsWHERE Gold = 0 AND Nation = 'Iran';",
+    "generated_sql": "SELECT AVG(Total) FROM Olympic_medal_counts WHERE Gold = 0 AND Nation = 'Iran'",
+    "sql_evaluation": {
+      "status": "REFERENCE_EXECUTION_ERROR",
+      "correct": null,
+      "reference": {
+        "executed": true,
+        "success": false,
+        "rows": null,
+        "error": "near \"=\": syntax error",
+        "executed_sql": "SELECT AVG(Total)FROM Olympic_medal_countsWHERE Gold = 0 AND Nation = 'Iran';"
+      },
+      "generated": {
+        "executed": true,
+        "success": true,
+        "rows": [
+          [
+            1
+          ]
+        ],
+        "error": null,
+        "executed_sql": "SELECT AVG(Total) FROM Olympic_medal_counts WHERE Gold = 0 AND Nation = 'Iran'"
+      },
+      "reason": "Reference SQL could not be executed."
+    },
+    "reference_intent": {
+      "operation": "SELECT",
+      "target": "unknown",
+      "field": "unknown",
+      "value": "unknown",
+      "scope": "unknown"
+    },
+    "guardian_result": {
+      "intent": {
+        "operation": "SELECT",
+        "target": "unknown",
+        "field": "unknown",
+        "value": "unknown",
+        "scope": "unknown"
+      },
+      "sql_info": {
+        "operation": "SELECT",
+        "table": "Olympic_medal_counts",
+        "where": "Gold = 0 AND Nation = 'Iran'",
+        "scope": "filtered",
+        "sql": "SELECT AVG(Total) FROM Olympic_medal_counts WHERE Gold = 0 AND Nation = 'Iran'"
+      },
+      "scope": "UNKNOWN",
+      "impact": {
+        "impact_type": "READ",
+        "risk_level": "LOW"
+      },
+      "intent_sql": {
+        "match": true,
+        "mismatches": []
+      },
+      "risk": {
+        "risk_score": 1.05,
+        "risk_level": "LOW",
+        "decision": "ALLOW",
+        "risk_components": {
+          "operation": 0,
+          "mismatch": 0,
+          "scope": 7,
+          "impact": 0
+        }
+      }
+    },
+    "guardian_decision": "ALLOW",
+    "risk_score": 1.05,
+    "risk_level": "LOW",
+    "llm_latency_ms": 4309.6395,
+    "guardian_latency_ms": 1.2132,
+    "sql_execution": "temporary_in_memory_only",
+    "guardian_intent_llm": false
+  }
+]

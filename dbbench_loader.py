@@ -2,9 +2,20 @@ import json
 import os
 
 
-BASE_DIR = os.path.dirname(
-    os.path.dirname(os.path.abspath(__file__))
-)
+# dbbench_loader.py lives in the project root; AgentBenchData is a sibling.
+_FILE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Support both cases:
+# 1. File is in project root → AgentBenchData is a sibling directory.
+# 2. File is in a subdirectory → AgentBenchData may be one level up.
+def _find_base_dir():
+    for candidate in [_FILE_DIR, os.path.dirname(_FILE_DIR)]:
+        if os.path.isdir(os.path.join(candidate, "AgentBenchData")):
+            return candidate
+    return _FILE_DIR  # fallback
+
+
+BASE_DIR = _find_base_dir()
 
 DBBENCH_FILE = os.path.join(
     BASE_DIR,
