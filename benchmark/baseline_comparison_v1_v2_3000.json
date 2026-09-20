@@ -1,0 +1,809 @@
+{
+  "metadata": {
+    "benchmark_title": "GuardianAgent Baseline Comparison V1 + V2 (3,000 Cases)",
+    "evaluation_date": "2026-09-20T11:25:13.074348+00:00",
+    "v1_dataset_file": "benchmark/heldout_v1_1500_dataset.json",
+    "v2_dataset_file": "benchmark/adversarial_v2_1500_dataset.json",
+    "combined_dataset_file": "benchmark/combined_v1_v2_3000.json",
+    "v1_case_count": 1500,
+    "v2_case_count": 1500,
+    "combined_case_count": 3000,
+    "duplicate_request_sql_count": 488,
+    "exact_full_json_duplicate_count": 0,
+    "guardian_core_frozen": true,
+    "methods_evaluated": [
+      "Always-Allow",
+      "Rule-Filter",
+      "GuardianAgent"
+    ]
+  },
+  "v1_heldout_results": {
+    "Always-Allow": {
+      "total_cases": 1500,
+      "accuracy": 0.3933,
+      "accuracy_pct": 39.33,
+      "macro_precision": 0.1311,
+      "macro_recall": 0.3333,
+      "macro_f1": 0.1882,
+      "per_class": {
+        "ALLOW": {
+          "precision": 0.3933,
+          "recall": 1.0,
+          "f1": 0.5646,
+          "support": 590
+        },
+        "CONFIRM": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 310
+        },
+        "BLOCK": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 600
+        }
+      },
+      "confusion_matrix": {
+        "labels": [
+          "ALLOW",
+          "CONFIRM",
+          "BLOCK"
+        ],
+        "matrix": [
+          [
+            590,
+            0,
+            0
+          ],
+          [
+            310,
+            0,
+            0
+          ],
+          [
+            600,
+            0,
+            0
+          ]
+        ]
+      },
+      "safety_metrics": {
+        "total_dangerous_cases": 600,
+        "dangerous_ALLOW_count": 600,
+        "dangerous_CONFIRM_count": 0,
+        "dangerous_BLOCK_count": 0,
+        "dangerous_not_blocked": 600,
+        "unsafe_miss_count": 600,
+        "unsafe_miss_rate_pct": 100.0,
+        "total_safe_cases": 590,
+        "safe_false_BLOCK_count": 0,
+        "safe_false_BLOCK_rate_pct": 0.0,
+        "safe_false_CONFIRM_count": 0
+      },
+      "decision_distribution": {
+        "predicted": {
+          "ALLOW": 1500,
+          "CONFIRM": 0,
+          "BLOCK": 0
+        },
+        "actual": {
+          "ALLOW": 590,
+          "CONFIRM": 310,
+          "BLOCK": 600
+        }
+      },
+      "latency_ms": {
+        "count": 1500,
+        "mean": 0.0,
+        "median": 0.0,
+        "std_dev": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "Rule-Filter": {
+      "total_cases": 1500,
+      "accuracy": 0.442,
+      "accuracy_pct": 44.2,
+      "macro_precision": 0.4759,
+      "macro_recall": 0.4137,
+      "macro_f1": 0.4129,
+      "per_class": {
+        "ALLOW": {
+          "precision": 0.5882,
+          "recall": 0.678,
+          "f1": 0.6299,
+          "support": 590
+        },
+        "CONFIRM": {
+          "precision": 0.1436,
+          "recall": 0.2581,
+          "f1": 0.1845,
+          "support": 310
+        },
+        "BLOCK": {
+          "precision": 0.6958,
+          "recall": 0.305,
+          "f1": 0.4241,
+          "support": 600
+        }
+      },
+      "confusion_matrix": {
+        "labels": [
+          "ALLOW",
+          "CONFIRM",
+          "BLOCK"
+        ],
+        "matrix": [
+          [
+            400,
+            190,
+            0
+          ],
+          [
+            150,
+            80,
+            80
+          ],
+          [
+            130,
+            287,
+            183
+          ]
+        ]
+      },
+      "safety_metrics": {
+        "total_dangerous_cases": 600,
+        "dangerous_ALLOW_count": 130,
+        "dangerous_CONFIRM_count": 287,
+        "dangerous_BLOCK_count": 183,
+        "dangerous_not_blocked": 417,
+        "unsafe_miss_count": 417,
+        "unsafe_miss_rate_pct": 69.5,
+        "total_safe_cases": 590,
+        "safe_false_BLOCK_count": 0,
+        "safe_false_BLOCK_rate_pct": 0.0,
+        "safe_false_CONFIRM_count": 190
+      },
+      "decision_distribution": {
+        "predicted": {
+          "ALLOW": 680,
+          "CONFIRM": 557,
+          "BLOCK": 263
+        },
+        "actual": {
+          "ALLOW": 590,
+          "CONFIRM": 310,
+          "BLOCK": 600
+        }
+      },
+      "latency_ms": {
+        "count": 1500,
+        "mean": 0.001,
+        "median": 0.001,
+        "std_dev": 0.0,
+        "min": 0.0,
+        "max": 0.004,
+        "p95": 0.001,
+        "p99": 0.001
+      }
+    },
+    "GuardianAgent": {
+      "total_cases": 1500,
+      "accuracy": 1.0,
+      "accuracy_pct": 100.0,
+      "macro_precision": 1.0,
+      "macro_recall": 1.0,
+      "macro_f1": 1.0,
+      "per_class": {
+        "ALLOW": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 590
+        },
+        "CONFIRM": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 310
+        },
+        "BLOCK": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 600
+        }
+      },
+      "confusion_matrix": {
+        "labels": [
+          "ALLOW",
+          "CONFIRM",
+          "BLOCK"
+        ],
+        "matrix": [
+          [
+            590,
+            0,
+            0
+          ],
+          [
+            0,
+            310,
+            0
+          ],
+          [
+            0,
+            0,
+            600
+          ]
+        ]
+      },
+      "safety_metrics": {
+        "total_dangerous_cases": 600,
+        "dangerous_ALLOW_count": 0,
+        "dangerous_CONFIRM_count": 0,
+        "dangerous_BLOCK_count": 600,
+        "dangerous_not_blocked": 0,
+        "unsafe_miss_count": 0,
+        "unsafe_miss_rate_pct": 0.0,
+        "total_safe_cases": 590,
+        "safe_false_BLOCK_count": 0,
+        "safe_false_BLOCK_rate_pct": 0.0,
+        "safe_false_CONFIRM_count": 0
+      },
+      "decision_distribution": {
+        "predicted": {
+          "ALLOW": 590,
+          "CONFIRM": 310,
+          "BLOCK": 600
+        },
+        "actual": {
+          "ALLOW": 590,
+          "CONFIRM": 310,
+          "BLOCK": 600
+        }
+      },
+      "latency_ms": {
+        "count": 1500,
+        "mean": 0.638,
+        "median": 0.586,
+        "std_dev": 0.372,
+        "min": 0.233,
+        "max": 8.349,
+        "p95": 1.097,
+        "p99": 2.02
+      }
+    }
+  },
+  "v2_adversarial_results": {
+    "Always-Allow": {
+      "total_cases": 1500,
+      "accuracy": 0.4333,
+      "accuracy_pct": 43.33,
+      "macro_precision": 0.1444,
+      "macro_recall": 0.3333,
+      "macro_f1": 0.2016,
+      "per_class": {
+        "ALLOW": {
+          "precision": 0.4333,
+          "recall": 1.0,
+          "f1": 0.6047,
+          "support": 650
+        },
+        "CONFIRM": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 250
+        },
+        "BLOCK": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 600
+        }
+      },
+      "confusion_matrix": {
+        "labels": [
+          "ALLOW",
+          "CONFIRM",
+          "BLOCK"
+        ],
+        "matrix": [
+          [
+            650,
+            0,
+            0
+          ],
+          [
+            250,
+            0,
+            0
+          ],
+          [
+            600,
+            0,
+            0
+          ]
+        ]
+      },
+      "safety_metrics": {
+        "total_dangerous_cases": 600,
+        "dangerous_ALLOW_count": 600,
+        "dangerous_CONFIRM_count": 0,
+        "dangerous_BLOCK_count": 0,
+        "dangerous_not_blocked": 600,
+        "unsafe_miss_count": 600,
+        "unsafe_miss_rate_pct": 100.0,
+        "total_safe_cases": 650,
+        "safe_false_BLOCK_count": 0,
+        "safe_false_BLOCK_rate_pct": 0.0,
+        "safe_false_CONFIRM_count": 0
+      },
+      "decision_distribution": {
+        "predicted": {
+          "ALLOW": 1500,
+          "CONFIRM": 0,
+          "BLOCK": 0
+        },
+        "actual": {
+          "ALLOW": 650,
+          "CONFIRM": 250,
+          "BLOCK": 600
+        }
+      },
+      "latency_ms": {
+        "count": 1500,
+        "mean": 0.0,
+        "median": 0.0,
+        "std_dev": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "Rule-Filter": {
+      "total_cases": 1500,
+      "accuracy": 0.492,
+      "accuracy_pct": 49.2,
+      "macro_precision": 0.5531,
+      "macro_recall": 0.4078,
+      "macro_f1": 0.421,
+      "per_class": {
+        "ALLOW": {
+          "precision": 0.6043,
+          "recall": 0.78,
+          "f1": 0.681,
+          "support": 650
+        },
+        "CONFIRM": {
+          "precision": 0.0549,
+          "recall": 0.1,
+          "f1": 0.0709,
+          "support": 250
+        },
+        "BLOCK": {
+          "precision": 1.0,
+          "recall": 0.3433,
+          "f1": 0.5112,
+          "support": 600
+        }
+      },
+      "confusion_matrix": {
+        "labels": [
+          "ALLOW",
+          "CONFIRM",
+          "BLOCK"
+        ],
+        "matrix": [
+          [
+            507,
+            143,
+            0
+          ],
+          [
+            225,
+            25,
+            0
+          ],
+          [
+            107,
+            287,
+            206
+          ]
+        ]
+      },
+      "safety_metrics": {
+        "total_dangerous_cases": 600,
+        "dangerous_ALLOW_count": 107,
+        "dangerous_CONFIRM_count": 287,
+        "dangerous_BLOCK_count": 206,
+        "dangerous_not_blocked": 394,
+        "unsafe_miss_count": 394,
+        "unsafe_miss_rate_pct": 65.67,
+        "total_safe_cases": 650,
+        "safe_false_BLOCK_count": 0,
+        "safe_false_BLOCK_rate_pct": 0.0,
+        "safe_false_CONFIRM_count": 143
+      },
+      "decision_distribution": {
+        "predicted": {
+          "ALLOW": 839,
+          "CONFIRM": 455,
+          "BLOCK": 206
+        },
+        "actual": {
+          "ALLOW": 650,
+          "CONFIRM": 250,
+          "BLOCK": 600
+        }
+      },
+      "latency_ms": {
+        "count": 1500,
+        "mean": 0.001,
+        "median": 0.001,
+        "std_dev": 0.0,
+        "min": 0.0,
+        "max": 0.003,
+        "p95": 0.001,
+        "p99": 0.001
+      }
+    },
+    "GuardianAgent": {
+      "total_cases": 1500,
+      "accuracy": 0.982,
+      "accuracy_pct": 98.2,
+      "macro_precision": 0.9675,
+      "macro_recall": 0.985,
+      "macro_f1": 0.9752,
+      "per_class": {
+        "ALLOW": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 650
+        },
+        "CONFIRM": {
+          "precision": 0.9025,
+          "recall": 1.0,
+          "f1": 0.9488,
+          "support": 250
+        },
+        "BLOCK": {
+          "precision": 1.0,
+          "recall": 0.955,
+          "f1": 0.977,
+          "support": 600
+        }
+      },
+      "confusion_matrix": {
+        "labels": [
+          "ALLOW",
+          "CONFIRM",
+          "BLOCK"
+        ],
+        "matrix": [
+          [
+            650,
+            0,
+            0
+          ],
+          [
+            0,
+            250,
+            0
+          ],
+          [
+            0,
+            27,
+            573
+          ]
+        ]
+      },
+      "safety_metrics": {
+        "total_dangerous_cases": 600,
+        "dangerous_ALLOW_count": 0,
+        "dangerous_CONFIRM_count": 27,
+        "dangerous_BLOCK_count": 573,
+        "dangerous_not_blocked": 27,
+        "unsafe_miss_count": 27,
+        "unsafe_miss_rate_pct": 4.5,
+        "total_safe_cases": 650,
+        "safe_false_BLOCK_count": 0,
+        "safe_false_BLOCK_rate_pct": 0.0,
+        "safe_false_CONFIRM_count": 0
+      },
+      "decision_distribution": {
+        "predicted": {
+          "ALLOW": 650,
+          "CONFIRM": 277,
+          "BLOCK": 573
+        },
+        "actual": {
+          "ALLOW": 650,
+          "CONFIRM": 250,
+          "BLOCK": 600
+        }
+      },
+      "latency_ms": {
+        "count": 1500,
+        "mean": 0.665,
+        "median": 0.608,
+        "std_dev": 0.307,
+        "min": 0.258,
+        "max": 3.845,
+        "p95": 1.164,
+        "p99": 1.945
+      }
+    }
+  },
+  "combined_3000_results": {
+    "Always-Allow": {
+      "total_cases": 3000,
+      "accuracy": 0.4133,
+      "accuracy_pct": 41.33,
+      "macro_precision": 0.1378,
+      "macro_recall": 0.3333,
+      "macro_f1": 0.195,
+      "per_class": {
+        "ALLOW": {
+          "precision": 0.4133,
+          "recall": 1.0,
+          "f1": 0.5849,
+          "support": 1240
+        },
+        "CONFIRM": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 560
+        },
+        "BLOCK": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 1200
+        }
+      },
+      "confusion_matrix": {
+        "labels": [
+          "ALLOW",
+          "CONFIRM",
+          "BLOCK"
+        ],
+        "matrix": [
+          [
+            1240,
+            0,
+            0
+          ],
+          [
+            560,
+            0,
+            0
+          ],
+          [
+            1200,
+            0,
+            0
+          ]
+        ]
+      },
+      "safety_metrics": {
+        "total_dangerous_cases": 1200,
+        "dangerous_ALLOW_count": 1200,
+        "dangerous_CONFIRM_count": 0,
+        "dangerous_BLOCK_count": 0,
+        "dangerous_not_blocked": 1200,
+        "unsafe_miss_count": 1200,
+        "unsafe_miss_rate_pct": 100.0,
+        "total_safe_cases": 1240,
+        "safe_false_BLOCK_count": 0,
+        "safe_false_BLOCK_rate_pct": 0.0,
+        "safe_false_CONFIRM_count": 0
+      },
+      "decision_distribution": {
+        "predicted": {
+          "ALLOW": 3000,
+          "CONFIRM": 0,
+          "BLOCK": 0
+        },
+        "actual": {
+          "ALLOW": 1240,
+          "CONFIRM": 560,
+          "BLOCK": 1200
+        }
+      },
+      "latency_ms": {
+        "count": 3000,
+        "mean": 0.0,
+        "median": 0.0,
+        "std_dev": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "Rule-Filter": {
+      "total_cases": 3000,
+      "accuracy": 0.467,
+      "accuracy_pct": 46.7,
+      "macro_precision": 0.5101,
+      "macro_recall": 0.4144,
+      "macro_f1": 0.4191,
+      "per_class": {
+        "ALLOW": {
+          "precision": 0.5971,
+          "recall": 0.7315,
+          "f1": 0.6575,
+          "support": 1240
+        },
+        "CONFIRM": {
+          "precision": 0.1038,
+          "recall": 0.1875,
+          "f1": 0.1336,
+          "support": 560
+        },
+        "BLOCK": {
+          "precision": 0.8294,
+          "recall": 0.3242,
+          "f1": 0.4661,
+          "support": 1200
+        }
+      },
+      "confusion_matrix": {
+        "labels": [
+          "ALLOW",
+          "CONFIRM",
+          "BLOCK"
+        ],
+        "matrix": [
+          [
+            907,
+            333,
+            0
+          ],
+          [
+            375,
+            105,
+            80
+          ],
+          [
+            237,
+            574,
+            389
+          ]
+        ]
+      },
+      "safety_metrics": {
+        "total_dangerous_cases": 1200,
+        "dangerous_ALLOW_count": 237,
+        "dangerous_CONFIRM_count": 574,
+        "dangerous_BLOCK_count": 389,
+        "dangerous_not_blocked": 811,
+        "unsafe_miss_count": 811,
+        "unsafe_miss_rate_pct": 67.58,
+        "total_safe_cases": 1240,
+        "safe_false_BLOCK_count": 0,
+        "safe_false_BLOCK_rate_pct": 0.0,
+        "safe_false_CONFIRM_count": 333
+      },
+      "decision_distribution": {
+        "predicted": {
+          "ALLOW": 1519,
+          "CONFIRM": 1012,
+          "BLOCK": 469
+        },
+        "actual": {
+          "ALLOW": 1240,
+          "CONFIRM": 560,
+          "BLOCK": 1200
+        }
+      },
+      "latency_ms": {
+        "count": 3000,
+        "mean": 0.001,
+        "median": 0.001,
+        "std_dev": 0.0,
+        "min": 0.0,
+        "max": 0.004,
+        "p95": 0.001,
+        "p99": 0.001
+      }
+    },
+    "GuardianAgent": {
+      "total_cases": 3000,
+      "accuracy": 0.991,
+      "accuracy_pct": 99.1,
+      "macro_precision": 0.9847,
+      "macro_recall": 0.9925,
+      "macro_f1": 0.9884,
+      "per_class": {
+        "ALLOW": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 1240
+        },
+        "CONFIRM": {
+          "precision": 0.954,
+          "recall": 1.0,
+          "f1": 0.9765,
+          "support": 560
+        },
+        "BLOCK": {
+          "precision": 1.0,
+          "recall": 0.9775,
+          "f1": 0.9886,
+          "support": 1200
+        }
+      },
+      "confusion_matrix": {
+        "labels": [
+          "ALLOW",
+          "CONFIRM",
+          "BLOCK"
+        ],
+        "matrix": [
+          [
+            1240,
+            0,
+            0
+          ],
+          [
+            0,
+            560,
+            0
+          ],
+          [
+            0,
+            27,
+            1173
+          ]
+        ]
+      },
+      "safety_metrics": {
+        "total_dangerous_cases": 1200,
+        "dangerous_ALLOW_count": 0,
+        "dangerous_CONFIRM_count": 27,
+        "dangerous_BLOCK_count": 1173,
+        "dangerous_not_blocked": 27,
+        "unsafe_miss_count": 27,
+        "unsafe_miss_rate_pct": 2.25,
+        "total_safe_cases": 1240,
+        "safe_false_BLOCK_count": 0,
+        "safe_false_BLOCK_rate_pct": 0.0,
+        "safe_false_CONFIRM_count": 0
+      },
+      "decision_distribution": {
+        "predicted": {
+          "ALLOW": 1240,
+          "CONFIRM": 587,
+          "BLOCK": 1173
+        },
+        "actual": {
+          "ALLOW": 1240,
+          "CONFIRM": 560,
+          "BLOCK": 1200
+        }
+      },
+      "latency_ms": {
+        "count": 3000,
+        "mean": 0.652,
+        "median": 0.597,
+        "std_dev": 0.341,
+        "min": 0.233,
+        "max": 8.349,
+        "p95": 1.161,
+        "p99": 2.013
+      }
+    }
+  }
+}

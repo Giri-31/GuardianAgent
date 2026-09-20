@@ -115,7 +115,7 @@ class GroqSQLGenerator:
         return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
     def build_prompt(self, task: dict) -> str:
-        """Constructs prompt providing database schema and natural language instruction."""
+        """Constructs prompt providing database schema, sample data, and general SQL guidelines."""
         table = task.get("table", {})
         table_name = table.get("table_name", "data_table")
         table_info = table.get("table_info", {})
@@ -128,12 +128,13 @@ class GroqSQLGenerator:
             col_lines.append(f'  - "{cname}" ({ctype})')
         cols_str = "\n".join(col_lines)
 
-        sample_rows = table_info.get("rows", [])[:2]
-        sample_str = ""
-        if sample_rows:
-            sample_str = f"\nSample rows (first {len(sample_rows)}):\n"
-            for r in sample_rows:
-                sample_str += f"  {r}\n"
+        # Show ALL rows so the model can always see every existing entity
+        all_rows = table_info.get("rows", [])
+        rows_str = ""
+        if all_rows:
+            rows_str = f"\nAll existing table rows ({len(all_rows)} total):\n"
+            for r in all_rows:
+                rows_str += f"  {r}\n"
 
         instruction = task.get("description", "")
 
@@ -141,14 +142,27 @@ class GroqSQLGenerator:
             f"You are a precise SQLite SQL expert.\n\n"
             f'Table: "{table_name}"\n'
             f"Columns:\n{cols_str}\n"
-            f"{sample_str}\n"
+            f"{rows_str}\n"
             f"Instruction: {instruction}\n\n"
             f"Requirements:\n"
             f"1. Generate a single valid SQLite SQL query to satisfy the instruction.\n"
             f'2. Quote table and column names with double quotes when they contain spaces (e.g. "{table_name}").\n'
-            f"3. Return ONLY the raw SQL query. Do not include markdown code fences, comments, or explanations."
+            f"3. Operation semantics — CRITICAL: First scan the table rows shown above. "
+            f"If you can find a row that matches the entity or subject described in the instruction, "
+            f"you MUST use UPDATE ... SET ... WHERE ... to modify that row. "
+            f"Only use INSERT when you are certain no matching row exists in the table. "
+            f"Choosing INSERT when the entity already exists will produce a duplicate row, which is wrong.\n"
+            f"4. Value formatting: Copy string values exactly as they appear in the existing rows "
+            f"(preserve commas in numbers like '62,129', special dashes like \u2013, "
+            f"spaces around punctuation, and any special characters).\n"
+            f"5. Column projection for SELECT: Select ONLY the specific column(s) the instruction asks for. "
+            f"When asked 'which [entity] has the highest/lowest [metric]', return the entity name/identifier column. "
+            f"When asked to 'name the [metric value]' or report a statistic, return the metric/value column. "
+            f"Never use SELECT * unless all columns are explicitly needed.\n"
+            f"6. Return ONLY the raw SQL query. Do not include markdown code fences, comments, or explanations."
         )
         return prompt
+
 
     def clean_sql(self, raw_sql: str) -> str:
         """Minimal extraction of SQL from markdown fences without altering SQL semantics."""

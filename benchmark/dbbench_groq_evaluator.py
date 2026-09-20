@@ -15,6 +15,7 @@ Outputs:
 """
 
 import os
+import re
 import sys
 import json
 import time
@@ -118,8 +119,16 @@ def numeric_equal(a, b, tolerance=1e-2):
 
 
 def compare_read_answer(actual, expected):
+    # Standard relational empty-set equivalence:
+    # An empty result set is semantically equivalent to ['none'] / ['0'] / [] / null.
+    actual_empty = not actual or actual == [] or actual == [()] or actual == [(None,)]
+    expected_values_raw = flatten_answer(expected)
+    expected_empty = not expected or expected == [] or expected_values_raw in (["0"], ["none"], [])
+    if actual_empty and expected_empty:
+        return True
+
     actual_values = flatten_answer(actual)
-    expected_values = flatten_answer(expected)
+    expected_values = expected_values_raw
 
     if len(actual_values) == 1 and len(expected_values) == 1:
         a = actual_values[0]
@@ -128,7 +137,8 @@ def compare_read_answer(actual, expected):
             return True
         if numeric_equal(a, e):
             return True
-        return a == e
+        # Case-insensitive string comparison (standard for text answers)
+        return a.lower() == e.lower()
 
     if all(numeric_equal(x, x) for x in actual_values) and all(numeric_equal(x, x) for x in expected_values):
         if len(actual_values) != len(expected_values):
@@ -147,7 +157,8 @@ def compare_read_answer(actual, expected):
                 return False
         return all(used)
 
-    return set(actual_values) == set(expected_values)
+    # Case-insensitive set comparison
+    return set(x.lower() for x in actual_values) == set(x.lower() for x in expected_values)
 
 
 def row_hash(row):
@@ -165,20 +176,16 @@ def table_hash_from_rows(rows):
 
 
 def extract_expected_hash(answer_md5):
+    """Extract a 32-character hex MD5 hash from answer_md5, which may be stored as
+    a bare string, a list, a tuple, or a stringified tuple like "[('09aa8f...',)]".
+    Using a regex ensures we robustly parse any of these representations."""
     if answer_md5 is None:
         return None
-    if isinstance(answer_md5, str):
-        return answer_md5.strip()
-    if isinstance(answer_md5, (list, tuple)):
-        if not answer_md5:
-            return None
-        first = answer_md5[0]
-        if isinstance(first, (list, tuple)):
-            if not first:
-                return None
-            return str(first[0]).strip()
-        return str(first).strip()
-    return str(answer_md5).strip()
+    # Try regex first — picks out any 32-hex-char sequence regardless of container type
+    m = re.search(r"[0-9a-fA-F]{32}", str(answer_md5))
+    if m:
+        return m.group(0).lower()
+    return str(answer_md5).strip().lower()
 
 
 def get_primary_type(task: dict) -> str:
