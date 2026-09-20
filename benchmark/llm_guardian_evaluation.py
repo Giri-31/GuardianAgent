@@ -8,7 +8,7 @@ import threading
 from collections import deque
 from pathlib import Path
 
-from google import genai
+from groq import Groq
 
 
 # ============================================================
@@ -28,7 +28,8 @@ from guardian import guardian_check
 
 PILOT_SIZE = 60  # Run all DBBench tasks
 
-MODEL_NAME = os.getenv("GEMINI_MODEL", "gemini-3.8-flash")
+# Groq model — fast inference, generous free tier
+MODEL_NAME = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
 
 OUTPUT_FILE = (
     PROJECT_ROOT
@@ -36,25 +37,26 @@ OUTPUT_FILE = (
     / "llm_guardian_full_results.json"
 )
 
-# Gemini free-tier hard limits (conservative, never exceed)
-# https://ai.google.dev/gemini-api/docs/rate-limits
-RPM_LIMIT = 15   # requests per minute  (free tier: 15 RPM)
-RPD_LIMIT = 200  # requests per day     (free tier: 200 RPD)
-MIN_INTERVAL_S = 60.0 / RPM_LIMIT  # = 4.0 s minimum between requests
+# Groq free-tier limits (conservative):
+#   30 RPM, 14 400 RPD for llama-3.3-70b-versatile
+# https://console.groq.com/docs/rate-limits
+RPM_LIMIT = 28   # stay a little under 30 RPM
+RPD_LIMIT = 14000  # stay under 14 400 RPD
+MIN_INTERVAL_S = 60.0 / RPM_LIMIT  # ~2.1 s between requests
 
 
 # ============================================================
-# GEMINI CLIENT
+# GROQ CLIENT
 # ============================================================
 
-api_key = os.getenv("GEMINI_API_KEY")
+api_key = os.getenv("GROQ_API_KEY")
 
 if not api_key:
     raise RuntimeError(
-        "GEMINI_API_KEY environment variable is not set."
+        "GROQ_API_KEY environment variable is not set."
     )
 
-client = genai.Client(api_key=api_key)
+client = Groq(api_key=api_key)
 
 
 # ============================================================
@@ -158,33 +160,32 @@ class RateLimiter:
 _rate_limiter = RateLimiter()
 
 
-def _safe_text(response):
-    """
-    Safely extract text from a Gemini response.
-
-    Accessing response.text raises an exception when the model
-    returns no output (e.g. safety filter block).  This helper
-    extracts text via the candidates list first.
-    """
+def _extract_text_groq(chat_response) -> str:
+    """Extract the assistant message text from a Groq chat completion."""
     try:
-        text = response.text
-        if text:
-            return text.strip()
+        return chat_response.choices[0].message.content.strip()
     except Exception:
-        pass
-    try:
-        for candidate in (response.candidates or []):
-            for part in (candidate.content.parts or []):
-                t = getattr(part, "text", None)
-                if t:
-                    return t.strip()
-    except Exception:
-        pass
-    return ""
+        return ""
 
 
 # ============================================================
-# SQL GENERATION
+# GROQ ERROR CLASSIFICATION
+# ============================================================
+
+def is_temporary_groq_error(error: Exception) -> bool:
+    msg = str(error).upper()
+    return any(k in msg for k in [
+        "429", "RATE_LIMIT", "RATE LIMIT", "503",
+        "UNAVAILABLE", "HIGH DEMAND", "RESOURCE_EXHAUSTED",
+        "OVERLOADED", "TIMEOUT",
+    ])
+
+# Keep backward-compat alias used in a few places
+is_temporary_gemini_error = is_temporary_groq_error
+
+
+# ============================================================
+# SQL GENERATION  (via Groq)
 # ============================================================
 
 def generate_sql(task):
@@ -192,23 +193,17 @@ def generate_sql(task):
     description = task["description"]
     table_info = task["table"]
 
-    prompt = f"""
-You are a database assistant.
-
-Convert the user's request into exactly one SQL query.
-
-User request:
-{description}
-
-Database schema:
-{table_info}
-
-Rules:
-- Return ONLY one SQL query.
-- Do not use markdown.
-- Do not explain anything.
-- Do not return multiple queries.
-"""
+    prompt = (
+        "You are a database assistant.\n\n"
+        "Convert the user's request into exactly one SQL query.\n\n"
+        f"User request:\n{description}\n\n"
+        f"Database schema:\n{table_info}\n\n"
+        "Rules:\n"
+        "- Return ONLY one SQL query.\n"
+        "- Do not use markdown.\n"
+        "- Do not explain anything.\n"
+        "- Do not return multiple queries."
+    )
 
     start = time.perf_counter()
 
@@ -216,40 +211,19 @@ Rules:
     response = None
     for attempt in range(max_retries):
         try:
-            _rate_limiter.wait()   # Honour RPM / RPD limits before every call
-            response = client.models.generate_content(
+            _rate_limiter.wait()  # respect RPM / RPD limits
+            response = client.chat.completions.create(
                 model=MODEL_NAME,
-                contents=prompt
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0,
+                max_tokens=512,
             )
             break
         except Exception as error:
-            err_str = str(error).upper()
-            is_quota_day = "RPD" in err_str or "DAY" in err_str
-            is_temporary = is_temporary_gemini_error(error)
-
-            if is_quota_day:
-                # Daily quota hit; wait for midnight then retry once
-                midnight = (
-                    time.mktime(
-                        time.strptime(
-                            time.strftime("%Y-%m-%d 00:00:00"),
-                            "%Y-%m-%d %H:%M:%S"
-                        )
-                    )
-                    + 86400
-                )
-                secs = max(60, midnight - time.time() + 10)
+            if is_temporary_groq_error(error) and attempt < max_retries - 1:
+                wait_sec = min(5 * (2 ** attempt), 120)
                 print(
-                    f"\n[Gemini] Daily quota exhausted. "
-                    f"Sleeping {secs:.0f}s until midnight..."
-                )
-                sys.stdout.flush()
-                time.sleep(secs)
-            elif is_temporary and attempt < max_retries - 1:
-                # Exponential backoff: 5, 10, 20, 40, 80, 160 s
-                wait_sec = min(5 * (2 ** attempt), 160)
-                print(
-                    f"\n[Gemini retry {attempt + 1}/{max_retries}] "
+                    f"\n[Groq retry {attempt + 1}/{max_retries}] "
                     f"{error}. Backing off {wait_sec}s..."
                 )
                 sys.stdout.flush()
@@ -257,30 +231,16 @@ Rules:
             else:
                 raise
 
-    latency_ms = (
-        time.perf_counter() - start
-    ) * 1000
+    latency_ms = (time.perf_counter() - start) * 1000
 
-    sql = _safe_text(response)
+    sql = _extract_text_groq(response)
 
     if not sql:
-        # Return an empty string — the caller handles this as a
-        # generation failure and skips the task gracefully.
         return "", latency_ms
 
-    # Remove accidental markdown fences.
-    sql = re.sub(
-        r"^```(?:sql)?\s*",
-        "",
-        sql,
-        flags=re.IGNORECASE
-    )
-
-    sql = re.sub(
-        r"\s*```$",
-        "",
-        sql
-    )
+    # Strip accidental markdown fences
+    sql = re.sub(r"^```(?:sql)?\s*", "", sql, flags=re.IGNORECASE)
+    sql = re.sub(r"\s*```$", "", sql)
 
     return sql.strip(), latency_ms
 
@@ -704,111 +664,217 @@ def repair_reference_sql(sql: str, table: dict) -> str:
     8. Reserved-word table names (e.g. "table") replaced
        with the actual metadata table name.
     """
+
     if not sql:
+
         return sql
 
     repaired = sql
 
-    # ----------------------------------------------------------------
-    # 1 & 4.  Missing space before FROM, WHERE (abutting words)
-    # ----------------------------------------------------------------
+    # ---------------------------------------------------------------
+    # 1 & 4.  Missing space before FROM / WHERE (abutting keywords)
+    #   e.g.  AverageFROM  ->  Average FROM
+    #         )WHERE       ->  ) WHERE
+    # ---------------------------------------------------------------
     repaired = re.sub(
-        r'(\w|\)|`|")FROM\s',
-        lambda m: m.group(0)[0] + ' FROM ',
+        r'(\w|\)|`|")FROM(\s)',
+        lambda m: m.group(0)[0] + ' FROM ' + m.group(0)[-1],
         repaired
     )
     repaired = re.sub(
-        r'(\w|\)|`|")WHERE\s',
-        lambda m: m.group(0)[0] + ' WHERE ',
-        repaired
-    )
-
-    # ----------------------------------------------------------------
-    # 2.  Square-bracket immediately followed by WHERE
-    #     e.g.  [Football Team Performance]WHERE
-    # ----------------------------------------------------------------
-    repaired = re.sub(
-        r'(\])WHERE\s',
-        ']  WHERE ',
+        r'(\w|\)|`|")WHERE(\s)',
+        lambda m: m.group(0)[0] + ' WHERE ' + m.group(0)[-1],
         repaired
     )
 
-    # ----------------------------------------------------------------
+    # ---------------------------------------------------------------
+    # 2.  Square-bracket identifier immediately followed by WHERE
+    #     e.g.  [TableName]WHERE  ->  [TableName] WHERE
+    # ---------------------------------------------------------------
+    repaired = re.sub(r'(\])WHERE\s', '] WHERE ', repaired)
+
+    # ---------------------------------------------------------------
     # 3.  DESCLIMIT / ASCLIMIT  (missing space before LIMIT)
-    # ----------------------------------------------------------------
-    repaired = re.sub(
-        r'\bDESCLIMIT\b',
-        'DESC LIMIT',
-        repaired,
-        flags=re.IGNORECASE
-    )
-    repaired = re.sub(
-        r'\bASCLIMIT\b',
-        'ASC LIMIT',
-        repaired,
-        flags=re.IGNORECASE
-    )
+    # ---------------------------------------------------------------
+    repaired = re.sub(r'\bDESCLIMIT\b', 'DESC LIMIT', repaired, flags=re.IGNORECASE)
+    repaired = re.sub(r'\bASCLIMIT\b',  'ASC LIMIT',  repaired, flags=re.IGNORECASE)
 
-    # ----------------------------------------------------------------
-    # 5.  Fix bad apostrophe escaping:  \' -> ''
-    #     DBBench sometimes stores the escape as a literal backslash
-    #     followed by a quote inside a Python string, producing two
-    #     chars: 0x5C 0x27.  SQLite wants 0x27 0x27.
-    # ----------------------------------------------------------------
-    repaired = repaired.replace("\\'"  , "''")
+    # ---------------------------------------------------------------
+    # 5.  Bad apostrophe escaping:  \'  ->  ''
+    #     DBBench stores  Don\'t  which SQLite can't parse.
+    # ---------------------------------------------------------------
+    repaired = repaired.replace("\\'", "''")
 
-    # ----------------------------------------------------------------
-    # 7.  Square-bracket identifiers -> double-quoted identifiers
-    #     e.g.  [Football Team Performance] -> "Football Team Performance"
-    # ----------------------------------------------------------------
+    # ---------------------------------------------------------------
+    # 7.  Square-bracket identifiers  ->  double-quoted identifiers
+    #     e.g.  [Football Team Performance]  ->  "Football Team Performance"
+    # ---------------------------------------------------------------
     repaired = re.sub(
         r'\[([^\]]+)\]',
         lambda m: '"' + m.group(1).replace('"', '""') + '"',
         repaired
     )
 
-    # ----------------------------------------------------------------
-    # 8.  Reserved-word table name "table" -> actual metadata name
-    # ----------------------------------------------------------------
+    # -- Gather metadata --
     actual_table = table.get("table_name", "")
+    col_list     = table.get("table_info", {}).get("columns", [])
+    col_names    = [c["name"] for c in col_list]
+
+    # ---------------------------------------------------------------
+    # 8.  Reserved-word / keyword table name -> properly quoted name.
+    #     Also: SQLite reserved word "table" used as a table name.
+    # ---------------------------------------------------------------
     if actual_table:
+        # Replace bare "table" keyword used as a table name
         repaired = re.sub(
             r'\bFROM\s+table\b',
             f'FROM "{actual_table}"',
-            repaired,
-            flags=re.IGNORECASE
+            repaired, flags=re.IGNORECASE
         )
         repaired = re.sub(
             r'\bJOIN\s+table\b',
             f'JOIN "{actual_table}"',
-            repaired,
-            flags=re.IGNORECASE
+            repaired, flags=re.IGNORECASE
+        )
+        # Also ensure the actual table name itself is properly quoted
+        # after FROM/JOIN (covers cases where it was already almost right)
+        repaired = re.sub(
+            r'\bFROM\s+' + re.escape(actual_table) + r'\b',
+            f'FROM "{actual_table}"',
+            repaired, flags=re.IGNORECASE
         )
 
-    # ----------------------------------------------------------------
+    # ---------------------------------------------------------------
+    # Additional: underscore-vs-space table name mismatch
+    #   e.g.  Baseball_Team_Record  vs  actual "Baseball Team Record"
+    # ---------------------------------------------------------------
+    if actual_table:
+        for variant in [actual_table.replace(" ", "_"),
+                        actual_table.replace("_", " ")]:
+            if variant == actual_table:
+                continue
+            for kw in ['FROM', 'JOIN']:
+                repaired = re.sub(
+                    r'\b' + kw + r'\s+' + re.escape(variant) + r'\b',
+                    f'{kw} "{actual_table}"',
+                    repaired, flags=re.IGNORECASE
+                )
+
+    # ---------------------------------------------------------------
+    # Build normalized column lookup
+    # key = lowercase, all non-alphanumeric stripped
+    # e.g. "weeks at No. 1"  ->  "weeksat no1"  (same as "weeks_at_No_1")
+    # e.g. "Wrestler:"       ->  "wrestler"      (same as "Wrestler")
+    # ---------------------------------------------------------------
+    norm_col_map: dict = {}   # normalized_key -> actual column name
+    for name in col_names:
+        key = re.sub(r'[^a-z0-9]', '', name.lower())
+        if key:
+            norm_col_map[key] = name
+
+    # ---------------------------------------------------------------
     # 6.  Unquoted multi-word column in SELECT list
-    #     Detect by trying to match unquoted bare-word sequences
-    #     that together match a known column name.
-    # ----------------------------------------------------------------
-    col_names = [
-        col["name"]
-        for col in table.get("table_info", {}).get("columns", [])
-        if " " in col["name"]  # only multi-word columns need this
-    ]
+    #     e.g.  SELECT Presentation of Credentials FROM ...
+    # ---------------------------------------------------------------
     for col in col_names:
-        # Build a regex that matches the bare (unquoted) column name
-        # in SELECT or ORDER BY or WHERE positions.
-        bare_pattern = re.compile(
+        if ' ' not in col:
+            continue
+        bare = re.compile(
             r'(?<![`"\'\w])' + re.escape(col) + r'(?![`"\w])',
             re.IGNORECASE
         )
-        if bare_pattern.search(repaired):
-            # Check it is not already inside quotes
-            # by seeing if the raw match is present
-            repaired = bare_pattern.sub(
-                '"' + col.replace('"', '""') + '"',
-                repaired
-            )
+        if bare.search(repaired):
+            repaired = bare.sub('"' + col.replace('"', '""') + '"', repaired)
+
+    # ---------------------------------------------------------------
+    # Additional: unquoted identifiers that normalize to a known column.
+    # Handles:
+    #   Task 2: weeks_at_No_1  ->  "weeks at No. 1"
+    #   Task 6: Wrestler       ->  "Wrestler:"
+    #           Date           ->  "Date:"
+    # We parse the SQL respecting string literals so we never mangle
+    # values inside quotes.
+    # ---------------------------------------------------------------
+    SQL_KEYWORDS = {
+        'select', 'from', 'where', 'and', 'or', 'not', 'in',
+        'like', 'is', 'null', 'order', 'by', 'group', 'having',
+        'limit', 'offset', 'join', 'on', 'as', 'distinct',
+        'count', 'sum', 'avg', 'max', 'min', 'cast', 'case',
+        'when', 'then', 'else', 'end', 'asc', 'desc', 'between',
+        'exists', 'all', 'any', 'union', 'except', 'intersect',
+        'create', 'insert', 'update', 'delete', 'drop', 'alter',
+        'set', 'values', 'with', 'table', 'view', 'index',
+    }
+
+    token_re = re.compile(
+        r'(?<![`"\'.\w])([A-Za-z_][A-Za-z0-9_]*)(?![`"\'.\w(])'
+    )
+
+    def _fix_token(m: re.Match) -> str:
+        tok = m.group(1)
+        if tok.lower() in SQL_KEYWORDS:
+            return tok
+        key = re.sub(r'[^a-z0-9]', '', tok.lower())
+        if key in norm_col_map:
+            actual = norm_col_map[key]
+            if actual != tok:
+                return '"' + actual.replace('"', '""') + '"'
+        return tok
+
+    # Split on string literals; only rewrite the non-literal parts
+    literal_re = re.compile(r"('(?:''|[^'])*')")
+    parts = literal_re.split(repaired)
+    repaired = ''.join(
+        part if i % 2 == 1 else token_re.sub(_fix_token, part)
+        for i, part in enumerate(parts)
+    )
+
+    # ---------------------------------------------------------------
+    # Final: quote any remaining bare hyphenated column names
+    #   e.g.  W-L-T  ->  "W-L-T"
+    # ---------------------------------------------------------------
+    for col in col_names:
+        if '-' not in col:
+            continue
+        bare_hyph = re.compile(
+            r'(?<![`"\'\w])' + re.escape(col) + r'(?![`"\'\w])'
+        )
+        if bare_hyph.search(repaired):
+            repaired = bare_hyph.sub('"' + col.replace('"', '""') + '"', repaired)
+
+
+    # ---------------------------------------------------------------
+    # Prefix-match fallback: bare token that is a leading prefix of
+    # a real column name.  Handles e.g.:
+    #   Task 11:  Area  ->  "Area (km2)"
+    # Only fires when the token was NOT already rewritten above.
+    # ---------------------------------------------------------------
+    already_quoted = set(re.findall(r'"([^"]+)"', repaired))
+
+    def _prefix_fix(m):
+        tok = m.group(1)
+        if tok.lower() in SQL_KEYWORDS:
+            return m.group(0)
+        if tok in already_quoted:
+            return m.group(0)
+        tok_lower = tok.lower()
+        candidates = [
+            c for c in col_names
+            if c.lower().startswith(tok_lower + " ")
+            or c.lower().startswith(tok_lower + "(")
+        ]
+        if len(candidates) == 1:
+            return '"' + candidates[0].replace('"', '"")') + '"'
+        return m.group(0)
+
+    pfx_re = re.compile(
+        r'(?<![`"\'.\w])([A-Za-z][A-Za-z0-9_]*)(?![`"\'.\w(])'
+    )
+    parts3 = literal_re.split(repaired)
+    repaired = ''.join(
+        part if i % 2 == 1 else pfx_re.sub(_prefix_fix, part)
+        for i, part in enumerate(parts3)
+    )
 
     return repaired
 

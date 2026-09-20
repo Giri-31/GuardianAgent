@@ -1,0 +1,1470 @@
+{
+  "v1_independent_1500": {
+    "experiment": "GuardianAgent Component Ablation (V1_Independent_1500)",
+    "dataset": "D:\\Git\\GuardianAgent\\benchmark\\heldout_v1_1500_dataset.json",
+    "total_cases": 1500,
+    "intent_mode": "GROUND-TRUTH",
+    "sql_execution": false,
+    "configurations": {
+      "FULL": {
+        "accuracy": 100.0,
+        "macro_f1": 1.0,
+        "per_class": {
+          "ALLOW": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 590
+          },
+          "CONFIRM": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 310
+          },
+          "BLOCK": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 600
+          }
+        },
+        "confusion_matrix": {
+          "labels": [
+            "ALLOW",
+            "CONFIRM",
+            "BLOCK"
+          ],
+          "matrix": [
+            [
+              590,
+              0,
+              0
+            ],
+            [
+              0,
+              310,
+              0
+            ],
+            [
+              0,
+              0,
+              600
+            ]
+          ]
+        },
+        "category_results": {
+          "DANGEROUS_DELETE_ALL": {
+            "correct": 40,
+            "total": 40,
+            "accuracy": 100.0
+          },
+          "DANGEROUS_DELETE_SINGLE": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "DANGEROUS_SCHEMA_OP": {
+            "correct": 40,
+            "total": 40,
+            "accuracy": 100.0
+          },
+          "FIELD_MISMATCH": {
+            "correct": 100,
+            "total": 100,
+            "accuracy": 100.0
+          },
+          "MULTI_MISMATCH": {
+            "correct": 40,
+            "total": 40,
+            "accuracy": 100.0
+          },
+          "OPERATION_MISMATCH": {
+            "correct": 100,
+            "total": 100,
+            "accuracy": 100.0
+          },
+          "SAFE_ALL_READ": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "SAFE_INSERT": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "SAFE_SELECT": {
+            "correct": 200,
+            "total": 200,
+            "accuracy": 100.0
+          },
+          "SAFE_SELECT_VARIANT": {
+            "correct": 120,
+            "total": 120,
+            "accuracy": 100.0
+          },
+          "SAFE_UPDATE_MULTI_ROW": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "SAFE_UPDATE_SINGLE_ROW": {
+            "correct": 150,
+            "total": 150,
+            "accuracy": 100.0
+          },
+          "SCOPE_MISMATCH": {
+            "correct": 100,
+            "total": 100,
+            "accuracy": 100.0
+          },
+          "TARGET_MISMATCH": {
+            "correct": 150,
+            "total": 150,
+            "accuracy": 100.0
+          },
+          "VALUE_MISMATCH": {
+            "correct": 100,
+            "total": 100,
+            "accuracy": 100.0
+          },
+          "ZERO_ROW_UPDATE": {
+            "correct": 40,
+            "total": 40,
+            "accuracy": 100.0
+          }
+        },
+        "safety": {
+          "dangerous_not_blocked": 0,
+          "safe_incorrectly_blocked": 0
+        },
+        "latency_ms": {
+          "mean": 0.6828,
+          "median": 0.6258,
+          "minimum": 0.2307,
+          "maximum": 6.7414
+        }
+      },
+      "NO_INTENT_SQL": {
+        "accuracy": 62.87,
+        "macro_f1": 0.5844,
+        "per_class": {
+          "ALLOW": {
+            "precision": 0.5819,
+            "recall": 1.0,
+            "f1": 0.7357,
+            "support": 590
+          },
+          "CONFIRM": {
+            "precision": 0.5461,
+            "recall": 0.5161,
+            "f1": 0.5307,
+            "support": 310
+          },
+          "BLOCK": {
+            "precision": 1.0,
+            "recall": 0.3217,
+            "f1": 0.4868,
+            "support": 600
+          }
+        },
+        "confusion_matrix": {
+          "labels": [
+            "ALLOW",
+            "CONFIRM",
+            "BLOCK"
+          ],
+          "matrix": [
+            [
+              590,
+              0,
+              0
+            ],
+            [
+              150,
+              160,
+              0
+            ],
+            [
+              274,
+              133,
+              193
+            ]
+          ]
+        },
+        "category_results": {
+          "DANGEROUS_DELETE_ALL": {
+            "correct": 40,
+            "total": 40,
+            "accuracy": 100.0
+          },
+          "DANGEROUS_DELETE_SINGLE": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "DANGEROUS_SCHEMA_OP": {
+            "correct": 40,
+            "total": 40,
+            "accuracy": 100.0
+          },
+          "FIELD_MISMATCH": {
+            "correct": 0,
+            "total": 100,
+            "accuracy": 0.0
+          },
+          "MULTI_MISMATCH": {
+            "correct": 0,
+            "total": 40,
+            "accuracy": 0.0
+          },
+          "OPERATION_MISMATCH": {
+            "correct": 33,
+            "total": 100,
+            "accuracy": 33.0
+          },
+          "SAFE_ALL_READ": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "SAFE_INSERT": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "SAFE_SELECT": {
+            "correct": 200,
+            "total": 200,
+            "accuracy": 100.0
+          },
+          "SAFE_SELECT_VARIANT": {
+            "correct": 120,
+            "total": 120,
+            "accuracy": 100.0
+          },
+          "SAFE_UPDATE_MULTI_ROW": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "SAFE_UPDATE_SINGLE_ROW": {
+            "correct": 150,
+            "total": 150,
+            "accuracy": 100.0
+          },
+          "SCOPE_MISMATCH": {
+            "correct": 0,
+            "total": 100,
+            "accuracy": 0.0
+          },
+          "TARGET_MISMATCH": {
+            "correct": 0,
+            "total": 150,
+            "accuracy": 0.0
+          },
+          "VALUE_MISMATCH": {
+            "correct": 0,
+            "total": 100,
+            "accuracy": 0.0
+          },
+          "ZERO_ROW_UPDATE": {
+            "correct": 40,
+            "total": 40,
+            "accuracy": 100.0
+          }
+        },
+        "safety": {
+          "dangerous_not_blocked": 407,
+          "safe_incorrectly_blocked": 0
+        },
+        "latency_ms": {
+          "mean": 0.7184,
+          "median": 0.6531,
+          "minimum": 0.2536,
+          "maximum": 2.8157
+        }
+      },
+      "NO_SCOPE": {
+        "accuracy": 94.67,
+        "macro_f1": 0.9298,
+        "per_class": {
+          "ALLOW": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 590
+          },
+          "CONFIRM": {
+            "precision": 1.0,
+            "recall": 0.7419,
+            "f1": 0.8519,
+            "support": 310
+          },
+          "BLOCK": {
+            "precision": 0.8824,
+            "recall": 1.0,
+            "f1": 0.9375,
+            "support": 600
+          }
+        },
+        "confusion_matrix": {
+          "labels": [
+            "ALLOW",
+            "CONFIRM",
+            "BLOCK"
+          ],
+          "matrix": [
+            [
+              590,
+              0,
+              0
+            ],
+            [
+              0,
+              230,
+              80
+            ],
+            [
+              0,
+              0,
+              600
+            ]
+          ]
+        },
+        "category_results": {
+          "DANGEROUS_DELETE_ALL": {
+            "correct": 40,
+            "total": 40,
+            "accuracy": 100.0
+          },
+          "DANGEROUS_DELETE_SINGLE": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "DANGEROUS_SCHEMA_OP": {
+            "correct": 40,
+            "total": 40,
+            "accuracy": 100.0
+          },
+          "FIELD_MISMATCH": {
+            "correct": 100,
+            "total": 100,
+            "accuracy": 100.0
+          },
+          "MULTI_MISMATCH": {
+            "correct": 40,
+            "total": 40,
+            "accuracy": 100.0
+          },
+          "OPERATION_MISMATCH": {
+            "correct": 100,
+            "total": 100,
+            "accuracy": 100.0
+          },
+          "SAFE_ALL_READ": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "SAFE_INSERT": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "SAFE_SELECT": {
+            "correct": 200,
+            "total": 200,
+            "accuracy": 100.0
+          },
+          "SAFE_SELECT_VARIANT": {
+            "correct": 120,
+            "total": 120,
+            "accuracy": 100.0
+          },
+          "SAFE_UPDATE_MULTI_ROW": {
+            "correct": 0,
+            "total": 80,
+            "accuracy": 0.0
+          },
+          "SAFE_UPDATE_SINGLE_ROW": {
+            "correct": 150,
+            "total": 150,
+            "accuracy": 100.0
+          },
+          "SCOPE_MISMATCH": {
+            "correct": 100,
+            "total": 100,
+            "accuracy": 100.0
+          },
+          "TARGET_MISMATCH": {
+            "correct": 150,
+            "total": 150,
+            "accuracy": 100.0
+          },
+          "VALUE_MISMATCH": {
+            "correct": 100,
+            "total": 100,
+            "accuracy": 100.0
+          },
+          "ZERO_ROW_UPDATE": {
+            "correct": 40,
+            "total": 40,
+            "accuracy": 100.0
+          }
+        },
+        "safety": {
+          "dangerous_not_blocked": 0,
+          "safe_incorrectly_blocked": 0
+        },
+        "latency_ms": {
+          "mean": 0.8752,
+          "median": 0.7958,
+          "minimum": 0.2617,
+          "maximum": 3.0572
+        }
+      },
+      "NO_IMPACT": {
+        "accuracy": 100.0,
+        "macro_f1": 1.0,
+        "per_class": {
+          "ALLOW": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 590
+          },
+          "CONFIRM": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 310
+          },
+          "BLOCK": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 600
+          }
+        },
+        "confusion_matrix": {
+          "labels": [
+            "ALLOW",
+            "CONFIRM",
+            "BLOCK"
+          ],
+          "matrix": [
+            [
+              590,
+              0,
+              0
+            ],
+            [
+              0,
+              310,
+              0
+            ],
+            [
+              0,
+              0,
+              600
+            ]
+          ]
+        },
+        "category_results": {
+          "DANGEROUS_DELETE_ALL": {
+            "correct": 40,
+            "total": 40,
+            "accuracy": 100.0
+          },
+          "DANGEROUS_DELETE_SINGLE": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "DANGEROUS_SCHEMA_OP": {
+            "correct": 40,
+            "total": 40,
+            "accuracy": 100.0
+          },
+          "FIELD_MISMATCH": {
+            "correct": 100,
+            "total": 100,
+            "accuracy": 100.0
+          },
+          "MULTI_MISMATCH": {
+            "correct": 40,
+            "total": 40,
+            "accuracy": 100.0
+          },
+          "OPERATION_MISMATCH": {
+            "correct": 100,
+            "total": 100,
+            "accuracy": 100.0
+          },
+          "SAFE_ALL_READ": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "SAFE_INSERT": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "SAFE_SELECT": {
+            "correct": 200,
+            "total": 200,
+            "accuracy": 100.0
+          },
+          "SAFE_SELECT_VARIANT": {
+            "correct": 120,
+            "total": 120,
+            "accuracy": 100.0
+          },
+          "SAFE_UPDATE_MULTI_ROW": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "SAFE_UPDATE_SINGLE_ROW": {
+            "correct": 150,
+            "total": 150,
+            "accuracy": 100.0
+          },
+          "SCOPE_MISMATCH": {
+            "correct": 100,
+            "total": 100,
+            "accuracy": 100.0
+          },
+          "TARGET_MISMATCH": {
+            "correct": 150,
+            "total": 150,
+            "accuracy": 100.0
+          },
+          "VALUE_MISMATCH": {
+            "correct": 100,
+            "total": 100,
+            "accuracy": 100.0
+          },
+          "ZERO_ROW_UPDATE": {
+            "correct": 40,
+            "total": 40,
+            "accuracy": 100.0
+          }
+        },
+        "safety": {
+          "dangerous_not_blocked": 0,
+          "safe_incorrectly_blocked": 0
+        },
+        "latency_ms": {
+          "mean": 0.8769,
+          "median": 0.7831,
+          "minimum": 0.2583,
+          "maximum": 3.4881
+        }
+      },
+      "NO_INTENT": {
+        "accuracy": 62.87,
+        "macro_f1": 0.5844,
+        "per_class": {
+          "ALLOW": {
+            "precision": 0.5819,
+            "recall": 1.0,
+            "f1": 0.7357,
+            "support": 590
+          },
+          "CONFIRM": {
+            "precision": 0.5461,
+            "recall": 0.5161,
+            "f1": 0.5307,
+            "support": 310
+          },
+          "BLOCK": {
+            "precision": 1.0,
+            "recall": 0.3217,
+            "f1": 0.4868,
+            "support": 600
+          }
+        },
+        "confusion_matrix": {
+          "labels": [
+            "ALLOW",
+            "CONFIRM",
+            "BLOCK"
+          ],
+          "matrix": [
+            [
+              590,
+              0,
+              0
+            ],
+            [
+              150,
+              160,
+              0
+            ],
+            [
+              274,
+              133,
+              193
+            ]
+          ]
+        },
+        "category_results": {
+          "DANGEROUS_DELETE_ALL": {
+            "correct": 40,
+            "total": 40,
+            "accuracy": 100.0
+          },
+          "DANGEROUS_DELETE_SINGLE": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "DANGEROUS_SCHEMA_OP": {
+            "correct": 40,
+            "total": 40,
+            "accuracy": 100.0
+          },
+          "FIELD_MISMATCH": {
+            "correct": 0,
+            "total": 100,
+            "accuracy": 0.0
+          },
+          "MULTI_MISMATCH": {
+            "correct": 0,
+            "total": 40,
+            "accuracy": 0.0
+          },
+          "OPERATION_MISMATCH": {
+            "correct": 33,
+            "total": 100,
+            "accuracy": 33.0
+          },
+          "SAFE_ALL_READ": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "SAFE_INSERT": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "SAFE_SELECT": {
+            "correct": 200,
+            "total": 200,
+            "accuracy": 100.0
+          },
+          "SAFE_SELECT_VARIANT": {
+            "correct": 120,
+            "total": 120,
+            "accuracy": 100.0
+          },
+          "SAFE_UPDATE_MULTI_ROW": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "SAFE_UPDATE_SINGLE_ROW": {
+            "correct": 150,
+            "total": 150,
+            "accuracy": 100.0
+          },
+          "SCOPE_MISMATCH": {
+            "correct": 0,
+            "total": 100,
+            "accuracy": 0.0
+          },
+          "TARGET_MISMATCH": {
+            "correct": 0,
+            "total": 150,
+            "accuracy": 0.0
+          },
+          "VALUE_MISMATCH": {
+            "correct": 0,
+            "total": 100,
+            "accuracy": 0.0
+          },
+          "ZERO_ROW_UPDATE": {
+            "correct": 40,
+            "total": 40,
+            "accuracy": 100.0
+          }
+        },
+        "safety": {
+          "dangerous_not_blocked": 407,
+          "safe_incorrectly_blocked": 0
+        },
+        "latency_ms": {
+          "mean": 0.7282,
+          "median": 0.6604,
+          "minimum": 0.2493,
+          "maximum": 2.6933
+        }
+      }
+    }
+  },
+  "v2_adversarial_1500": {
+    "experiment": "GuardianAgent Component Ablation (V2_Adversarial_1500)",
+    "dataset": "D:\\Git\\GuardianAgent\\benchmark\\adversarial_v2_1500_dataset.json",
+    "total_cases": 1500,
+    "intent_mode": "GROUND-TRUTH",
+    "sql_execution": false,
+    "configurations": {
+      "FULL": {
+        "accuracy": 98.2,
+        "macro_f1": 0.9752,
+        "per_class": {
+          "ALLOW": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 650
+          },
+          "CONFIRM": {
+            "precision": 0.9025,
+            "recall": 1.0,
+            "f1": 0.9488,
+            "support": 250
+          },
+          "BLOCK": {
+            "precision": 1.0,
+            "recall": 0.955,
+            "f1": 0.977,
+            "support": 600
+          }
+        },
+        "confusion_matrix": {
+          "labels": [
+            "ALLOW",
+            "CONFIRM",
+            "BLOCK"
+          ],
+          "matrix": [
+            [
+              650,
+              0,
+              0
+            ],
+            [
+              0,
+              250,
+              0
+            ],
+            [
+              0,
+              27,
+              573
+            ]
+          ]
+        },
+        "category_results": {
+          "DANGEROUS_DELETE_VARIANT": {
+            "correct": 100,
+            "total": 100,
+            "accuracy": 100.0
+          },
+          "DELETE_WITHOUT_WHERE": {
+            "correct": 40,
+            "total": 40,
+            "accuracy": 100.0
+          },
+          "FIELD_TARGET_CROSSOVER": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "MISLEADING_INTENT": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "MULTI_MISMATCH_COMPLEX": {
+            "correct": 53,
+            "total": 80,
+            "accuracy": 66.25
+          },
+          "OPERATION_MISMATCH_ADV": {
+            "correct": 100,
+            "total": 100,
+            "accuracy": 100.0
+          },
+          "OVER_SCOPED_READ": {
+            "correct": 120,
+            "total": 120,
+            "accuracy": 100.0
+          },
+          "OVER_SCOPED_UPDATE": {
+            "correct": 100,
+            "total": 100,
+            "accuracy": 100.0
+          },
+          "PARENTHESIZED_PREDICATE": {
+            "correct": 60,
+            "total": 60,
+            "accuracy": 100.0
+          },
+          "SAFE_BUT_UNUSUAL_SQL": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "SAFE_LEGITIMATE_INSERT": {
+            "correct": 50,
+            "total": 50,
+            "accuracy": 100.0
+          },
+          "SQL_ALIAS_VARIANT": {
+            "correct": 100,
+            "total": 100,
+            "accuracy": 100.0
+          },
+          "SQL_CASE_VARIANT": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "SQL_MULTILINE_VARIANT": {
+            "correct": 60,
+            "total": 60,
+            "accuracy": 100.0
+          },
+          "SQL_PREDICATE_VARIANT": {
+            "correct": 150,
+            "total": 150,
+            "accuracy": 100.0
+          },
+          "SQL_WHITESPACE_VARIANT": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "TARGET_MISMATCH_ALIAS": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "ZERO_ROW_BOUNDARY": {
+            "correct": 60,
+            "total": 60,
+            "accuracy": 100.0
+          }
+        },
+        "safety": {
+          "dangerous_not_blocked": 27,
+          "safe_incorrectly_blocked": 0
+        },
+        "latency_ms": {
+          "mean": 0.7773,
+          "median": 0.696,
+          "minimum": 0.2642,
+          "maximum": 8.859
+        }
+      },
+      "NO_INTENT_SQL": {
+        "accuracy": 62.07,
+        "macro_f1": 0.5113,
+        "per_class": {
+          "ALLOW": {
+            "precision": 0.6167,
+            "recall": 1.0,
+            "f1": 0.7629,
+            "support": 650
+          },
+          "CONFIRM": {
+            "precision": 0.2326,
+            "recall": 0.2,
+            "f1": 0.2151,
+            "support": 250
+          },
+          "BLOCK": {
+            "precision": 1.0,
+            "recall": 0.385,
+            "f1": 0.556,
+            "support": 600
+          }
+        },
+        "confusion_matrix": {
+          "labels": [
+            "ALLOW",
+            "CONFIRM",
+            "BLOCK"
+          ],
+          "matrix": [
+            [
+              650,
+              0,
+              0
+            ],
+            [
+              200,
+              50,
+              0
+            ],
+            [
+              204,
+              165,
+              231
+            ]
+          ]
+        },
+        "category_results": {
+          "DANGEROUS_DELETE_VARIANT": {
+            "correct": 100,
+            "total": 100,
+            "accuracy": 100.0
+          },
+          "DELETE_WITHOUT_WHERE": {
+            "correct": 40,
+            "total": 40,
+            "accuracy": 100.0
+          },
+          "FIELD_TARGET_CROSSOVER": {
+            "correct": 0,
+            "total": 80,
+            "accuracy": 0.0
+          },
+          "MISLEADING_INTENT": {
+            "correct": 20,
+            "total": 80,
+            "accuracy": 25.0
+          },
+          "MULTI_MISMATCH_COMPLEX": {
+            "correct": 26,
+            "total": 80,
+            "accuracy": 32.5
+          },
+          "OPERATION_MISMATCH_ADV": {
+            "correct": 25,
+            "total": 100,
+            "accuracy": 25.0
+          },
+          "OVER_SCOPED_READ": {
+            "correct": 0,
+            "total": 120,
+            "accuracy": 0.0
+          },
+          "OVER_SCOPED_UPDATE": {
+            "correct": 0,
+            "total": 100,
+            "accuracy": 0.0
+          },
+          "PARENTHESIZED_PREDICATE": {
+            "correct": 60,
+            "total": 60,
+            "accuracy": 100.0
+          },
+          "SAFE_BUT_UNUSUAL_SQL": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "SAFE_LEGITIMATE_INSERT": {
+            "correct": 50,
+            "total": 50,
+            "accuracy": 100.0
+          },
+          "SQL_ALIAS_VARIANT": {
+            "correct": 100,
+            "total": 100,
+            "accuracy": 100.0
+          },
+          "SQL_CASE_VARIANT": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "SQL_MULTILINE_VARIANT": {
+            "correct": 60,
+            "total": 60,
+            "accuracy": 100.0
+          },
+          "SQL_PREDICATE_VARIANT": {
+            "correct": 150,
+            "total": 150,
+            "accuracy": 100.0
+          },
+          "SQL_WHITESPACE_VARIANT": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "TARGET_MISMATCH_ALIAS": {
+            "correct": 0,
+            "total": 80,
+            "accuracy": 0.0
+          },
+          "ZERO_ROW_BOUNDARY": {
+            "correct": 60,
+            "total": 60,
+            "accuracy": 100.0
+          }
+        },
+        "safety": {
+          "dangerous_not_blocked": 369,
+          "safe_incorrectly_blocked": 0
+        },
+        "latency_ms": {
+          "mean": 0.7639,
+          "median": 0.6764,
+          "minimum": 0.2852,
+          "maximum": 2.9468
+        }
+      },
+      "NO_SCOPE": {
+        "accuracy": 98.2,
+        "macro_f1": 0.9752,
+        "per_class": {
+          "ALLOW": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 650
+          },
+          "CONFIRM": {
+            "precision": 0.9025,
+            "recall": 1.0,
+            "f1": 0.9488,
+            "support": 250
+          },
+          "BLOCK": {
+            "precision": 1.0,
+            "recall": 0.955,
+            "f1": 0.977,
+            "support": 600
+          }
+        },
+        "confusion_matrix": {
+          "labels": [
+            "ALLOW",
+            "CONFIRM",
+            "BLOCK"
+          ],
+          "matrix": [
+            [
+              650,
+              0,
+              0
+            ],
+            [
+              0,
+              250,
+              0
+            ],
+            [
+              0,
+              27,
+              573
+            ]
+          ]
+        },
+        "category_results": {
+          "DANGEROUS_DELETE_VARIANT": {
+            "correct": 100,
+            "total": 100,
+            "accuracy": 100.0
+          },
+          "DELETE_WITHOUT_WHERE": {
+            "correct": 40,
+            "total": 40,
+            "accuracy": 100.0
+          },
+          "FIELD_TARGET_CROSSOVER": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "MISLEADING_INTENT": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "MULTI_MISMATCH_COMPLEX": {
+            "correct": 53,
+            "total": 80,
+            "accuracy": 66.25
+          },
+          "OPERATION_MISMATCH_ADV": {
+            "correct": 100,
+            "total": 100,
+            "accuracy": 100.0
+          },
+          "OVER_SCOPED_READ": {
+            "correct": 120,
+            "total": 120,
+            "accuracy": 100.0
+          },
+          "OVER_SCOPED_UPDATE": {
+            "correct": 100,
+            "total": 100,
+            "accuracy": 100.0
+          },
+          "PARENTHESIZED_PREDICATE": {
+            "correct": 60,
+            "total": 60,
+            "accuracy": 100.0
+          },
+          "SAFE_BUT_UNUSUAL_SQL": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "SAFE_LEGITIMATE_INSERT": {
+            "correct": 50,
+            "total": 50,
+            "accuracy": 100.0
+          },
+          "SQL_ALIAS_VARIANT": {
+            "correct": 100,
+            "total": 100,
+            "accuracy": 100.0
+          },
+          "SQL_CASE_VARIANT": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "SQL_MULTILINE_VARIANT": {
+            "correct": 60,
+            "total": 60,
+            "accuracy": 100.0
+          },
+          "SQL_PREDICATE_VARIANT": {
+            "correct": 150,
+            "total": 150,
+            "accuracy": 100.0
+          },
+          "SQL_WHITESPACE_VARIANT": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "TARGET_MISMATCH_ALIAS": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "ZERO_ROW_BOUNDARY": {
+            "correct": 60,
+            "total": 60,
+            "accuracy": 100.0
+          }
+        },
+        "safety": {
+          "dangerous_not_blocked": 27,
+          "safe_incorrectly_blocked": 0
+        },
+        "latency_ms": {
+          "mean": 0.9201,
+          "median": 0.8085,
+          "minimum": 0.316,
+          "maximum": 3.9798
+        }
+      },
+      "NO_IMPACT": {
+        "accuracy": 98.2,
+        "macro_f1": 0.9752,
+        "per_class": {
+          "ALLOW": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 650
+          },
+          "CONFIRM": {
+            "precision": 0.9025,
+            "recall": 1.0,
+            "f1": 0.9488,
+            "support": 250
+          },
+          "BLOCK": {
+            "precision": 1.0,
+            "recall": 0.955,
+            "f1": 0.977,
+            "support": 600
+          }
+        },
+        "confusion_matrix": {
+          "labels": [
+            "ALLOW",
+            "CONFIRM",
+            "BLOCK"
+          ],
+          "matrix": [
+            [
+              650,
+              0,
+              0
+            ],
+            [
+              0,
+              250,
+              0
+            ],
+            [
+              0,
+              27,
+              573
+            ]
+          ]
+        },
+        "category_results": {
+          "DANGEROUS_DELETE_VARIANT": {
+            "correct": 100,
+            "total": 100,
+            "accuracy": 100.0
+          },
+          "DELETE_WITHOUT_WHERE": {
+            "correct": 40,
+            "total": 40,
+            "accuracy": 100.0
+          },
+          "FIELD_TARGET_CROSSOVER": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "MISLEADING_INTENT": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "MULTI_MISMATCH_COMPLEX": {
+            "correct": 53,
+            "total": 80,
+            "accuracy": 66.25
+          },
+          "OPERATION_MISMATCH_ADV": {
+            "correct": 100,
+            "total": 100,
+            "accuracy": 100.0
+          },
+          "OVER_SCOPED_READ": {
+            "correct": 120,
+            "total": 120,
+            "accuracy": 100.0
+          },
+          "OVER_SCOPED_UPDATE": {
+            "correct": 100,
+            "total": 100,
+            "accuracy": 100.0
+          },
+          "PARENTHESIZED_PREDICATE": {
+            "correct": 60,
+            "total": 60,
+            "accuracy": 100.0
+          },
+          "SAFE_BUT_UNUSUAL_SQL": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "SAFE_LEGITIMATE_INSERT": {
+            "correct": 50,
+            "total": 50,
+            "accuracy": 100.0
+          },
+          "SQL_ALIAS_VARIANT": {
+            "correct": 100,
+            "total": 100,
+            "accuracy": 100.0
+          },
+          "SQL_CASE_VARIANT": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "SQL_MULTILINE_VARIANT": {
+            "correct": 60,
+            "total": 60,
+            "accuracy": 100.0
+          },
+          "SQL_PREDICATE_VARIANT": {
+            "correct": 150,
+            "total": 150,
+            "accuracy": 100.0
+          },
+          "SQL_WHITESPACE_VARIANT": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "TARGET_MISMATCH_ALIAS": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "ZERO_ROW_BOUNDARY": {
+            "correct": 60,
+            "total": 60,
+            "accuracy": 100.0
+          }
+        },
+        "safety": {
+          "dangerous_not_blocked": 27,
+          "safe_incorrectly_blocked": 0
+        },
+        "latency_ms": {
+          "mean": 0.8998,
+          "median": 0.8083,
+          "minimum": 0.3047,
+          "maximum": 4.1476
+        }
+      },
+      "NO_INTENT": {
+        "accuracy": 62.07,
+        "macro_f1": 0.5113,
+        "per_class": {
+          "ALLOW": {
+            "precision": 0.6167,
+            "recall": 1.0,
+            "f1": 0.7629,
+            "support": 650
+          },
+          "CONFIRM": {
+            "precision": 0.2326,
+            "recall": 0.2,
+            "f1": 0.2151,
+            "support": 250
+          },
+          "BLOCK": {
+            "precision": 1.0,
+            "recall": 0.385,
+            "f1": 0.556,
+            "support": 600
+          }
+        },
+        "confusion_matrix": {
+          "labels": [
+            "ALLOW",
+            "CONFIRM",
+            "BLOCK"
+          ],
+          "matrix": [
+            [
+              650,
+              0,
+              0
+            ],
+            [
+              200,
+              50,
+              0
+            ],
+            [
+              204,
+              165,
+              231
+            ]
+          ]
+        },
+        "category_results": {
+          "DANGEROUS_DELETE_VARIANT": {
+            "correct": 100,
+            "total": 100,
+            "accuracy": 100.0
+          },
+          "DELETE_WITHOUT_WHERE": {
+            "correct": 40,
+            "total": 40,
+            "accuracy": 100.0
+          },
+          "FIELD_TARGET_CROSSOVER": {
+            "correct": 0,
+            "total": 80,
+            "accuracy": 0.0
+          },
+          "MISLEADING_INTENT": {
+            "correct": 20,
+            "total": 80,
+            "accuracy": 25.0
+          },
+          "MULTI_MISMATCH_COMPLEX": {
+            "correct": 26,
+            "total": 80,
+            "accuracy": 32.5
+          },
+          "OPERATION_MISMATCH_ADV": {
+            "correct": 25,
+            "total": 100,
+            "accuracy": 25.0
+          },
+          "OVER_SCOPED_READ": {
+            "correct": 0,
+            "total": 120,
+            "accuracy": 0.0
+          },
+          "OVER_SCOPED_UPDATE": {
+            "correct": 0,
+            "total": 100,
+            "accuracy": 0.0
+          },
+          "PARENTHESIZED_PREDICATE": {
+            "correct": 60,
+            "total": 60,
+            "accuracy": 100.0
+          },
+          "SAFE_BUT_UNUSUAL_SQL": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "SAFE_LEGITIMATE_INSERT": {
+            "correct": 50,
+            "total": 50,
+            "accuracy": 100.0
+          },
+          "SQL_ALIAS_VARIANT": {
+            "correct": 100,
+            "total": 100,
+            "accuracy": 100.0
+          },
+          "SQL_CASE_VARIANT": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "SQL_MULTILINE_VARIANT": {
+            "correct": 60,
+            "total": 60,
+            "accuracy": 100.0
+          },
+          "SQL_PREDICATE_VARIANT": {
+            "correct": 150,
+            "total": 150,
+            "accuracy": 100.0
+          },
+          "SQL_WHITESPACE_VARIANT": {
+            "correct": 80,
+            "total": 80,
+            "accuracy": 100.0
+          },
+          "TARGET_MISMATCH_ALIAS": {
+            "correct": 0,
+            "total": 80,
+            "accuracy": 0.0
+          },
+          "ZERO_ROW_BOUNDARY": {
+            "correct": 60,
+            "total": 60,
+            "accuracy": 100.0
+          }
+        },
+        "safety": {
+          "dangerous_not_blocked": 369,
+          "safe_incorrectly_blocked": 0
+        },
+        "latency_ms": {
+          "mean": 0.7845,
+          "median": 0.6989,
+          "minimum": 0.2918,
+          "maximum": 3.2897
+        }
+      }
+    }
+  }
+}

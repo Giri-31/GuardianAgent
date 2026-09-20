@@ -1,0 +1,488 @@
+[
+  {
+    "task_id": 1,
+    "original_input": "What is the Presentation of Credentials has a Termination of Mission listed as August 15, 2000?",
+    "cleaned_input": "What is the Presentation of Credentials has a Termination of Mission listed as August 15, 2000?",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 2,
+    "original_input": "his nickname is \"jimmy,\" but what is his full name?",
+    "cleaned_input": "his nickname is \"jimmy,\" but what is his full name?",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 3,
+    "original_input": "how many weeks did julie covington's \"don't cry for me argentina\" spend at the top of australia's singles chart?",
+    "cleaned_input": "how many weeks did julie covington's \"don't cry for me argentina\" spend at the top of australia's singles chart?",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 4,
+    "original_input": "how many floors does the capitol square have?",
+    "cleaned_input": "how many floors does the capitol square have?",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 5,
+    "original_input": "What is the total game number with athlone town as the opponent?",
+    "cleaned_input": "What is the total game number with athlone town as the opponent?",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 6,
+    "original_input": "what is the total number of register listings from dover?",
+    "cleaned_input": "what is the total number of register listings from dover?",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 7,
+    "original_input": "who was the only wrestler to have a title reign in 1992?",
+    "cleaned_input": "who was the only wrestler to have a title reign in 1992?",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 8,
+    "original_input": "Which Score has a Result of 2\u20131, and a Competition of friendly, and a Goal smaller than 17?",
+    "cleaned_input": "Which Score has a Result of 2-1, and a Competition of friendly, and a Goal smaller than 17?",
+    "was_modified": true,
+    "modifications": [
+      "normalized_unicode_'\u2013'_to_'-'"
+    ],
+    "preprocessing_status": "CLEANED"
+  },
+  {
+    "task_id": 9,
+    "original_input": "Which Average that has a W-L-T of 5-1, and a Season smaller than 2001, and Games smaller than 6?",
+    "cleaned_input": "Which Average that has a W-L-T of 5-1, and a Season smaller than 2001, and Games smaller than 6?",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 10,
+    "original_input": "What is the Average for South Carolina with an Interview less than 9.626?",
+    "cleaned_input": "What is the Average for South Carolina with an Interview less than 9.626?",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 11,
+    "original_input": "Class of d, and a Frequency MHz smaller than 107.7, and a ERP W smaller than 232 has what call sign?",
+    "cleaned_input": "Class of d, and a Frequency MHz smaller than 107.7, and a ERP W smaller than 232 has what call sign?",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 12,
+    "original_input": "which area is the largest in square km?",
+    "cleaned_input": "which area is the largest in square km?",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 13,
+    "original_input": "Name the least touchdowns for 11 points",
+    "cleaned_input": "Name the least touchdowns for 11 points",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 14,
+    "original_input": "Of the matches that had a home team score of 13.17 (95), which match had the largest crowd?",
+    "cleaned_input": "Of the matches that had a home team score of 13.17 (95), which match had the largest crowd?",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 15,
+    "original_input": "When the transfer fee is \u00a38.5m, what is the total ends?",
+    "cleaned_input": "When the transfer fee is \u00a38.5m, what is the total ends?",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 16,
+    "original_input": "With the given points of 51, what was the total number of the try bonus?",
+    "cleaned_input": "With the given points of 51, what was the total number of the try bonus?",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 17,
+    "original_input": "What was the earlier round where Takashi Kogure got the fastest lap?",
+    "cleaned_input": "What was the earlier round where Takashi Kogure got the fastest lap?",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 18,
+    "original_input": "What's the biggest Bronze that has less than 0 Silvers?",
+    "cleaned_input": "What's the biggest Bronze that has less than 0 Silvers?",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 19,
+    "original_input": "Which Attendance is the highest one that has a Record of 15-28?",
+    "cleaned_input": "Which Attendance is the highest one that has a Record of 15-28?",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 20,
+    "original_input": "What is the average Total, when Gold is 0, and when Nation is Iran?",
+    "cleaned_input": "What is the average Total, when Gold is 0, and when Nation is Iran?",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 21,
+    "original_input": "Insert 'Madison High School' into 'School Location Table' with values 'San Diego' for 'Location', '1980' for 'Date moved', and 'nearby junior high school' for 'Currently at this location'.",
+    "cleaned_input": "Insert 'Madison High School' into 'School Location Table' with values 'San Diego' for 'Location', '1980' for 'Date moved', and 'nearby junior high school' for 'Currently at this location'.",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 22,
+    "original_input": "Insert a new record into the 'Football Standings' table with the values of position 10, club 'FK Trakai', games played 18, wins 9, draws 2, losses 7, goals scored 29, goals conceded 24, and points 29.",
+    "cleaned_input": "Insert a new record into the 'Football Standings' table with the values of position 10, club 'FK Trakai', games played 18, wins 9, draws 2, losses 7, goals scored 29, goals conceded 24, and points 29.",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 23,
+    "original_input": "Insert the winners of Golf Tournament into the table 'Golf Tournament Winners' with the player name 'Bernhard Langer', country 'Germany', winning years '1985, 1993', total score '290' and 'To par' score of '+2'.",
+    "cleaned_input": "Insert the winners of Golf Tournament into the table 'Golf Tournament Winners' with the player name 'Bernhard Langer', country 'Germany', winning years '1985, 1993', total score '290' and 'To par' score of '+2'.",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 24,
+    "original_input": "Insert into table 'Olympic Medals' with 5 columns 'Rank', 'Gold', 'Silver', 'Bronze' and 'Total'. The values for column 'Rank' is '7', for column 'Gold' is '0', for column 'Silver' is '1', for column 'Bronze' is '0' and for column 'Total' is '1'.",
+    "cleaned_input": "Insert into table 'Olympic Medals' with 5 columns 'Rank', 'Gold', 'Silver', 'Bronze' and 'Total'. The values for column 'Rank' is '7', for column 'Gold' is '0', for column 'Silver' is '1', for column 'Bronze' is '0' and for column 'Total' is '1'.",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 25,
+    "original_input": "The Dallas Cowboys 1986 Season INSERT INTO table contains data for Week 18, played on January 4, 1987 at Texas Stadium against the Atlanta Falcons resulting in a 27-20 win for the Cowboys. The game was attended by 62,129 people and has been documented in the NFL Recap under [18].",
+    "cleaned_input": "The Dallas Cowboys 1986 Season INSERT INTO table contains data for Week 18, played on January 4, 1987 at Texas Stadium against the Atlanta Falcons resulting in a 27-20 win for the Cowboys. The game was attended by 62,129 people and has been documented in the NFL Recap under [18].",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 26,
+    "original_input": "Record the achievement of Jalani Sidek at All England Open in 1990 for Men's Doubles event at Birmingham, England under Badminton Achievements table.",
+    "cleaned_input": "Record the achievement of Jalani Sidek at All England Open in 1990 for Men's Doubles event at Birmingham, England under Badminton Achievements table.",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 27,
+    "original_input": "On 2 January 1944, Willem van der Zaan, a ship registered in Netherlands with a tonnage of 5,200 GRT, was sunk.",
+    "cleaned_input": "On 2 January 1944, Willem van der Zaan, a ship registered in Netherlands with a tonnage of 5,200 GRT, was sunk.",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 28,
+    "original_input": "On August 11, 2021, Lilly King from the United States set a new world record of 2 minutes and 16.33 seconds in women's swimming in Tokyo, Japan. The record was achieved in the Swimming World Records and the data of the record shows the swimmer's name, time, date and place, which are Lilly King, 2:16.33, August 11, 2021 and Tokyo, Japan respectively.",
+    "cleaned_input": "On August 11, 2021, Lilly King from the United States set a new world record of 2 minutes and 16.33 seconds in women's swimming in Tokyo, Japan. The record was achieved in the Swimming World Records and the data of the record shows the swimmer's name, time, date and place, which are Lilly King, 2:16.33, August 11, 2021 and Tokyo, Japan respectively.",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 29,
+    "original_input": "The attendance of Tennessee Titans at Nissan Stadium is recorded as 64,798 on average, with a total of 518,384 attendance over 8 home games; the stadium's capacity percentage is 99.8%.",
+    "cleaned_input": "The attendance of Tennessee Titans at Nissan Stadium is recorded as 64,798 on average, with a total of 518,384 attendance over 8 home games; the stadium's capacity percentage is 99.8%.",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 30,
+    "original_input": "Insert data into the table named Parish_LGA_Towns, with values 'Harris' for Parish, 'Scenic Rim' for LGA, and 'Boonah' for Towns.",
+    "cleaned_input": "Insert data into the table named Parish_LGA_Towns, with values 'Harris' for Parish, 'Scenic Rim' for LGA, and 'Boonah' for Towns.",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 31,
+    "original_input": "On 8 March 2007, in the Round of 16 Second leg, the match result for Porto was 1\u20130, with an attendance of 41,000. The match was played away from home.",
+    "cleaned_input": "On 8 March 2007, in the Round of 16 Second leg, the match result for Porto was 1-0, with an attendance of 41,000. The match was played away from home.",
+    "was_modified": true,
+    "modifications": [
+      "normalized_unicode_'\u2013'_to_'-'"
+    ],
+    "preprocessing_status": "CLEANED"
+  },
+  {
+    "task_id": 32,
+    "original_input": "In 1971, Kauai King, age 4, was trained by Henry Forrest and owned by Ford Stable, and was inserted into the horse_races table.",
+    "cleaned_input": "In 1971, Kauai King, age 4, was trained by Henry Forrest and owned by Ford Stable, and was inserted into the horse_races table.",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 33,
+    "original_input": "Insert a new row into the 'Doctor Who Episodes' table with the following values: Episode # as 'S4', Original airdate (UK) as '30 June 2007', Episode title as '\"Doctor Who Confidential: Music and Monsters\"', Doctor Who episode as 'Episodes 1-13', and Webcast link as 'N/A'.",
+    "cleaned_input": "Insert a new row into the 'Doctor Who Episodes' table with the following values: Episode # as 'S4', Original airdate (UK) as '30 June 2007', Episode title as '\"Doctor Who Confidential: Music and Monsters\"', Doctor Who episode as 'Episodes 1-13', and Webcast link as 'N/A'.",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 34,
+    "original_input": "The character Natalia Boa Vista played by Eva LaRue in CSI:Miami Characters is still alive. She first appeared in the episode Rio and had a final episode with no specified name. Natalia appeared for a total of 177 episodes spanning from 04x25 to 10x19.",
+    "cleaned_input": "The character Natalia Boa Vista played by Eva LaRue in CSI:Miami Characters is still alive. She first appeared in the episode Rio and had a final episode with no specified name. Natalia appeared for a total of 177 episodes spanning from 04x25 to 10x19.",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 35,
+    "original_input": "On 14 February 1917, the Romanian ship named Uranus with a tonnage of 1,429 was sunk.",
+    "cleaned_input": "On 14 February 1917, the Romanian ship named Uranus with a tonnage of 1,429 was sunk.",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 36,
+    "original_input": "Insert into the 'Football Draft Picks' table the values for Round, Pick, Player, Position, and School/Club Team, which are '33', '336', 'John Smith', 'Quarterback', and 'USC', respectively.",
+    "cleaned_input": "Insert into the 'Football Draft Picks' table the values for Round, Pick, Player, Position, and School/Club Team, which are '33', '336', 'John Smith', 'Quarterback', and 'USC', respectively.",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 37,
+    "original_input": "Insert 'Another Plant' with 'Muskegon' into 'Power Plants and Rivers' table with power of '15' (in MW).",
+    "cleaned_input": "Insert 'Another Plant' with 'Muskegon' into 'Power Plants and Rivers' table with power of '15' (in MW).",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 38,
+    "original_input": "The team record for UCF in 2021 was 35-25 overall and 13-11 in conference play, finishing 5th in the standings and reaching the NCAA Regional postseason tournament. The record was inserted into the 'Team Season Record' table with the following values: Season = '2021', Team = 'UCF', Overall = '35-25', Conference = '13-11', Standing = '5th', Postseason = 'NCAA Regional'.",
+    "cleaned_input": "The team record for UCF in 2021 was 35-25 overall and 13-11 in conference play, finishing 5th in the standings and reaching the NCAA Regional postseason tournament. The record was inserted into the 'Team Season Record' table with the following values: Season = '2021', Team = 'UCF', Overall = '35-25', Conference = '13-11', Standing = '5th', Postseason = 'NCAA Regional'.",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 39,
+    "original_input": "The game result for Game 16 in October against the San Jose Sharks was recorded with a final score of 4-3. Lundqvist's decision resulted in a loss, bringing the team's record to 13-2-1. This information was inserted into the game_results table.",
+    "cleaned_input": "The game result for Game 16 in October against the San Jose Sharks was recorded with a final score of 4-3. Lundqvist's decision resulted in a loss, bringing the team's record to 13-2-1. This information was inserted into the game_results table.",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 40,
+    "original_input": "The Surname Ranking table is being updated with data for the surname Hedlund. The data includes the rank of 23, 21.899 as the number of bearers in 2008, the type of landscape, and the etymology of heath+grove.",
+    "cleaned_input": "The Surname Ranking table is being updated with data for the surname Hedlund. The data includes the rank of 23, 21.899 as the number of bearers in 2008, the type of landscape, and the etymology of heath+grove.",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 41,
+    "original_input": "Update the results of the football team named Ballarat FL from Creswick with 5 wins, 3 byes, 8 losses, 2 draws and against a total score of 1305.",
+    "cleaned_input": "Update the results of the football team named Ballarat FL from Creswick with 5 wins, 3 byes, 8 losses, 2 draws and against a total score of 1305.",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 42,
+    "original_input": "Change the title of the film in the Actress Filmography table to 'Wonder Woman: 1984' where the year is '2017'.",
+    "cleaned_input": "Change the title of the film in the Actress Filmography table to 'Wonder Woman: 1984' where the year is '2017'.",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 43,
+    "original_input": "Update the winner of the Sportswoman_of_the_Year_Award_1 to 'Naomi Osaka' for the sport of Tennis and the year 2015.",
+    "cleaned_input": "Update the winner of the Sportswoman_of_the_Year_Award_1 to 'Naomi Osaka' for the sport of Tennis and the year 2015.",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 44,
+    "original_input": "Update the host city of the 2026 Central European Jamboree to Bratislava.",
+    "cleaned_input": "Update the host city of the 2026 Central European Jamboree to Bratislava.",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 45,
+    "original_input": "In the year 2002, update the Baseball Team Performance table to set the Affiliation as 'Red Sox' and Manager as 'Bill Belichick'.",
+    "cleaned_input": "In the year 2002, update the Baseball Team Performance table to set the Affiliation as 'Red Sox' and Manager as 'Bill Belichick'.",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 46,
+    "original_input": "Set the LGA value to Armadale for the primary school named Byford Primary School in the Western Australia database.",
+    "cleaned_input": "Set the LGA value to Armadale for the primary school named Byford Primary School in the Western Australia database.",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 47,
+    "original_input": "Update the table 'Zodiac Decans Rulers Table' by setting the ruler for the first decan (0 - 9.999 deg.) to 'Venus', the ruler for the second decan (10 - 19.999 deg.) to 'Saturn', and the ruler for the third decan (20 - 29.999 deg.) to 'Mercury' where the sign is 'Taurus'.",
+    "cleaned_input": "Update the table 'Zodiac Decans Rulers Table' by setting the ruler for the first decan (0 - 9.999 deg.) to 'Venus', the ruler for the second decan (10 - 19.999 deg.) to 'Saturn', and the ruler for the third decan (20 - 29.999 deg.) to 'Mercury' where the sign is 'Taurus'.",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 48,
+    "original_input": "Change the country of Central Park Tower in the Skyscraper Database to Canada.",
+    "cleaned_input": "Change the country of Central Park Tower in the Skyscraper Database to Canada.",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 49,
+    "original_input": "On September 27, update the game results so the opponent name is 'vs. Connecticut' and the score is '70-73'.",
+    "cleaned_input": "On September 27, update the game results so the opponent name is 'vs. Connecticut' and the score is '70-73'.",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 50,
+    "original_input": "Tiger Woods won Golf Champions in 1997, 2001, 2002, and 2005, with a total score of 270 and finishing 18 strokes under par.",
+    "cleaned_input": "Tiger Woods won Golf Champions in 1997, 2001, 2002, and 2005, with a total score of 270 and finishing 18 strokes under par.",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 51,
+    "original_input": "The table for Native American removal and emigration is being updated to reflect that 12,000 Navajo individuals were either forcibly removed or emigrated.",
+    "cleaned_input": "The table for Native American removal and emigration is being updated to reflect that 12,000 Navajo individuals were either forcibly removed or emigrated.",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 52,
+    "original_input": "Alter the 'Electorate' value to 'Auckland North' for the entry with 'Name' equal to 'John Smith' in the 'Elected Members of New Zealand Parliament' table.",
+    "cleaned_input": "Alter the 'Electorate' value to 'Auckland North' for the entry with 'Name' equal to 'John Smith' in the 'Elected Members of New Zealand Parliament' table.",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 53,
+    "original_input": "In the `Principal Assignments by Year` table, update the `Gorham Principal` column to 'Karen Lee' for the `Year` 2012-2013.",
+    "cleaned_input": "In the `Principal Assignments by Year` table, update the `Gorham Principal` column to 'Karen Lee' for the `Year` 2012-2013.",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 54,
+    "original_input": "The score table for Japan has been updated with an E Score of 7.400 and a total of 22.950.",
+    "cleaned_input": "The score table for Japan has been updated with an E Score of 7.400 and a total of 22.950.",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 55,
+    "original_input": "In the 'Basketball Tournament Results' table, update the 'Winner' column to 'Northeastern University' where the 'Year' column equals 2000.",
+    "cleaned_input": "In the 'Basketball Tournament Results' table, update the 'Winner' column to 'Northeastern University' where the 'Year' column equals 2000.",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 56,
+    "original_input": "Change the source for soybean production statistics to 'USDA' in the Statistics table.",
+    "cleaned_input": "Change the source for soybean production statistics to 'USDA' in the Statistics table.",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 57,
+    "original_input": "The statistics for the 2010-11 season have been updated with 7 matches played, 1 match drawn, 2 matches lost, and 82 goals against.",
+    "cleaned_input": "The statistics for the 2010-11 season have been updated with 7 matches played, 1 match drawn, 2 matches lost, and 82 goals against.",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 58,
+    "original_input": "The 'Year(s) retired' column of the 'Locomotive Inventory Table' was updated to '1935\u20131960' for locomotives in the 'M-1' class.",
+    "cleaned_input": "The 'Year(s) retired' column of the 'Locomotive Inventory Table' was updated to '1935-1960' for locomotives in the 'M-1' class.",
+    "was_modified": true,
+    "modifications": [
+      "normalized_unicode_'\u2013'_to_'-'"
+    ],
+    "preprocessing_status": "CLEANED"
+  },
+  {
+    "task_id": 59,
+    "original_input": "Update the football season results to W 28-10 and 16-2 record for week 19.",
+    "cleaned_input": "Update the football season results to W 28-10 and 16-2 record for week 19.",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  },
+  {
+    "task_id": 60,
+    "original_input": "Change the value of 'No. Specimens' to '190,000' in the 'Specimen Collection' table for the entry with 'Name' as 'University of Stockholm'.",
+    "cleaned_input": "Change the value of 'No. Specimens' to '190,000' in the 'Specimen Collection' table for the entry with 'Name' as 'University of Stockholm'.",
+    "was_modified": false,
+    "modifications": [],
+    "preprocessing_status": "UNCHANGED"
+  }
+]

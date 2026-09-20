@@ -1,0 +1,962 @@
+{
+  "task_1_2cb82b04b88f_672bee902704": {
+    "task_id": "1",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "672bee902704a0ff63cb1a20acacabb0ac16575230cfff634fff4b3f380b8be7",
+    "input_hash": "2cb82b04b88f3d89d479fce8eba471e93b931afa282971c2fcf3cbc405d6d5da",
+    "generated_sql": "SELECT \"Presentation of Credentials\" FROM \"US Ambassadors and Envoy Extraordinary to Colombia\" WHERE \"Termination of Mission\" = 'August 15, 2000';",
+    "timestamp": "2026-09-20T05:59:08.999199+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 327,
+      "completion_tokens": 151,
+      "total_tokens": 478
+    },
+    "latency_ms": 868.4
+  },
+  "task_2_0bfb0d402e82_f90a347e1eaf": {
+    "task_id": "2",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "f90a347e1eaf05a0e3dec936bf67763a36d156405f708eccdde78fed3ff81fa6",
+    "input_hash": "0bfb0d402e826712b10dde3bdfa16895c2b6e027ecb638f6e763682e57f75cb7",
+    "generated_sql": "SELECT \"Drivers\" FROM \"race_results\" WHERE \"Drivers\" LIKE '%Jimmy%';",
+    "timestamp": "2026-09-20T06:02:49.427908+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 332,
+      "completion_tokens": 394,
+      "total_tokens": 726
+    },
+    "latency_ms": 1719.74
+  },
+  "task_3_64cf0f67568e_be9621dbd177": {
+    "task_id": "3",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "be9621dbd177a9da323782e4eb03687200b2c3c5d2c75ffd4cc15855a75fd78a",
+    "input_hash": "64cf0f67568e944fb2260a082a102bc909a2802a7ed92884a445b9dfeefbb4c1",
+    "generated_sql": "SELECT \"weeks at No. 1\" FROM \"Music Chart History\" WHERE \"Artist\" = 'Julie Covington' AND \"Title\" = 'Don''t Cry for Me Argentina';",
+    "timestamp": "2026-09-20T06:02:51.192997+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 277,
+      "completion_tokens": 313,
+      "total_tokens": 590
+    },
+    "latency_ms": 1112.3
+  },
+  "task_4_5af6424ac83c_9b691fbd756a": {
+    "task_id": "4",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "9b691fbd756ae2d4d760985551d3bb101733c8029998d03b4df83146e109cd98",
+    "input_hash": "5af6424ac83c57f9d4cec8a6dcd579317e60260ada52e0538d61a0984c2b51ab",
+    "generated_sql": "SELECT \"Floors\" FROM \"skyscrapers_in_Columbus\" WHERE \"Name\" = 'Capitol Square';",
+    "timestamp": "2026-09-20T06:02:52.709402+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 326,
+      "completion_tokens": 219,
+      "total_tokens": 545
+    },
+    "latency_ms": 975.52
+  },
+  "task_5_1e43f3324ef3_a9cc4f691431": {
+    "task_id": "5",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "a9cc4f691431c021cbc8ede18fdcbf04f1c251a59809a71f76e6fc77cbc680dd",
+    "input_hash": "1e43f3324ef36213fa5e3d5647385351b3b6260212d0e98985a8249e3f07a197",
+    "generated_sql": "SELECT COUNT(*) FROM \"Game Schedule\" WHERE \"Opponent\" = 'Athlone Town';",
+    "timestamp": "2026-09-20T06:02:54.061378+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 275,
+      "completion_tokens": 119,
+      "total_tokens": 394
+    },
+    "latency_ms": 732.67
+  },
+  "task_6_d307453b4b69_03cf680abdb0": {
+    "task_id": "6",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "03cf680abdb009076abe97c25a82603ad5050df3fa74b496620201d299804773",
+    "input_hash": "d307453b4b69f519205756315a5e48585ad85db2148077b02c7d84c354738daa",
+    "generated_sql": "SELECT COUNT(*) FROM \"historic_sites\" WHERE \"City or town\" = 'Dover';",
+    "timestamp": "2026-09-20T06:02:55.374009+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 365,
+      "completion_tokens": 162,
+      "total_tokens": 527
+    },
+    "latency_ms": 780.57
+  },
+  "task_7_3d1f3e1c4580_aae207510295": {
+    "task_id": "7",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "aae207510295d50edab12163bc29a455b0abf43fbe258921bf84c56f6324c8a5",
+    "input_hash": "3d1f3e1c45803e1e6fae0e3019dbc7bda9d185f0fc75fb76edc5c8a026cb3964",
+    "generated_sql": "SELECT DISTINCT \"Wrestler:\" FROM \"Wrestler Title Reigns\" WHERE substr(\"Date:\", -4) = '1992';",
+    "timestamp": "2026-09-20T06:02:57.205544+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 284,
+      "completion_tokens": 291,
+      "total_tokens": 575
+    },
+    "latency_ms": 1041.7
+  },
+  "task_8_9203b2cf8758_bdfe512301c4": {
+    "task_id": "8",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "bdfe512301c45a220bbdb8bcf4204369a1387c7450d470c933a208beabd7d94a",
+    "input_hash": "9203b2cf875894004fafc4e11becdf65ae0e38ef024c1afb551dd72f1984353c",
+    "generated_sql": "SELECT \"Score\" FROM \"Football Matches\"\nWHERE \"Result\" = '2-1'\n  AND \"Competition\" = 'friendly' COLLATE NOCASE\n  AND CAST(REPLACE(\"Goal\", '.', '') AS INTEGER) < 17;",
+    "timestamp": "2026-09-20T06:02:58.891371+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 302,
+      "completion_tokens": 324,
+      "total_tokens": 626
+    },
+    "latency_ms": 1156.14
+  },
+  "task_9_d8296052b44e_159dc748fd40": {
+    "task_id": "9",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "159dc748fd40df18dda3138e5142931f1ccbd4b4587f0062684b34752a091601",
+    "input_hash": "d8296052b44ead777fd68b966908b6b83c349a7625ce38109cc9fc69a5f7ad06",
+    "generated_sql": "SELECT \"Average\"\nFROM \"Football Team Performance\"\nWHERE \"W-L-T\" = '5-1'\n  AND CAST(\"Season\" AS INTEGER) < 2001\n  AND CAST(\"Games\" AS INTEGER) < 6;",
+    "timestamp": "2026-09-20T06:03:00.476707+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 279,
+      "completion_tokens": 244,
+      "total_tokens": 523
+    },
+    "latency_ms": 1058.41
+  },
+  "task_10_abf6a3b2b955_dba23e649169": {
+    "task_id": "10",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "dba23e649169c2f0afe92a120b042e476e2acb284f21de82f5ad9f6f37eb0c53",
+    "input_hash": "abf6a3b2b9553030cc462541d6db88c6cdaad37b9e7f17e2440d525518944a12",
+    "generated_sql": "SELECT \"Average\" FROM \"Beauty_Pageant_Scores\" WHERE \"State\" = 'South Carolina' AND CAST(\"Interview\" AS REAL) < 9.626;",
+    "timestamp": "2026-09-20T06:03:01.891893+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 272,
+      "completion_tokens": 136,
+      "total_tokens": 408
+    },
+    "latency_ms": 819.97
+  },
+  "task_11_a105e6867ac3_e9b0e1ee3e9e": {
+    "task_id": "11",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "e9b0e1ee3e9eb92116d3c261a48626872621846ad5a27dedfb725cb59ed0618a",
+    "input_hash": "a105e6867ac3bc004dc42b162e5dbc5c13f218a489aca99bd47cf561d63d0054",
+    "generated_sql": "SELECT \"Call sign\"\nFROM \"Radio Stations\"\nWHERE LOWER(\"Class\") = 'd'\n  AND CAST(\"Frequency MHz\" AS REAL) < 107.7\n  AND CAST(REPLACE(\"ERP W\", ',', '') AS INTEGER) < 232;",
+    "timestamp": "2026-09-20T06:03:03.524432+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 295,
+      "completion_tokens": 285,
+      "total_tokens": 580
+    },
+    "latency_ms": 1104.19
+  },
+  "task_12_5fe594d02c28_fc6d7ac38d6c": {
+    "task_id": "12",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "fc6d7ac38d6cfeb06b8114b4af16f2865e61c44629fc7424b7194783dd9a0840",
+    "input_hash": "5fe594d02c28b5cce649be968444cb9e12b448ab73b55af194573c685bcc2366",
+    "generated_sql": "SELECT MAX(CAST(REPLACE(\"Area (km\u00b2)\", ',', '') AS REAL)) AS \"Largest Area (km\u00b2)\" FROM \"table\";",
+    "timestamp": "2026-09-20T06:03:05.402996+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 298,
+      "completion_tokens": 348,
+      "total_tokens": 646
+    },
+    "latency_ms": 1248.01
+  },
+  "task_13_4f3cc973a549_808510111eb7": {
+    "task_id": "13",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "808510111eb76dae1dde553c42a4352037d5a78140fb46fc53d7fc6b6afa7b8e",
+    "input_hash": "4f3cc973a549ebd3b4fa506834f9e5a1f26847d419135ed722bcaa56c6574b2c",
+    "generated_sql": "SELECT \"Player\"\nFROM \"football_stats\"\nWHERE \"Points\" = '11'\n  AND CAST(\"Touchdowns\" AS INTEGER) = (\n    SELECT MIN(CAST(\"Touchdowns\" AS INTEGER))\n    FROM \"football_stats\"\n    WHERE \"Points\" = '11'\n);",
+    "timestamp": "2026-09-20T06:03:07.175440+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 271,
+      "completion_tokens": 366,
+      "total_tokens": 637
+    },
+    "latency_ms": 1243.55
+  },
+  "task_14_d6716febfb9e_11c023e030e7": {
+    "task_id": "14",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "11c023e030e75115246b2c806f62206cec8b42d380979fd38ad16c8b74fd32f6",
+    "input_hash": "d6716febfb9e084b61ec3d984797828db8e74ba6ec762a5c2c8322b4e919bc89",
+    "generated_sql": "SELECT *\nFROM \"Australian Rules Football Matches\"\nWHERE \"Home team score\" = '13.17 (95)'\nORDER BY CAST(REPLACE(\"Crowd\", ',', '') AS INTEGER) DESC\nLIMIT 1",
+    "timestamp": "2026-09-20T06:03:08.822469+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 328,
+      "completion_tokens": 205,
+      "total_tokens": 533
+    },
+    "latency_ms": 1056.42
+  },
+  "task_15_830ce590b954_995ebad23a32": {
+    "task_id": "15",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "995ebad23a329cfb8b1c63c97d9dbbc8ef6062fbfcd6907f1f508d28abeeb8c4",
+    "input_hash": "830ce590b954d41d570dfeb065afedc4eb0ef6eccfe9ba5f87cf840f6f7d8b0e",
+    "generated_sql": "SELECT SUM(CAST(\"Ends\" AS INTEGER)) AS total_ends FROM \"football_players\" WHERE \"Transfer fee\" = '\u00a38.5m';",
+    "timestamp": "2026-09-20T06:03:10.504290+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 298,
+      "completion_tokens": 137,
+      "total_tokens": 435
+    },
+    "latency_ms": 804.02
+  },
+  "task_16_8176d3af360d_23f58384c9ea": {
+    "task_id": "16",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "23f58384c9ea63eefa52a7f5ee75b25ea4f96a17ef2007a626d513b5d6fa9bf1",
+    "input_hash": "8176d3af360dcbb2f8047f787eb21d92e220de86419881c9aa7cb8397cb2bba0",
+    "generated_sql": "SELECT SUM(CAST(\"Try bonus\" AS INTEGER)) AS total_try_bonus FROM \"Rugby Club Standings\" WHERE \"Points\" = '51';",
+    "timestamp": "2026-09-20T06:03:11.900698+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 373,
+      "completion_tokens": 159,
+      "total_tokens": 532
+    },
+    "latency_ms": 849.29
+  },
+  "task_17_644931d959b0_bf0987466b42": {
+    "task_id": "17",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "bf0987466b42bcbee9b218210dd85ef15531ab6555395648ab1c306ddfa035f4",
+    "input_hash": "644931d959b098d667e9674e772f6c9b7500d4e2702d0fe0a0395ab97b4f66af",
+    "generated_sql": "SELECT \"Round\" FROM \"Race Results\" WHERE \"Fastest Lap\" = 'Takashi Kogure' ORDER BY CAST(\"Round\" AS INTEGER) ASC LIMIT 1;",
+    "timestamp": "2026-09-20T06:03:13.268510+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 312,
+      "completion_tokens": 170,
+      "total_tokens": 482
+    },
+    "latency_ms": 825.1
+  },
+  "task_18_210c04235c27_96e2fef2c9bc": {
+    "task_id": "18",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "96e2fef2c9bc9baa70dcc4ce8f10c87672f0b5355e06850a5f65be36dc1bf1d6",
+    "input_hash": "210c04235c27feab7d883d602642abd618398431b472d2dbdfed3e9fe67174a0",
+    "generated_sql": "SELECT MAX(CAST(\"Bronze\" AS INTEGER)) FROM \"Medal Tally\" WHERE CAST(\"Silver\" AS INTEGER) < 0;",
+    "timestamp": "2026-09-20T06:03:14.389079+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 260,
+      "completion_tokens": 193,
+      "total_tokens": 453
+    },
+    "latency_ms": 578.66
+  },
+  "task_19_0f022babf525_5a00af659b98": {
+    "task_id": "19",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "5a00af659b98413618790e6d015cd4b518ef6e5a0218b0d9dfe4a497d0a639b0",
+    "input_hash": "0f022babf52503f4928401760dba2c40334b1528d1a387974f3c5fd7c9bb8c85",
+    "generated_sql": "SELECT Attendance \nFROM \"Baseball Team Record\" \nWHERE Record = '15-28' \nORDER BY CAST(REPLACE(Attendance, ',', '') AS INTEGER) DESC \nLIMIT 1;",
+    "timestamp": "2026-09-20T06:03:15.940377+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 292,
+      "completion_tokens": 190,
+      "total_tokens": 482
+    },
+    "latency_ms": 979.24
+  },
+  "task_20_8330c7b36b5e_c826dd83918c": {
+    "task_id": "20",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "c826dd83918ce7c1abf5181c496042c87bf48b386d11655453a4c6545485938a",
+    "input_hash": "8330c7b36b5e3771a11ffbec85c90427087ab40c67966af2ae0e0bf1cc35ce02",
+    "generated_sql": "SELECT AVG(CAST(\"Total\" AS INTEGER)) FROM \"Olympic_medal_counts\" WHERE CAST(\"Gold\" AS INTEGER) = 0 AND \"Nation\" = 'Iran';",
+    "timestamp": "2026-09-20T06:03:17.522162+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 270,
+      "completion_tokens": 192,
+      "total_tokens": 462
+    },
+    "latency_ms": 875.03
+  },
+  "task_21_a8d7968b9528_85465b46aaf1": {
+    "task_id": "21",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "85465b46aaf1eeef431a0cf141f2c4d9f64b78da235162fe9801e6533d44ffde",
+    "input_hash": "a8d7968b9528dd7651378e17a570d23b6b9ebbf19fa3f3b3596ddbcd3709e33f",
+    "generated_sql": "INSERT INTO \"School Location Table\" (\"School\",\"Location\",\"Date moved\",\"Currently at this location\") VALUES ('Madison High School','San Diego','1980','nearby junior high school');",
+    "timestamp": "2026-09-20T06:03:19.060637+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 290,
+      "completion_tokens": 198,
+      "total_tokens": 488
+    },
+    "latency_ms": 907.48
+  },
+  "task_22_83d75f62084f_854080e98f91": {
+    "task_id": "22",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "854080e98f91f40d967dd741d7d14243bb3cfc67650378c9f125f1b5dcd57138",
+    "input_hash": "83d75f62084fbbf165485d25d89eeb84fe74e72f75d6516874c557f1d7001a17",
+    "generated_sql": "INSERT INTO \"Football Standings\" (\"Position\",\"Club\",\"Games played\",\"Wins\",\"Draws\",\"Loses\",\"Goals scored\",\"Goals conceded\",\"Points\") VALUES ('10','FK Trakai','18','9','2','7','29','24','29');",
+    "timestamp": "2026-09-20T06:03:20.665057+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 361,
+      "completion_tokens": 158,
+      "total_tokens": 519
+    },
+    "latency_ms": 827.76
+  },
+  "task_23_c92731cccac4_e199f3ae36c5": {
+    "task_id": "23",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "e199f3ae36c512c9e108e33fd88f3dbc5a912a2d3eb060dbf1b401d6775d2e1d",
+    "input_hash": "c92731cccac4dc29ff446e0007c39efd48c6a0ad49429712b23cb60b71008dec",
+    "generated_sql": "INSERT INTO \"Golf Tournament Winners\" (\"Player\",\"Country\",\"Year(s) won\",\"Total\",\"To par\") VALUES ('Bernhard Langer','Germany','1985, 1993','290','+2');",
+    "timestamp": "2026-09-20T06:03:22.385019+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 292,
+      "completion_tokens": 204,
+      "total_tokens": 496
+    },
+    "latency_ms": 1178.24
+  },
+  "task_24_c31682e780e9_d1e95563f672": {
+    "task_id": "24",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "d1e95563f6723c3c6faab4efc788d356de71223e1ebf3461a45df300195489d7",
+    "input_hash": "c31682e780e9a04116946cf00c246df8eb25eac5315143541950675d3fa5e794",
+    "generated_sql": "INSERT INTO \"Olympic Medals\" (\"Rank\",\"Gold\",\"Silver\",\"Bronze\",\"Total\") VALUES ('7','0','1','0','1');",
+    "timestamp": "2026-09-20T06:03:23.820490+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 311,
+      "completion_tokens": 178,
+      "total_tokens": 489
+    },
+    "latency_ms": 889.26
+  },
+  "task_25_b4c0858da083_f80620aa5e94": {
+    "task_id": "25",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "f80620aa5e9437f8af20397b237d8209a033fe97cfb3716861b7fe6fec2d810e",
+    "input_hash": "b4c0858da083096b24f95c7e02c2fe5570b74db6721658ddc1141eae77e85400",
+    "generated_sql": "INSERT INTO \"Dallas Cowboys 1986 Season\" (\"Week\", \"Date\", \"Opponent\", \"Result\", \"Game site\", \"NFL Recap\", \"Attendance\") VALUES (18, 'January 4, 1987', 'Atlanta Falcons', 'W 27-20', 'Texas Stadium', '[18]', 62129);",
+    "timestamp": "2026-09-20T06:03:26.415703+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 367,
+      "completion_tokens": 230,
+      "total_tokens": 597
+    },
+    "latency_ms": 2042.25
+  },
+  "task_26_c85cdeabb4ad_6bc960515056": {
+    "task_id": "26",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "6bc9605150569191faabbe33671aa442b8b793b937894efef7b91af8ca48f95e",
+    "input_hash": "c85cdeabb4ad58b35747d12c91fccbdd4371a4afe1a543c5be1b4b286c128b6c",
+    "generated_sql": "INSERT INTO \"Badminton Achievements\" (\"Outcome\",\"Event\",\"Year\",\"Venue\",\"Partner\") VALUES (NULL, 'Men''s Doubles', '1990', 'Birmingham, England', NULL);",
+    "timestamp": "2026-09-20T06:03:30.622608+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 276,
+      "completion_tokens": 461,
+      "total_tokens": 737
+    },
+    "latency_ms": 3533.8
+  },
+  "task_27_77b7ed95f267_6a0006b4190e": {
+    "task_id": "27",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "6a0006b4190e322fb42bcab5e3d09c8909f83866bbdd5c1b477b81217be07732",
+    "input_hash": "77b7ed95f267e61a8b02a5750692990de8c1e7c77b6d7c2db730cc0f558e4573",
+    "generated_sql": "INSERT INTO \"Shipping Incidents\" (\"Date\",\"Name\",\"Nationality\",\"Tonnage (GRT)\",\"Fate\") VALUES ('2 January 1944','Willem van der Zaan','Netherlands',5200,'Sunk');",
+    "timestamp": "2026-09-20T06:03:36.543624+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 290,
+      "completion_tokens": 316,
+      "total_tokens": 606
+    },
+    "latency_ms": 5243.64
+  },
+  "task_28_ce2d15339759_7e81b360dbc5": {
+    "task_id": "28",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "7e81b360dbc5ac375281a368c42f14d290d7fdb8d6a680310600f550980bc0ad",
+    "input_hash": "ce2d1533975966dc63b27885277f6e6d79ffe0ae71c8d133f1396ae0897f3506",
+    "generated_sql": "INSERT INTO \"Swimming World Records\" (\"Time\",\"Swimmer\",\"Date\",\"Place\") VALUES ('2:16.33','Lilly King','August 11 , 2021','Tokyo, Japan');",
+    "timestamp": "2026-09-20T06:03:40.465271+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 341,
+      "completion_tokens": 418,
+      "total_tokens": 759
+    },
+    "latency_ms": 3394.99
+  },
+  "task_29_f5413b70690e_2dcdaf89ee12": {
+    "task_id": "29",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "2dcdaf89ee1244558a858983d4085ecfe57393f02e52db4703f1308bc6d921ed",
+    "input_hash": "f5413b70690eab47d0e03f050247601c5a7f20cd1963c22115b0fb87459d7547",
+    "generated_sql": "INSERT INTO \"Football Teams Attendance\" (\"Team\",\"Stadium\",\"Home games\",\"Average attendance\",\"Total attendance\",\"Capacity percentage\") VALUES ('Tennessee Titans','Nissan Stadium',8,64798,518384,'99.8%');",
+    "timestamp": "2026-09-20T06:03:46.569447+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 314,
+      "completion_tokens": 530,
+      "total_tokens": 844
+    },
+    "latency_ms": 5525.35
+  },
+  "task_30_bea0d427c1c1_adbae9ebe24f": {
+    "task_id": "30",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "adbae9ebe24f853b8a6ef891ded71645ee29bcaaaa89aa19a06f3bc7fad9312b",
+    "input_hash": "bea0d427c1c1e2d9355eee143a7a875d0c4c9217b11e11687c13a006bbb6dcc4",
+    "generated_sql": "INSERT INTO \"Parish_LGA_Towns\" (\"Parish\",\"LGA\",\"Towns\") VALUES ('Harris','Scenic Rim','Boonah');",
+    "timestamp": "2026-09-20T06:03:52.982203+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 261,
+      "completion_tokens": 139,
+      "total_tokens": 400
+    },
+    "latency_ms": 5880.65
+  },
+  "task_31_bd04ff1a242e_d3d5c9e0c6f6": {
+    "task_id": "31",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "d3d5c9e0c6f649fa721ea49d6f560be629855bd9c2c790cbcfbd6528c64e8a8e",
+    "input_hash": "bd04ff1a242e07a68be4de4eeadc68812181499dbaec904883ac31c783b94a15",
+    "generated_sql": "INSERT INTO \"Football Match Results\" (\"Date\",\"Round\",\"Opponents\",\"H / A\",\"Result F\u2013A\",\"Attendance\") VALUES ('8 March 2007','Round of 16 Second leg','Porto','A','1-0','41,000');",
+    "timestamp": "2026-09-20T06:03:56.911546+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 321,
+      "completion_tokens": 397,
+      "total_tokens": 718
+    },
+    "latency_ms": 3403.2
+  },
+  "task_32_418775ff825f_b51b5f091d0a": {
+    "task_id": "32",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "b51b5f091d0a3a2f1447ff01d7df3367f42d5359426b3ee666a6942bf20c6e6c",
+    "input_hash": "418775ff825f669e896ac72a2fac85b12f0b4e439909c56efc9bf1f94e6ca266",
+    "generated_sql": "INSERT INTO \"horse_races\" (\"Year\", \"Horse\", \"Age\", \"Trainer\", \"Owner\") VALUES (1971, 'Kauai King', 4, 'Henry Forrest', 'Ford Stable');",
+    "timestamp": "2026-09-20T06:04:00.396367+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 280,
+      "completion_tokens": 219,
+      "total_tokens": 499
+    },
+    "latency_ms": 2956.3
+  },
+  "task_33_9cedfa4a3558_f7c271d4d413": {
+    "task_id": "33",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "f7c271d4d413fe6fb6a561d2d612a86ae7da48aff0a66eb78dba6026720171af",
+    "input_hash": "9cedfa4a3558bb6a8a2ef1129107132d43faf0a073690515762f4c91ebeacffa",
+    "generated_sql": "INSERT INTO \"Doctor Who Episodes\" (\"Episode #\", \"Original airdate (UK)\", \"Episode title\", \"Doctor Who episode\", \"Webcast link\") VALUES ('S4', '30 June 2007', '\"Doctor Who Confidential: Music and Monsters\"', 'Episodes 1-13', 'N/A');",
+    "timestamp": "2026-09-20T06:04:08.457044+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 324,
+      "completion_tokens": 273,
+      "total_tokens": 597
+    },
+    "latency_ms": 1018.39
+  },
+  "task_34_e6cd6c3a126e_475b0d909888": {
+    "task_id": "34",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "475b0d9098887fb73ac9135c68db25c248c558b405d9bf97c00029a5640faa09",
+    "input_hash": "e6cd6c3a126e7f3efc1cb126917f89344e8f46f5e637458b9ecbfa787468a951",
+    "generated_sql": "INSERT INTO \"CSI:Miami Characters\" (\"Character\",\"Fate\",\"Actor\",\"First Episode\",\"Final Episode\",\"Duration\",\"Final Episode Count\") VALUES ('Natalia Boa Vista','Alive','Eva LaRue','Rio',NULL,'04x25\u201310x19','177');",
+    "timestamp": "2026-09-20T06:04:10.522635+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 365,
+      "completion_tokens": 463,
+      "total_tokens": 828
+    },
+    "latency_ms": 1480.43
+  },
+  "task_35_84617063e3c5_b58a4f74e74e": {
+    "task_id": "35",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "b58a4f74e74ebd273d4397de78ac6f4d4c12e14a32a1de9861b647ca6eb2dbb5",
+    "input_hash": "84617063e3c52d152be805ffc92ac6405760cc5a31888f90037c572993a918a9",
+    "generated_sql": "INSERT INTO \"shipwrecks\" (\"Date\",\"Name\",\"Nationality\",\"Tonnage\",\"Fate\") VALUES ('14 February 1917','Uranus','Romania','1,429','Sunk');",
+    "timestamp": "2026-09-20T06:04:16.416620+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 277,
+      "completion_tokens": 313,
+      "total_tokens": 590
+    },
+    "latency_ms": 5299.96
+  },
+  "task_36_9931724d70f1_556947ddda3d": {
+    "task_id": "36",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "556947ddda3ddc38320f2ba4a3ad30787a26df077f4bdfc5cf44cc75790ab92a",
+    "input_hash": "9931724d70f136b6108c492865d9ae0484ea50c055c3546d5fd147f7a7234ed2",
+    "generated_sql": "INSERT INTO \"Football Draft Picks\" (\"Round\", \"Pick\", \"Player\", \"Position\", \"School/Club Team\") VALUES ('33', '336', 'John Smith', 'Quarterback', 'USC');",
+    "timestamp": "2026-09-20T06:04:19.719934+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 291,
+      "completion_tokens": 250,
+      "total_tokens": 541
+    },
+    "latency_ms": 2746.72
+  },
+  "task_37_86b9f28a9f4c_edabb954ca75": {
+    "task_id": "37",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "edabb954ca75628def9423927fb15cea0ac1840440108d244c64a4b77c90bce5",
+    "input_hash": "86b9f28a9f4c2b0fcd1468c98bf4608212ae29c732fca801e2f1ae95c60fdcc1",
+    "generated_sql": "INSERT INTO \"Power Plants and Rivers\" (\"Plant\",\"River\",\"Power ( MW )\") VALUES ('Another Plant','Muskegon','15');",
+    "timestamp": "2026-09-20T06:04:24.057995+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 246,
+      "completion_tokens": 131,
+      "total_tokens": 377
+    },
+    "latency_ms": 3756.66
+  },
+  "task_38_3bbbdc20daf2_87f7a1e44848": {
+    "task_id": "38",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "87f7a1e44848bede4a0e56b6525d2afd7e81febf0a6405e9ad09bf529f63a617",
+    "input_hash": "3bbbdc20daf29fc317f2340560a0e4880922c7bf71d94d16ed5cd70c57ccee56",
+    "generated_sql": "INSERT INTO \"Team Season Record\" (\"Season\",\"Team\",\"Overall\",\"Conference\",\"Standing\",\"Postseason\") VALUES ('2021','UCF','35-25','13-11','5th','NCAA Regional');",
+    "timestamp": "2026-09-20T06:04:28.647197+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 422,
+      "completion_tokens": 172,
+      "total_tokens": 594
+    },
+    "latency_ms": 4088.79
+  },
+  "task_39_7e642c2adbac_72c7cf4ee5cd": {
+    "task_id": "39",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "72c7cf4ee5cdd59d0c9541aa6b124da4581bd275563f59fde65e5b1c29d3f61f",
+    "input_hash": "7e642c2adbac9aca845d2ff5759eeba321bdcb0f4f68cb1b1e2a4801592b2172",
+    "generated_sql": "INSERT INTO \"game_results\" (\"Game\",\"October\",\"Opponent\",\"Score\",\"Decision\",\"Record\") VALUES ('16','16','San Jose Sharks','4 - 3','Lundqvist','13-2-1');",
+    "timestamp": "2026-09-20T06:04:32.878693+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 336,
+      "completion_tokens": 507,
+      "total_tokens": 843
+    },
+    "latency_ms": 3707.02
+  },
+  "task_40_d7689cbc0570_5fa7e57cfee2": {
+    "task_id": "40",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "5fa7e57cfee2bd121de2f61d6408c511d81d991a0477651b617b5c4f29b4b2c6",
+    "input_hash": "d7689cbc05701f18afdaa883d38f1d3da75ce765240f686afbe708e9ab4b79be",
+    "generated_sql": "INSERT INTO \"Surname Ranking\" (\"Rank\",\"Surname\",\"Number of bearers 2008\",\"Type\",\"Etymology\") VALUES ('23','Hedlund','21.899','landscape','heath+grove');",
+    "timestamp": "2026-09-20T06:04:38.661924+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 308,
+      "completion_tokens": 215,
+      "total_tokens": 523
+    },
+    "latency_ms": 5233.93
+  },
+  "task_41_1b4ceea0decf_e2da107a480c": {
+    "task_id": "41",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "e2da107a480c2e39dd389db537ffd236453171a95d619de332d40b34de6ab701",
+    "input_hash": "1b4ceea0decf5b5032e1345d8802eecb3ccd5ca48112973928ae13891bb4e032",
+    "generated_sql": "UPDATE \"Football Team Results\"\nSET \"Wins\" = '5',\n    \"Byes\" = '3',\n    \"Losses\" = '8',\n    \"Draws\" = '2',\n    \"Against\" = '1305'\nWHERE \"Ballarat FL\" = 'Creswick';",
+    "timestamp": "2026-09-20T06:04:42.103697+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 294,
+      "completion_tokens": 203,
+      "total_tokens": 497
+    },
+    "latency_ms": 2818.1
+  },
+  "task_42_22d7bd1ced27_237d08cb48cd": {
+    "task_id": "42",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "237d08cb48cd0532ecaf4a4f876f59adcf198022f3af933aef1aa153c47bfdea",
+    "input_hash": "22d7bd1ced27474ab2708c2e4d991309bc407ec024d3e51eb8eede49429c022e",
+    "generated_sql": "UPDATE \"Actress Filmography\" SET \"Title\" = 'Wonder Woman: 1984' WHERE \"Year\" = 2017;",
+    "timestamp": "2026-09-20T06:04:45.686467+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 258,
+      "completion_tokens": 167,
+      "total_tokens": 425
+    },
+    "latency_ms": 2997.11
+  },
+  "task_43_ba66bb320a30_171a020bd59e": {
+    "task_id": "43",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "171a020bd59e9dd5a1b1ccc6bfae42c00ad8555983a238bc3a2a7cd7a33c502a",
+    "input_hash": "ba66bb320a30262de3837005b22d2aaa83c85ce9919165010e047e5ac040ac2c",
+    "generated_sql": "UPDATE \"Sportswoman_of_the_Year_Award_1\"\nSET \"Winner\" = 'Naomi Osaka'\nWHERE \"Year\" = 2015 AND \"Sport\" = 'Tennis';",
+    "timestamp": "2026-09-20T06:04:48.228612+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 257,
+      "completion_tokens": 199,
+      "total_tokens": 456
+    },
+    "latency_ms": 2003.44
+  },
+  "task_44_fcccab7a9e8f_b4ccd116e0bf": {
+    "task_id": "44",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "b4ccd116e0bfbc1a1a1c13b3b73dcc27641aab8e9e70a5d46a41b2a89c05804c",
+    "input_hash": "fcccab7a9e8f47107e3834f5f684d44a9955fae10337c0edba9651f47c644d24",
+    "generated_sql": "UPDATE \"Central European Jamboree\"\nSET \"Host City\" = 'Bratislava'\nWHERE \"Year\" = 2026;",
+    "timestamp": "2026-09-20T06:04:52.553020+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 287,
+      "completion_tokens": 116,
+      "total_tokens": 403
+    },
+    "latency_ms": 3781.25
+  },
+  "task_45_75c924d08b7a_f5f5a3e2e91f": {
+    "task_id": "45",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "f5f5a3e2e91fd1148fc5576e36203ebb032c1ae0cedfc2370880ca70dce31e38",
+    "input_hash": "75c924d08b7a0b788107563058c38748ce80eff6ddf2ecd77cfa2610dddddb07",
+    "generated_sql": "UPDATE \"Baseball Team Performance\" SET \"Affiliation\" = 'Red Sox', \"Manager\" = 'Bill Belichick' WHERE \"Year\" = 2002;",
+    "timestamp": "2026-09-20T06:04:55.921922+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 314,
+      "completion_tokens": 146,
+      "total_tokens": 460
+    },
+    "latency_ms": 2828.41
+  },
+  "task_46_ff3fc556544e_bcf5adb1190d": {
+    "task_id": "46",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "bcf5adb1190d3660a8cc9b5050da5b7f2346bccabdaa2118f23ca914e5b6f181",
+    "input_hash": "ff3fc556544e90e4721877477a7af96afaa2c1e78c7e2f9ee19dc43b27f098f0",
+    "generated_sql": "UPDATE \"Primary Schools in Western Australia\" SET \"LGA\" = 'Armadale' WHERE \"Name\" = 'Byford Primary School';",
+    "timestamp": "2026-09-20T06:04:58.233731+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 275,
+      "completion_tokens": 131,
+      "total_tokens": 406
+    },
+    "latency_ms": 1682.4
+  },
+  "task_47_bb804af65e59_7a5bee2f5828": {
+    "task_id": "47",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "7a5bee2f58286d1a58ada5d2d3d6123facd7877c461b5c9770b624aecab85461",
+    "input_hash": "bb804af65e5903b54a02334c0398166efe9c9b2093ed1c30fdd72419e8c18f8e",
+    "generated_sql": "UPDATE \"Zodiac Decans Rulers Table\" SET \"First Decan ruler ( 0 - 9.999 deg . )\" = 'Venus', \"Second Decan ruler ( 10 - 19.999 deg . )\" = 'Saturn', \"Third Decan ruler ( 20 - 29.999 deg . )\" = 'Mercury' WHERE \"Sign\" = 'Taurus';",
+    "timestamp": "2026-09-20T06:05:03.049715+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 357,
+      "completion_tokens": 309,
+      "total_tokens": 666
+    },
+    "latency_ms": 4287.93
+  },
+  "task_48_936d40fc60a3_ee59036d53f9": {
+    "task_id": "48",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "ee59036d53f91971c3079d6a99fd627de6bdb3690cc20367e45180bd3702e2bb",
+    "input_hash": "936d40fc60a3d35b11ef150b6f013969a75a02ed60002e6ea2e34494617be720",
+    "generated_sql": "UPDATE \"Skyscraper Database\" SET \"Country\" = 'Canada' WHERE \"Building\" = 'Central Park Tower';",
+    "timestamp": "2026-09-20T06:05:05.525118+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 282,
+      "completion_tokens": 103,
+      "total_tokens": 385
+    },
+    "latency_ms": 1837.02
+  },
+  "task_49_45b9e6350f5a_75acdba8c192": {
+    "task_id": "49",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "75acdba8c192d95f59789ef4ff1bc6f2d1e42a23dda139c93424c9cef8f85fa9",
+    "input_hash": "45b9e6350f5aa96fbb7a8a9e46966110d26d645abb85c99e7226697ad6d9ab0a",
+    "generated_sql": "UPDATE \"game_results\" SET \"Opponent\" = 'vs. Connecticut', \"Score\" = '70-73' WHERE \"Date\" = 'September 27';",
+    "timestamp": "2026-09-20T06:05:10.026246+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 270,
+      "completion_tokens": 149,
+      "total_tokens": 419
+    },
+    "latency_ms": 3965.54
+  },
+  "task_50_dd70ffd0498d_47f13fcd0b43": {
+    "task_id": "50",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "47f13fcd0b432dfc282416133b99f72e8944900655438097556fb0648babfff8",
+    "input_hash": "dd70ffd0498db281b83283f5c63e08e284f17303bfb1fa0b5b3a9ebb332dc6c1",
+    "generated_sql": "INSERT INTO \"Golf Champions\" (\"Player\",\"Country\",\"Year(s) won\",\"Total\",\"To par\") VALUES ('Tiger Woods', NULL, '1997,2001,2002,2005', '270', '-18');",
+    "timestamp": "2026-09-20T06:05:11.910823+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 279,
+      "completion_tokens": 370,
+      "total_tokens": 649
+    },
+    "latency_ms": 1354.08
+  },
+  "task_51_00be3d78d64b_23974185f466": {
+    "task_id": "51",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "23974185f466f5bd0645549e39e517978e8874ffebfc5a8b1146f2c9e089e4fb",
+    "input_hash": "00be3d78d64b88b2e4d59131b31ba664d2067f836d23b08d12cfa13139945182",
+    "generated_sql": "INSERT INTO \"Native American removal and emigration table\" (\"Nation\",\"Removal treaty (year signed)\",\"Years of major emigration\",\"Total number emigrated or forcibly removed\",\"Number stayed in Southeast\",\"Deaths from warfare\") VALUES ('Navajo',NULL,NULL,'12,000',NULL,NULL);",
+    "timestamp": "2026-09-20T06:05:18.802598+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 333,
+      "completion_tokens": 344,
+      "total_tokens": 677
+    },
+    "latency_ms": 6361.62
+  },
+  "task_52_abdf8db291a6_a8984c19a917": {
+    "task_id": "52",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "a8984c19a9170f90bd4e6e89bcd75c172ca8dc7f3c07a7c4f4c9aa05cfe0184a",
+    "input_hash": "abdf8db291a69a4bbdd9417f4bd571adf51f2cd2fdd4bd4bce682fcafa2a7ebd",
+    "generated_sql": "UPDATE \"Elected Members of New Zealand Parliament\" SET \"Electorate\" = 'Auckland North' WHERE \"Name\" = 'John Smith';",
+    "timestamp": "2026-09-20T06:05:23.242296+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 326,
+      "completion_tokens": 114,
+      "total_tokens": 440
+    },
+    "latency_ms": 3906.5
+  },
+  "task_53_c14c9e9548ef_7c5dedbf2796": {
+    "task_id": "53",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "7c5dedbf27961e0462154cbf034efad31bc2b47aa1448a8d13ed291f8142048f",
+    "input_hash": "c14c9e9548ef4f92734c18fde08ea361b14cceb4aec140492c5a8ffbe7fb4fab",
+    "generated_sql": "UPDATE \"Principal Assignments by Year\" SET \"Gorham Principal\" = 'Karen Lee' WHERE \"Year\" = '2012-2013';",
+    "timestamp": "2026-09-20T06:05:26.770235+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 328,
+      "completion_tokens": 130,
+      "total_tokens": 458
+    },
+    "latency_ms": 2850.2
+  },
+  "task_54_49f861ad73bc_8b28fbb9caed": {
+    "task_id": "54",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "8b28fbb9caed11e0b9df4bba0df9fba6da6f82afa9e83aa2cbf5e5f0b64cd8dc",
+    "input_hash": "49f861ad73bca77c81cd463c342689415de97eb2094484b2ac978a770ba9f325",
+    "generated_sql": "UPDATE \"Nation Scores Table\"\nSET \"E Score\" = '7.400',\n    \"Total\" = '22.950'\nWHERE \"Nation\" = 'Japan';",
+    "timestamp": "2026-09-20T06:05:29.239646+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 292,
+      "completion_tokens": 157,
+      "total_tokens": 449
+    },
+    "latency_ms": 1934.08
+  },
+  "task_55_90bcb9dc3980_d03d4b7cc454": {
+    "task_id": "55",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "d03d4b7cc45481987f7f5697d66d593486d005997065a7904379564421250d0f",
+    "input_hash": "90bcb9dc39804edd3147c673357ff7bf4022b76b353b0eff70071131d99be4d1",
+    "generated_sql": "UPDATE \"Basketball Tournament Results\"\nSET \"Winner\" = 'Northeastern University'\nWHERE \"Year\" = 2000;",
+    "timestamp": "2026-09-20T06:05:33.704221+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 316,
+      "completion_tokens": 137,
+      "total_tokens": 453
+    },
+    "latency_ms": 3947.68
+  },
+  "task_56_f6efb065a643_a7dcdca66141": {
+    "task_id": "56",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "a7dcdca66141f35bf145250c66d8a0844da196b0ebed05d7ef8edd8ad45586b8",
+    "input_hash": "f6efb065a6431a1f860f0099cabbd33d0c9023ba35f667827acac2886b9326ad",
+    "generated_sql": "UPDATE \"Statistics\" SET \"Source\" = 'USDA' WHERE \"Name\" LIKE '%soybean%';",
+    "timestamp": "2026-09-20T06:05:35.391686+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 297,
+      "completion_tokens": 162,
+      "total_tokens": 459
+    },
+    "latency_ms": 981.29
+  },
+  "task_57_720130e2ab37_9df36d0fdc2c": {
+    "task_id": "57",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "9df36d0fdc2c4af9730897f8e97b15ff803b37b6c3c8b8be7658c83743d8052d",
+    "input_hash": "720130e2ab37c93ff9c1feb30a9269f78aca1ebd5a893fce59159d3b5f05b3a5",
+    "generated_sql": "UPDATE \"SeasonStatistics\" SET \"Played\"='7', \"Drawn\"='1', \"Lost\"='2', \"Against\"='82' WHERE \"Season\"='2010-11';",
+    "timestamp": "2026-09-20T06:05:40.064279+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 269,
+      "completion_tokens": 304,
+      "total_tokens": 573
+    },
+    "latency_ms": 4150.24
+  },
+  "task_58_2aedf45e0b6d_1064932a949b": {
+    "task_id": "58",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "1064932a949b5ace71dde2cfe58a3eb574f027ab376ad1ede9e7a6f359163a68",
+    "input_hash": "2aedf45e0b6d06dbda86821d64d91c15073ee7c50cbb25171f2a95015f71152d",
+    "generated_sql": "UPDATE \"Locomotive Inventory Table\" SET \"Year(s) retired\" = '1935-1960' WHERE \"Class\" = 'M-1';",
+    "timestamp": "2026-09-20T06:05:45.680054+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 432,
+      "completion_tokens": 148,
+      "total_tokens": 580
+    },
+    "latency_ms": 5029.11
+  },
+  "task_59_71437b61ada7_78ed4a3558d8": {
+    "task_id": "59",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "78ed4a3558d889680241aa6d6592ba4e4bf5b1c224c73f54944f230c9f7b3b1c",
+    "input_hash": "71437b61ada7e1e511aec02ac859bb682b2c7143796e9f75591beba10f605213",
+    "generated_sql": "UPDATE \"Football Season Results\"\nSET \"Result\" = 'W 28-10',\n    \"Record\" = '16-2'\nWHERE \"Week\" = 19;",
+    "timestamp": "2026-09-20T06:05:49.111809+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 327,
+      "completion_tokens": 149,
+      "total_tokens": 476
+    },
+    "latency_ms": 2910.77
+  },
+  "task_60_e348b5ce4542_80a1858411ef": {
+    "task_id": "60",
+    "model": "openai/gpt-oss-120b",
+    "reasoning_effort": "medium",
+    "prompt_hash": "80a1858411efc26042b9039e3fedb8c5dbcd1a8a55c9b69608e799666f8b8dae",
+    "input_hash": "e348b5ce4542097ff6f49a031058be2bba64097e9ff5e3c263b57c8ddda5497f",
+    "generated_sql": "UPDATE \"Specimen Collection\" SET \"No. Specimens\" = '190,000' WHERE \"Name\" = 'University of Stockholm';",
+    "timestamp": "2026-09-20T06:05:50.469331+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 287,
+      "completion_tokens": 102,
+      "total_tokens": 389
+    },
+    "latency_ms": 750.86
+  }
+}

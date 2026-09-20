@@ -1,0 +1,17 @@
+{
+  "task_1_2cb82b04b88f_93b3a1e2bfc1": {
+    "task_id": "1",
+    "model": "gemini-3.8-flash",
+    "prompt_hash": "93b3a1e2bfc19dcf5b6cb8824d6dd992d721ae1e936df6814784d061a944781f",
+    "input_hash": "2cb82b04b88f3d89d479fce8eba471e93b931afa282971c2fcf3cbc405d6d5da",
+    "generated_sql": "SELECT \"Presentation of Credentials\" FROM \"US Ambassadors and Envoy Extraordinary to Colombia\" WHERE \"Termination of Mission\" = 'August 15, 2000'",
+    "timestamp": "2026-09-20T04:51:58.593439+00:00",
+    "api_status": "SUCCESS",
+    "token_usage": {
+      "prompt_tokens": 179,
+      "candidates_tokens": 35,
+      "total_tokens": 531
+    },
+    "latency_ms": 15038.24
+  }
+}

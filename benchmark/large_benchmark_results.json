@@ -1,0 +1,184 @@
+{
+  "v1_1500": {
+    "accuracy": 100.0,
+    "macro_f1": 1.0,
+    "unsafe_miss_rate": 0.0,
+    "safe_false_block_rate": 0.0,
+    "total_cases": 1500,
+    "confidence_interval_95": {
+      "lower": 0.9974,
+      "upper": 1.0,
+      "confidence_level": "95%",
+      "method": "Wilson score interval"
+    },
+    "per_class": {
+      "ALLOW": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 590
+      },
+      "CONFIRM": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 310
+      },
+      "BLOCK": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 600
+      }
+    },
+    "safety_metrics": {
+      "total_dangerous_cases": 600,
+      "total_safe_cases": 590,
+      "unsafe_miss_count": 0,
+      "unsafe_miss_rate": 0.0,
+      "unsafe_allowed_count": 0,
+      "unsafe_confirmed_count": 0,
+      "safe_false_block_count": 0,
+      "safe_false_block_rate": 0.0,
+      "safe_false_confirm_count": 0,
+      "confirmation_count": 310,
+      "block_count": 600
+    },
+    "latency_ms": {
+      "mean_ms": 0.6308,
+      "median_ms": 0.5784,
+      "std_ms": 0.4067,
+      "p95_ms": 1.2319,
+      "p99_ms": 2.3599,
+      "min_ms": 0.2343,
+      "max_ms": 5.7789,
+      "n": 1500
+    },
+    "evaluated_at": "2026-09-20T04:26:50.204221+00:00"
+  },
+  "v2_1500": {
+    "accuracy": 98.2,
+    "macro_f1": 0.9752,
+    "unsafe_miss_rate": 0.045,
+    "safe_false_block_rate": 0.0,
+    "total_cases": 1500,
+    "confidence_interval_95": {
+      "lower": 0.9739,
+      "upper": 0.9876,
+      "confidence_level": "95%",
+      "method": "Wilson score interval"
+    },
+    "per_class": {
+      "ALLOW": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 650
+      },
+      "CONFIRM": {
+        "precision": 0.9025,
+        "recall": 1.0,
+        "f1": 0.9488,
+        "support": 250
+      },
+      "BLOCK": {
+        "precision": 1.0,
+        "recall": 0.955,
+        "f1": 0.977,
+        "support": 600
+      }
+    },
+    "safety_metrics": {
+      "total_dangerous_cases": 600,
+      "total_safe_cases": 650,
+      "unsafe_miss_count": 27,
+      "unsafe_miss_rate": 0.045,
+      "unsafe_allowed_count": 0,
+      "unsafe_confirmed_count": 27,
+      "safe_false_block_count": 0,
+      "safe_false_block_rate": 0.0,
+      "safe_false_confirm_count": 0
+    },
+    "latency_ms": {
+      "mean_ms": 0.6279,
+      "median_ms": 0.5882,
+      "std_ms": 0.345,
+      "p95_ms": 1.1196,
+      "p99_ms": 2.03,
+      "min_ms": 0.2436,
+      "max_ms": 6.2017,
+      "n": 1500
+    },
+    "evaluated_at": "2026-09-20T04:27:56.809982+00:00"
+  },
+  "ablation_study_v1": {
+    "configurations": {
+      "FULL": {
+        "accuracy": 100.0,
+        "macro_f1": 1.0,
+        "dangerous_not_blocked": 0,
+        "safe_incorrectly_blocked": 0
+      },
+      "NO_INTENT_SQL": {
+        "accuracy": 62.87,
+        "macro_f1": 0.5844,
+        "dangerous_not_blocked": 407,
+        "safe_incorrectly_blocked": 0
+      },
+      "NO_SCOPE": {
+        "accuracy": 94.67,
+        "macro_f1": 0.9298,
+        "dangerous_not_blocked": 0,
+        "safe_incorrectly_blocked": 0
+      },
+      "NO_IMPACT": {
+        "accuracy": 100.0,
+        "macro_f1": 1.0,
+        "dangerous_not_blocked": 0,
+        "safe_incorrectly_blocked": 0
+      },
+      "NO_INTENT": {
+        "accuracy": 62.87,
+        "macro_f1": 0.5844,
+        "dangerous_not_blocked": 407,
+        "safe_incorrectly_blocked": 0
+      }
+    },
+    "evaluated_at": "2026-09-20T04:30:33.868722+00:00"
+  },
+  "ablation_study_v2": {
+    "configurations": {
+      "FULL": {
+        "accuracy": 98.2,
+        "macro_f1": 0.9752,
+        "dangerous_not_blocked": 27,
+        "safe_incorrectly_blocked": 0
+      },
+      "NO_INTENT_SQL": {
+        "accuracy": 62.07,
+        "macro_f1": 0.5113,
+        "dangerous_not_blocked": 369,
+        "safe_incorrectly_blocked": 0
+      },
+      "NO_SCOPE": {
+        "accuracy": 98.2,
+        "macro_f1": 0.9752,
+        "dangerous_not_blocked": 27,
+        "safe_incorrectly_blocked": 0
+      },
+      "NO_IMPACT": {
+        "accuracy": 98.2,
+        "macro_f1": 0.9752,
+        "dangerous_not_blocked": 27,
+        "safe_incorrectly_blocked": 0
+      },
+      "NO_INTENT": {
+        "accuracy": 62.07,
+        "macro_f1": 0.5113,
+        "dangerous_not_blocked": 369,
+        "safe_incorrectly_blocked": 0
+      }
+    },
+    "evaluated_at": "2026-09-20T04:30:33.868744+00:00"
+  }
+}
