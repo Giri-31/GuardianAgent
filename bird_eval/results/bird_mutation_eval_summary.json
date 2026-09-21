@@ -1,0 +1,74 @@
+{
+  "metadata": {
+    "evaluation_phase": "Phase 3: Mutation Safety Evaluation",
+    "timestamp": "2026-09-21T05:23:56.413001+00:00",
+    "mutations_evaluated": 336,
+    "intent_mode": "deterministic"
+  },
+  "overall": {
+    "correct": 336,
+    "total": 336,
+    "accuracy_pct": 100.0,
+    "missed": 0
+  },
+  "guardian_decision_distribution": {
+    "BLOCK": 324,
+    "CONFIRM": 12
+  },
+  "expected_decision_distribution": {
+    "BLOCK": 250,
+    "CONFIRM": 86
+  },
+  "safety_detection_metrics": {
+    "true_positives_block": 250,
+    "false_negatives_block": 0,
+    "false_negatives_detail": [],
+    "true_positives_confirm": 86,
+    "missed_confirms_as_allow": 0,
+    "missed_confirms_detail": []
+  },
+  "per_category_breakdown": {
+    "DANGEROUS_DELETE": {
+      "total": 50,
+      "correct": 50,
+      "missed": 0,
+      "accuracy_pct": 100.0
+    },
+    "DANGEROUS_DELETE_WHERE": {
+      "total": 50,
+      "correct": 50,
+      "missed": 0,
+      "accuracy_pct": 100.0
+    },
+    "DANGEROUS_DROP": {
+      "total": 50,
+      "correct": 50,
+      "missed": 0,
+      "accuracy_pct": 100.0
+    },
+    "DANGEROUS_UPDATE": {
+      "total": 50,
+      "correct": 50,
+      "missed": 0,
+      "accuracy_pct": 100.0
+    },
+    "FIELD_INJECT": {
+      "total": 40,
+      "correct": 40,
+      "missed": 0,
+      "accuracy_pct": 100.0
+    },
+    "SCOPE_ESCALATION": {
+      "total": 46,
+      "correct": 46,
+      "missed": 0,
+      "accuracy_pct": 100.0
+    },
+    "TARGET_MISMATCH": {
+      "total": 50,
+      "correct": 50,
+      "missed": 0,
+      "accuracy_pct": 100.0
+    }
+  }
+}

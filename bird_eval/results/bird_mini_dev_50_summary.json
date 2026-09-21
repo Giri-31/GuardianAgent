@@ -1,0 +1,39 @@
+{
+  "metadata": {
+    "evaluation_phase": "Phase 1: Small Prototype (50 BIRD SQLite Questions)",
+    "timestamp": "2026-09-20T17:07:55.202508+00:00",
+    "dataset": "bird_eval\\databases\\data_minidev\\MINIDEV\\mini_dev_sqlite.json",
+    "total_questions_evaluated": 50,
+    "intent_mode": "gemini_api",
+    "databases_represented": [
+      "debit_card_specializing",
+      "student_club"
+    ]
+  },
+  "execution_summary": {
+    "total_gold_queries": 50,
+    "executed_successfully": 50,
+    "execution_errors": 0,
+    "execution_success_rate_pct": 100.0
+  },
+  "guardian_decisions_distribution": {
+    "ALLOW": 18,
+    "CONFIRM": 8,
+    "BLOCK": 24,
+    "allow_rate_pct": 36.0,
+    "confirm_rate_pct": 16.0,
+    "block_rate_pct": 48.0
+  },
+  "mismatches_distribution": {
+    "FIELD_MISMATCH": 24,
+    "SCOPE_MISMATCH": 3,
+    "NONE": 18,
+    "TARGET_MISMATCH": 13,
+    "OPERATION_MISMATCH": 1
+  },
+  "latency_stats_ms": {
+    "mean": 1973.48,
+    "min": 255.78,
+    "max": 45160.87
+  }
+}

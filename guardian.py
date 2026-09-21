@@ -555,7 +555,7 @@ def guardian_check(
     intent_sql_result = check_intent_sql(
         intent,
         sql,
-        
+        connection=connection,
     )
 
     # ========================================================

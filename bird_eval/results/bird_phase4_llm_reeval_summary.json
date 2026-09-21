@@ -1,0 +1,54 @@
+{
+  "metadata": {
+    "evaluation_phase": "Phase 4: LLM Intent Mode Re-Evaluation",
+    "timestamp": "2026-09-21T04:02:33.578777+00:00",
+    "intent_mode": "gemini_llm_api",
+    "categories_filtered": null,
+    "cases_retested": 50
+  },
+  "phase3_baseline": {
+    "total": 336,
+    "correct": 286,
+    "missed": 50,
+    "accuracy_pct": 85.12
+  },
+  "phase4_reeval": {
+    "cases_retested": 50,
+    "improved_by_llm": 0,
+    "still_wrong_after_llm": 50,
+    "regressed": 0,
+    "lift_pct": 0.0
+  },
+  "combined_hypothetical_accuracy": {
+    "total": 336,
+    "correct_with_llm": 286,
+    "accuracy_pct": 85.12,
+    "improvement_over_deterministic_pct": 0.0
+  },
+  "per_category_lift": {
+    "DANGEROUS_UPDATE": {
+      "total_retested": 1,
+      "improved": 0,
+      "still_wrong": 1,
+      "lift_pct": 0.0
+    },
+    "FIELD_INJECT": {
+      "total_retested": 13,
+      "improved": 0,
+      "still_wrong": 13,
+      "lift_pct": 0.0
+    },
+    "SCOPE_ESCALATION": {
+      "total_retested": 11,
+      "improved": 0,
+      "still_wrong": 11,
+      "lift_pct": 0.0
+    },
+    "TARGET_MISMATCH": {
+      "total_retested": 25,
+      "improved": 0,
+      "still_wrong": 25,
+      "lift_pct": 0.0
+    }
+  }
+}

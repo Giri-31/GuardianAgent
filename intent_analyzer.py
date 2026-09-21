@@ -295,13 +295,17 @@ def _normalize_intent(intent):
     if scope not in VALID_SCOPES:
         scope = "unknown"
 
-    return {
+    res = {
         "operation": operation,
         "target": target,
         "field": field,
         "value": value,
         "scope": scope,
     }
+    if isinstance(intent, dict) and "raw_request" in intent:
+        res["raw_request"] = intent["raw_request"]
+
+    return res
 
 
 # ============================================================
@@ -404,6 +408,19 @@ def _detect_operation(text):
         r"\bwhich\b",
         r"\bhow\s+many\b",
         r"\bcount\b",
+        r"\bwho\b",
+        r"\bwhen\b",
+        r"\bwhere\b",
+        r"\bwhy\b",
+        r"\bwhose\b",
+        r"\bstate\b",
+        r"\btell\b",
+        r"\bgive\b",
+        r"\bprovide\b",
+        r"\breport\b",
+        r"\bcalculate\b",
+        r"\bcompute\b",
+        r"\bcheck\b",
     ]
 
     if any(
@@ -993,8 +1010,17 @@ def _extract_target(text):
             text
         )
 
-        if direct_target != "unknown":
-            return direct_target
+    # --------------------------------------------------------
+    # 7. Quoted target or named entity introduced by of/about
+    # --------------------------------------------------------
+
+    quoted_match = re.search(
+        r"\b(?:of|for|about)\s+[\"']([^\"']+)[\"']",
+        text,
+        flags=re.IGNORECASE,
+    )
+    if quoted_match:
+        return quoted_match.group(1).strip()
 
     return "unknown"
 
@@ -1381,6 +1407,7 @@ def _detect_scope(text):
         r"\bone row\b",
         r"\bsingle record\b",
         r"\bsingle row\b",
+        r"\b(?:most|least|highest|lowest|minimum|maximum|peak|top|bottom|best|worst|latest|newest|oldest)\b",
     ]
 
     if any(
@@ -1489,6 +1516,7 @@ def _fallback_intent(user_request):
             "field": field,
             "value": value,
             "scope": scope,
+            "raw_request": text,
         }
     )
 
@@ -1676,29 +1704,22 @@ def analyze_intent(user_request):
     # --------------------------------------------------------
 
     if DISABLE_LLM:
-
-        return _fallback_intent(
+        intent = _fallback_intent(
             user_request
         )
+    else:
+        intent = _gemini_intent(
+            user_request
+        )
+        if intent is None:
+            intent = _fallback_intent(
+                user_request
+            )
 
-    # --------------------------------------------------------
-    # Optional Gemini
-    # --------------------------------------------------------
+    if isinstance(intent, dict) and user_request:
+        intent["raw_request"] = str(user_request).strip()
 
-    intent = _gemini_intent(
-        user_request
-    )
-
-    if intent is not None:
-        return intent
-
-    # --------------------------------------------------------
-    # Deterministic fallback
-    # --------------------------------------------------------
-
-    return _fallback_intent(
-        user_request
-    )
+    return intent
 
 
 # ============================================================

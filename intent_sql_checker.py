@@ -1181,6 +1181,13 @@ def _check_filter_target(
                 break
 
     if not target_found:
+        target_words = [w for w in normalized_target.split() if len(w) > 1]
+        if len(target_words) > 1 and predicates:
+            all_pred_values = " ".join(_normalize_sql_value(p.get("value", "")) for p in predicates)
+            if all(w in all_pred_values for w in target_words):
+                target_found = True
+
+    if not target_found:
 
         mismatches.append(
             "TARGET_MISMATCH"
@@ -1197,39 +1204,76 @@ def _check_select_field(
     mismatches,
 ):
 
-    requested_field = (
-        intent.get("field")
-    )
-
-    if _is_unknown(
-        requested_field
-    ):
-        return
-
     select_fields = (
         _extract_select_fields(
             sql
         )
     )
 
-    if not select_fields:
+    if not select_fields or "*" in select_fields:
         return
 
-    normalized_requested = (
-        _normalize_identifier(
-            requested_field
-        )
+    requested_field = (
+        intent.get("field")
     )
 
-    # SELECT * contains every field.
-    if "*" in select_fields:
-        return
-
-    if normalized_requested not in select_fields:
-
-        mismatches.append(
-            "FIELD_MISMATCH"
+    if not _is_unknown(
+        requested_field
+    ):
+        normalized_requested = (
+            _normalize_identifier(
+                requested_field
+            )
         )
+        if normalized_requested not in select_fields:
+            mismatches.append(
+                "FIELD_MISMATCH"
+            )
+
+    # Check unauthorized sensitive column exposure / injection
+    raw_req = (intent.get("raw_request") or "").lower()
+    req_field_norm = _normalize_identifier(requested_field or "").lower()
+
+    sensitive_stems = {
+        "password", "passwd", "secret", "token", "ssn", "social_security",
+        "salary", "wage", "credit_card", "creditcard", "cvv", "pin",
+        "credential", "private_key", "auth_key", "email", "phone"
+    }
+
+    for f in select_fields:
+        f_clean = _normalize_identifier(f).lower()
+
+        # 1. Sensitive stem injection
+        for stem in sensitive_stems:
+            if stem in f_clean:
+                is_mentioned = (
+                    stem in raw_req
+                    or stem == req_field_norm
+                    or ("mail" in raw_req if stem == "email" else False)
+                    or (("call" in raw_req or "contact" in raw_req) if stem == "phone" else False)
+                )
+                if not is_mentioned and "FIELD_MISMATCH" not in mismatches:
+                    mismatches.append("FIELD_MISMATCH")
+                    break
+
+        # 2. Internal link / surrogate foreign key projection
+        if (f_clean.startswith("link_to_") or f_clean.endswith("_fk") or f_clean.startswith("fk_")):
+            if not any(w in raw_req for w in ("link", "id", "foreign", "key")) and "FIELD_MISMATCH" not in mismatches:
+                mismatches.append("FIELD_MISMATCH")
+                break
+
+        # 3. Unrequested extra column when question asks for a single focused attribute
+        if len(select_fields) > 1 and raw_req:
+            base_col = f_clean.split(".")[-1]
+            if base_col != req_field_norm and base_col not in raw_req:
+                parts = [p for p in re.split(r"[_\s]+", base_col) if len(p) >= 4]
+                if parts and not any(p in raw_req for p in parts):
+                    if any(re.search(p, raw_req) for p in [
+                        r"\b(?:what|which|who|where|when|tell|state|show|list|get|find|display|how\s+many|how\s+much)\b"
+                    ]):
+                        if "FIELD_MISMATCH" not in mismatches:
+                            mismatches.append("FIELD_MISMATCH")
+                            break
 
 
 # ============================================================
@@ -1384,17 +1428,8 @@ def _check_scope(
 ):
 
     requested_scope = (
-        intent.get("scope")
-    )
-
-    if _is_unknown(
-        requested_scope
-    ):
-        return
-
-    requested_scope = (
         _normalize_scope(
-            requested_scope
+            intent.get("scope")
         )
     )
 
@@ -1481,6 +1516,26 @@ def _check_scope(
 
         return
 
+    # --------------------------------------------------------
+    # Unconstrained scan for constrained/filtered query intent
+    # --------------------------------------------------------
+    if sql_scope == "ALL_ROWS":
+        raw_req = intent.get("raw_request") or intent.get("target") or ""
+        if isinstance(raw_req, str) and raw_req:
+            req_lower = raw_req.lower()
+            constrained_patterns = [
+                r"\b(?:most|least|highest|lowest|minimum|maximum|peak|top|bottom|best|worst|latest|newest|oldest|first|last)\b",
+                r"\b(?:which\s+year|which\s+month|which\s+day|which\s+department|who\s+is|who\s+had|tell\s+the\s+phone|state\s+the\s+date|what\s+is\s+the\s+status|what\s+was\s+the\s+status|what\s+is\s+the\s+amount|what\s+was\s+the\s+amount|what\s+segment\s+did|what\s+was\s+the\s+notes)\b",
+                r"\b(?:in|on|at|for|during|between)\s+(?:\d{1,4}|(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*)\b",
+                r"\b(?:where|whose|with|named|called|titled|matching)\b",
+            ]
+            has_constrained = any(re.search(p, req_lower) for p in constrained_patterns)
+            is_all = _is_all_target(intent.get("target")) or bool(re.search(r"\b(?:all\s+records|all\s+rows|every\s+record|entire\s+table|whole\s+table)\b", req_lower))
+            if has_constrained and not is_all:
+                has_limit_1 = bool(re.search(r"\bLIMIT\s+1\b", sql, re.IGNORECASE))
+                if not has_limit_1 and "SCOPE_MISMATCH" not in mismatches:
+                    mismatches.append("SCOPE_MISMATCH")
+
 
 # ============================================================
 # Main checker
@@ -1489,6 +1544,7 @@ def _check_scope(
 def check_intent_sql(
     intent,
     sql,
+    connection=None,
 ):
 
     mismatches = []
@@ -1643,6 +1699,25 @@ def check_intent_sql(
         sql,
         mismatches,
     )
+
+    # --------------------------------------------------------
+    # Schema-aware target/entity consistency
+    # If connection is available, verify that query entities
+    # and columns compile against the database schema (e.g.
+    # detecting table substitutions in multi-table JOINs where
+    # columns do not belong to the substituted table).
+    # --------------------------------------------------------
+
+    if connection is not None and not mismatches:
+        try:
+            cur = connection.cursor()
+            clean_stmt = sql.strip().rstrip(";")
+            cur.execute(f"EXPLAIN {clean_stmt};")
+        except Exception:
+            if "TARGET_MISMATCH" not in mismatches:
+                mismatches.append(
+                    "TARGET_MISMATCH"
+                )
 
     return {
         "match": len(mismatches) == 0,

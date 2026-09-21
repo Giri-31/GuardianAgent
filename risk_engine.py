@@ -14,6 +14,8 @@ Design principles:
     - Unknown scope remains conservative
 """
 
+import os
+
 # ---------------------------------------------------------------------
 # Risk model
 # ---------------------------------------------------------------------
@@ -272,6 +274,24 @@ def _apply_safety_overrides(
             "DELETE",
         }
         and "TARGET_MISMATCH" in mismatches
+    ):
+        risk_score = max(
+            risk_score,
+            7.0
+        )
+
+    # ---------------------------------------------------------------
+    # 4b. Strict read target mismatch
+    # In strict enterprise / multi-tenant mode (GUARDIAN_READ_SAFETY_LEVEL=STRICT),
+    # reading from an unintended target table is treated as unauthorized
+    # data access and blocked. In standard mode (default), safe human
+    # confirmation (CONFIRM) is preserved for non-destructive reads.
+    # ---------------------------------------------------------------
+
+    if (
+        operation == "SELECT"
+        and "TARGET_MISMATCH" in mismatches
+        and os.environ.get("GUARDIAN_READ_SAFETY_LEVEL", "STANDARD").upper() == "STRICT"
     ):
         risk_score = max(
             risk_score,
