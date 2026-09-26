@@ -1188,27 +1188,6 @@ def _check_filter_target(
                 target_found = True
 
     if not target_found:
-        # Check if requested target refers to a queried table/entity in FROM or JOIN
-        raw_tables = re.findall(r"\b(?:FROM|JOIN)\s+([A-Za-z0-9_`\"\[\]]+)", sql, re.IGNORECASE)
-        clean_tables = [t.strip("`\"[]").lower() for t in raw_tables]
-        norm_t_lower = normalized_target.lower()
-        if any(norm_t_lower == t or norm_t_lower in t.split("_") for t in clean_tables):
-            target_found = True
-
-    if not target_found and len(normalized_target) >= 3:
-        pattern_t = r"\b" + re.escape(normalized_target.lower()) + r"\b"
-        for predicate in predicates:
-            val = _normalize_sql_value(predicate.get("value", "")).lower()
-            pattern_v = r"\b" + re.escape(val) + r"\b"
-            if re.search(pattern_t, val) or (len(val) >= 3 and re.search(pattern_v, normalized_target.lower())):
-                target_found = True
-                break
-        if not target_found:
-            raw_where = re.search(r"\bWHERE\b\s+(.*)", sql, re.IGNORECASE | re.DOTALL)
-            if raw_where and re.search(pattern_t, raw_where.group(1).lower()):
-                target_found = True
-
-    if not target_found:
 
         mismatches.append(
             "TARGET_MISMATCH"

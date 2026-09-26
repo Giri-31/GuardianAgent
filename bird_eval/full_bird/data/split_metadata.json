@@ -1,0 +1,50 @@
+{
+  "development": {
+    "count": 100,
+    "index_range": "0..99",
+    "database_distribution": {
+      "debit_card_specializing": 30,
+      "student_club": 48,
+      "thrombosis_prediction": 22
+    },
+    "difficulty_distribution": {
+      "simple": 40,
+      "moderate": 45,
+      "challenging": 15
+    },
+    "sample_question_ids": [
+      1471,
+      1472,
+      1473,
+      1476,
+      1479
+    ]
+  },
+  "final_frozen_evaluation": {
+    "count": 400,
+    "index_range": "100..499",
+    "database_distribution": {
+      "thrombosis_prediction": 28,
+      "european_football_2": 51,
+      "formula_1": 66,
+      "superhero": 52,
+      "codebase_community": 49,
+      "card_games": 52,
+      "toxicology": 40,
+      "california_schools": 30,
+      "financial": 32
+    },
+    "difficulty_distribution": {
+      "moderate": 205,
+      "simple": 108,
+      "challenging": 87
+    },
+    "sample_question_ids": [
+      1205,
+      1208,
+      1209,
+      1220,
+      1225
+    ]
+  }
+}

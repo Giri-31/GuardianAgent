@@ -170,22 +170,11 @@ def _empty_intent():
 # Generic Helpers
 # ============================================================
 
-ENGLISH_STOPWORDS = {
-    "a", "an", "the", "and", "or", "in", "on", "at", "to", "for", "with",
-    "from", "by", "of", "about", "as", "into", "like", "through", "after",
-    "over", "between", "out", "against", "during", "without", "before",
-    "under", "around", "among", "this", "that", "these", "those", "is",
-    "are", "was", "were", "be", "been", "being", "have", "has", "had",
-    "do", "does", "did", "more", "most", "less", "least", "all", "any",
-    "some", "no", "not", "where", "order", "which", "what", "who", "whom"
-}
-
 def _clean(value):
     """
     Normalize an extracted textual value.
 
     No schema-specific semantic knowledge is applied.
-    Linguistic determiners and stopwords are treated as unknown.
     """
 
     if value is None:
@@ -196,14 +185,9 @@ def _clean(value):
     if not value:
         return "unknown"
 
-    cleaned = value.strip(
+    return value.strip(
         " \t\r\n.,!?;:"
     )
-
-    if cleaned.lower() in ENGLISH_STOPWORDS:
-        return "unknown"
-
-    return cleaned
 
 
 def _is_unknown(value):
@@ -704,26 +688,16 @@ def _extract_descriptor_identifier(text):
 
     pattern = re.compile(
         r"\b"
-        r"([A-Za-z][A-Za-z0-9_-]*)"
+        r"[A-Za-z][A-Za-z0-9_-]*"
         r"\s+"
         r"(\d+)"
         r"(?=\s|[.,!?;:]|$)",
         flags=re.IGNORECASE,
     )
 
-    comparative_and_prepositional_words = {
-        "than", "the", "a", "an", "after", "before", "over", "under", "above",
-        "below", "between", "of", "to", "from", "in", "at", "by", "around",
-        "since", "until", "or", "and", "is", "was", "were", "for", "with",
-        "without", "no", "less", "more", "least", "most", "about", "into"
-    }
-
     for match in pattern.finditer(
         text
     ):
-        descriptor = match.group(1).lower()
-        if descriptor in comparative_and_prepositional_words:
-            continue
 
         prefix = text[
             :match.start()
@@ -737,7 +711,7 @@ def _extract_descriptor_identifier(text):
         ):
             continue
 
-        return match.group(2)
+        return match.group(1)
 
     return "unknown"
 

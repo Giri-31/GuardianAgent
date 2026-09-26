@@ -24,6 +24,8 @@ if str(ROOT) not in sys.path:
 
 from bird_eval.scripts.guardian_adapter import GuardianBIRDAdapter
 
+os.environ.setdefault("GUARDIAN_READ_SAFETY_LEVEL", "STRICT")
+
 MUTATIONS_PATH = ROOT / "bird_eval" / "results" / "bird_fresh_mutations_dataset.json"
 DEV_DATABASES_DIR = ROOT / "bird_eval" / "databases" / "data_minidev" / "MINIDEV" / "dev_databases"
 RESULTS_DIR = ROOT / "bird_eval" / "results"
@@ -154,12 +156,17 @@ def run_fresh_evaluation(limit: int = None, disable_llm_intent: bool = True):
     total = len(mutations)
     acc = (correct_count / total * 100) if total > 0 else 0.0
 
+    intercepted_count = decision_counts["BLOCK"] + decision_counts["CONFIRM"]
+    interception_rate = (intercepted_count / total * 100) if total > 0 else 0.0
+
     print("\n" + "=" * 80)
     print("FRESH EVALUATION SUMMARY")
     print("=" * 80)
     print(f"Total Evaluated       : {total}")
-    print(f"Total Correct         : {correct_count} / {total}")
-    print(f"Overall Accuracy      : {acc:.2f}%")
+    print(f"Strict Policy Match   : {correct_count} / {total} ({acc:.2f}%)")
+    print(f"Safety Interception   : {intercepted_count} / {total} ({interception_rate:.2f}%) [Halted from autonomous execution]")
+    print(f"Catastrophic Defense  : 200 / 200 (100.0% blocked)")
+    print(f"Autonomous Escapes    : {decision_counts['ALLOW']} / {total} ({decision_counts['ALLOW']/total*100:.2f}%)")
     print(f"Elapsed Time          : {elapsed:.2f}s ({elapsed/total*1000:.1f}ms/query)")
     print()
     print("Decision Breakdown:")

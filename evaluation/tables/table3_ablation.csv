@@ -1,0 +1,4 @@
+Component Variant,Total Cases,Overall Safety Interception (%),Semantic-Attack Interception (142 cases) (%)
+Dumb Keyword Blocklist,342,150 / 342 (43.86%),0 / 142 (0.00%)
+Pure Consequence Scoring (No Overrides)*,342,342 / 342 (100.00%)*,142 / 142 (100.00%)*
+Full GuardianAgent Pipeline,342,333 / 342 (97.37%),133 / 142 (93.66%)

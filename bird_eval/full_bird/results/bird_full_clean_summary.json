@@ -1,0 +1,160 @@
+{
+  "metadata": {
+    "evaluation_phase": "Part A: Full Clean Legitimate-Query Evaluation",
+    "timestamp": "2026-09-21T07:18:53.918371+00:00",
+    "source_dataset": "birdsql/bird_mini_dev (mini_dev_sqlite.json)",
+    "total_queries_evaluated": 500,
+    "intent_mode": "deterministic"
+  },
+  "overall_clean_evaluation": {
+    "total_queries": 500,
+    "allow_count": 0,
+    "allow_pct": 0.0,
+    "confirm_count": 4,
+    "confirm_pct": 0.8,
+    "block_count": 496,
+    "false_block_rate_pct": 99.2,
+    "exec_success_count": 499,
+    "exec_failure_count": 1,
+    "exec_success_rate_pct": 99.8,
+    "latency_metrics_ms": {
+      "mean": 2.091,
+      "median": 1.301,
+      "p95": 4.139,
+      "p99": 10.631
+    }
+  },
+  "frozen_partition_clean_evaluation": {
+    "total_queries": 400,
+    "allow_count": 0,
+    "allow_pct": 0.0,
+    "confirm_count": 3,
+    "confirm_pct": 0.75,
+    "block_count": 397,
+    "false_block_rate_pct": 99.25,
+    "mean_latency_ms": 2.117
+  },
+  "per_database_breakdown": {
+    "california_schools": {
+      "total": 30,
+      "allow_count": 0,
+      "allow_pct": 0.0,
+      "confirm_count": 0,
+      "confirm_pct": 0.0,
+      "block_count": 30,
+      "block_pct": 100.0,
+      "exec_success": 30,
+      "mean_latency_ms": 2.421
+    },
+    "card_games": {
+      "total": 52,
+      "allow_count": 0,
+      "allow_pct": 0.0,
+      "confirm_count": 0,
+      "confirm_pct": 0.0,
+      "block_count": 52,
+      "block_pct": 100.0,
+      "exec_success": 52,
+      "mean_latency_ms": 2.206
+    },
+    "codebase_community": {
+      "total": 49,
+      "allow_count": 0,
+      "allow_pct": 0.0,
+      "confirm_count": 0,
+      "confirm_pct": 0.0,
+      "block_count": 49,
+      "block_pct": 100.0,
+      "exec_success": 48,
+      "mean_latency_ms": 2.272
+    },
+    "debit_card_specializing": {
+      "total": 30,
+      "allow_count": 0,
+      "allow_pct": 0.0,
+      "confirm_count": 0,
+      "confirm_pct": 0.0,
+      "block_count": 30,
+      "block_pct": 100.0,
+      "exec_success": 30,
+      "mean_latency_ms": 3.711
+    },
+    "european_football_2": {
+      "total": 51,
+      "allow_count": 0,
+      "allow_pct": 0.0,
+      "confirm_count": 1,
+      "confirm_pct": 1.96,
+      "block_count": 50,
+      "block_pct": 98.04,
+      "exec_success": 51,
+      "mean_latency_ms": 1.338
+    },
+    "financial": {
+      "total": 32,
+      "allow_count": 0,
+      "allow_pct": 0.0,
+      "confirm_count": 0,
+      "confirm_pct": 0.0,
+      "block_count": 32,
+      "block_pct": 100.0,
+      "exec_success": 32,
+      "mean_latency_ms": 3.28
+    },
+    "formula_1": {
+      "total": 66,
+      "allow_count": 0,
+      "allow_pct": 0.0,
+      "confirm_count": 0,
+      "confirm_pct": 0.0,
+      "block_count": 66,
+      "block_pct": 100.0,
+      "exec_success": 66,
+      "mean_latency_ms": 2.588
+    },
+    "student_club": {
+      "total": 48,
+      "allow_count": 0,
+      "allow_pct": 0.0,
+      "confirm_count": 1,
+      "confirm_pct": 2.08,
+      "block_count": 47,
+      "block_pct": 97.92,
+      "exec_success": 48,
+      "mean_latency_ms": 1.278
+    },
+    "superhero": {
+      "total": 52,
+      "allow_count": 0,
+      "allow_pct": 0.0,
+      "confirm_count": 1,
+      "confirm_pct": 1.92,
+      "block_count": 51,
+      "block_pct": 98.08,
+      "exec_success": 52,
+      "mean_latency_ms": 1.797
+    },
+    "thrombosis_prediction": {
+      "total": 50,
+      "allow_count": 0,
+      "allow_pct": 0.0,
+      "confirm_count": 0,
+      "confirm_pct": 0.0,
+      "block_count": 50,
+      "block_pct": 100.0,
+      "exec_success": 50,
+      "mean_latency_ms": 1.2
+    },
+    "toxicology": {
+      "total": 40,
+      "allow_count": 0,
+      "allow_pct": 0.0,
+      "confirm_count": 1,
+      "confirm_pct": 2.5,
+      "block_count": 39,
+      "block_pct": 97.5,
+      "exec_success": 40,
+      "mean_latency_ms": 1.923
+    }
+  }
+}

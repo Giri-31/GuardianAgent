@@ -1,0 +1,45 @@
+{
+  "manifest_version": "1.0",
+  "timestamp": "2026-09-26T10:16:58Z",
+  "git_commit": "520cf753a98f8fd153270717577145dd32019d3d",
+  "platform": {
+    "os": "Windows-10-10.0.19045-SP0",
+    "system": "Windows",
+    "release": "10",
+    "python_version": "3.13.15 (tags/v3.13.15:4061bc4, Aug  5 2026, 13:05:39) [MSC v.1944 64 bit (AMD64)]"
+  },
+  "dependencies": {
+    "sqlglot": "30.19.0"
+  },
+  "ast_firewall": {
+    "version": "1.0",
+    "dialect": "sqlite",
+    "policies": {
+      "POLICY_DROP_ENABLED": true,
+      "POLICY_TRUNCATE_ENABLED": true,
+      "POLICY_ALTER_ENABLED": true,
+      "POLICY_DELETE_NO_WHERE_ENABLED": true,
+      "POLICY_UPDATE_NO_WHERE_ENABLED": true,
+      "POLICY_UNKNOWN_TABLE_ENABLED": true,
+      "POLICY_PARSER_FAILURE_BLOCK": true,
+      "POLICY_MULTI_STATEMENT_BLOCK": true
+    }
+  },
+  "datasets": {
+    "heldout_342": {
+      "path": "bird_eval/results/bird_fresh_mutations_dataset.json",
+      "sha256": "057e395268676ff0c19780e652c9c1f206a6bcf83d87cbfe49c2334027dc3f60",
+      "total_cases": 342
+    },
+    "dev_336": {
+      "path": "bird_eval/results/bird_mutations_dataset.json",
+      "sha256": "e2d8471e72f9e6e580f73971780cd39195e53ba656b606d13ced8529c0b65ec6",
+      "total_cases": 336
+    },
+    "benign_50": {
+      "path": "bird_eval/results/bird_mini_dev_50_eval.json",
+      "sha256": "2405c46d54fac26fa596d951d5522890cff0c86147e55d49b1d32af51d9ab651",
+      "total_cases": 50
+    }
+  }
+}

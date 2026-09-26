@@ -1,0 +1,179 @@
+{
+  "metadata": {
+    "evaluation_title": "BIRD 500-Query Clean Evaluation (LLM Intent Mode)",
+    "timestamp_utc": "2026-09-21T13:03:04.633677+00:00",
+    "llm_provider": "groq",
+    "llm_model": "qwen/qwen3.8-27b",
+    "dataset": "D:\\Git\\GuardianAgent\\bird_eval\\databases\\data_minidev\\MINIDEV\\mini_dev_sqlite.json",
+    "total_queries": 500,
+    "python_version": "3.13.15 (tags/v3.13.15:4061bc4, Aug  5 2026, 13:05:39) [MSC v.1944 64 bit (AMD64)]",
+    "guardian_disable_llm": "0",
+    "total_eval_time_sec": 1359.71
+  },
+  "llm_stats": {
+    "api_calls_made": 498,
+    "cached_calls": 2,
+    "failed_calls": 0,
+    "fallbacks_to_deterministic": 0
+  },
+  "overall_metrics": {
+    "total_queries": 500,
+    "allow_count": 0,
+    "allow_percentage": 0.0,
+    "confirm_count": 16,
+    "confirm_percentage": 3.2,
+    "block_count": 484,
+    "block_percentage": 96.8,
+    "false_block_rate_percentage": 96.8,
+    "gold_sql_execution_success": "499/500",
+    "gold_sql_execution_success_percentage": 99.8
+  },
+  "latency_metrics_ms": {
+    "mean": 2574.055,
+    "median": 2390.203,
+    "p95": 3411.407,
+    "p99": 3512.909
+  },
+  "comparison_against_deterministic": {
+    "deterministic_baseline": {
+      "total_queries": 500,
+      "allow": 0,
+      "confirm": 4,
+      "block": 496,
+      "false_block_rate": 99.2,
+      "mean_latency_ms": 2.091,
+      "median_latency_ms": 1.301,
+      "p95_latency_ms": 4.139,
+      "p99_latency_ms": 10.631,
+      "exec_success": "499/500"
+    },
+    "llm_mode": {
+      "false_block_rate": 96.8,
+      "allow_rate": 0.0,
+      "confirm_rate": 3.2,
+      "block_rate": 96.8,
+      "mean_latency_ms": 2574.055,
+      "p95_latency_ms": 3411.407
+    },
+    "absolute_reduction_false_block_rate_percentage_points": 2.4,
+    "relative_reduction_false_block_rate_percent": 2.42
+  },
+  "per_database_results": {
+    "debit_card_specializing": {
+      "queries": 30,
+      "ALLOW": 0,
+      "CONFIRM": 1,
+      "BLOCK": 29,
+      "false_block_rate": 96.67,
+      "mean_latency_ms": 2203.959,
+      "exec_success": 30,
+      "exec_failed": 0
+    },
+    "student_club": {
+      "queries": 48,
+      "ALLOW": 0,
+      "CONFIRM": 1,
+      "BLOCK": 47,
+      "false_block_rate": 97.92,
+      "mean_latency_ms": 2396.162,
+      "exec_success": 48,
+      "exec_failed": 0
+    },
+    "thrombosis_prediction": {
+      "queries": 50,
+      "ALLOW": 0,
+      "CONFIRM": 2,
+      "BLOCK": 48,
+      "false_block_rate": 96.0,
+      "mean_latency_ms": 2389.2,
+      "exec_success": 50,
+      "exec_failed": 0
+    },
+    "european_football_2": {
+      "queries": 51,
+      "ALLOW": 0,
+      "CONFIRM": 2,
+      "BLOCK": 49,
+      "false_block_rate": 96.08,
+      "mean_latency_ms": 2660.38,
+      "exec_success": 51,
+      "exec_failed": 0
+    },
+    "formula_1": {
+      "queries": 66,
+      "ALLOW": 0,
+      "CONFIRM": 1,
+      "BLOCK": 65,
+      "false_block_rate": 98.48,
+      "mean_latency_ms": 2726.801,
+      "exec_success": 66,
+      "exec_failed": 0
+    },
+    "superhero": {
+      "queries": 52,
+      "ALLOW": 0,
+      "CONFIRM": 2,
+      "BLOCK": 50,
+      "false_block_rate": 96.15,
+      "mean_latency_ms": 2783.806,
+      "exec_success": 52,
+      "exec_failed": 0
+    },
+    "codebase_community": {
+      "queries": 49,
+      "ALLOW": 0,
+      "CONFIRM": 4,
+      "BLOCK": 45,
+      "false_block_rate": 91.84,
+      "mean_latency_ms": 2335.124,
+      "exec_success": 48,
+      "exec_failed": 1
+    },
+    "card_games": {
+      "queries": 52,
+      "ALLOW": 0,
+      "CONFIRM": 1,
+      "BLOCK": 51,
+      "false_block_rate": 98.08,
+      "mean_latency_ms": 2481.015,
+      "exec_success": 52,
+      "exec_failed": 0
+    },
+    "toxicology": {
+      "queries": 40,
+      "ALLOW": 0,
+      "CONFIRM": 0,
+      "BLOCK": 40,
+      "false_block_rate": 100.0,
+      "mean_latency_ms": 2880.261,
+      "exec_success": 40,
+      "exec_failed": 0
+    },
+    "california_schools": {
+      "queries": 30,
+      "ALLOW": 0,
+      "CONFIRM": 1,
+      "BLOCK": 29,
+      "false_block_rate": 96.67,
+      "mean_latency_ms": 2837.526,
+      "exec_success": 30,
+      "exec_failed": 0
+    },
+    "financial": {
+      "queries": 32,
+      "ALLOW": 0,
+      "CONFIRM": 1,
+      "BLOCK": 31,
+      "false_block_rate": 96.88,
+      "mean_latency_ms": 2570.526,
+      "exec_success": 32,
+      "exec_failed": 0
+    }
+  },
+  "mismatch_breakdown": {
+    "TARGET_MISMATCH": 238,
+    "FIELD_MISMATCH": 250,
+    "SCOPE_MISMATCH": 36,
+    "OPERATION_MISMATCH": 6
+  }
+}

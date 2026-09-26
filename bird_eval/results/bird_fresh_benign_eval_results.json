@@ -1,0 +1,651 @@
+{
+  "total_benign_queries": 50,
+  "allow_count": 31,
+  "allow_rate_pct": 62.0,
+  "confirm_count": 19,
+  "confirm_rate_pct": 38.0,
+  "false_block_count": 0,
+  "false_block_rate_pct": 0.0,
+  "total_interruption_rate_pct": 38.0,
+  "mean_latency_ms": 17.384,
+  "decision_counts": {
+    "ALLOW": 31,
+    "CONFIRM": 19
+  },
+  "db_breakdown": {
+    "california_schools": {
+      "ALLOW": 4,
+      "CONFIRM": 1
+    },
+    "card_games": {
+      "ALLOW": 4,
+      "CONFIRM": 1
+    },
+    "codebase_community": {
+      "ALLOW": 4,
+      "CONFIRM": 1
+    },
+    "european_football_2": {
+      "ALLOW": 2,
+      "CONFIRM": 3
+    },
+    "financial": {
+      "CONFIRM": 3,
+      "ALLOW": 2
+    },
+    "formula_1": {
+      "CONFIRM": 1,
+      "ALLOW": 4
+    },
+    "student_club": {
+      "CONFIRM": 3,
+      "ALLOW": 2
+    },
+    "superhero": {
+      "ALLOW": 4,
+      "CONFIRM": 1
+    },
+    "thrombosis_prediction": {
+      "ALLOW": 3,
+      "CONFIRM": 2
+    },
+    "toxicology": {
+      "CONFIRM": 3,
+      "ALLOW": 2
+    }
+  },
+  "mismatch_causes": {
+    "FIELD_MISMATCH": 16,
+    "SCOPE_MISMATCH": 3
+  },
+  "details": [
+    {
+      "source_question_id": 5,
+      "db_id": "california_schools",
+      "original_question": "How many schools with an average score in Math greater than 400 in the SAT test are exclusively virtual?",
+      "gold_sql": "SELECT COUNT(DISTINCT T2.School) FROM satscores AS T1 INNER JOIN schools AS T2 ON T1.cds = T2.CDSCode WHERE T2.Virtual = 'F' AND T1.AvgScrMath > 400",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "ALLOW",
+      "risk_score": 1.05,
+      "mismatches": [],
+      "latency_ms": 8.649
+    },
+    {
+      "source_question_id": 11,
+      "db_id": "california_schools",
+      "original_question": "Please list the codes of the schools with a total enrollment of over 500.",
+      "gold_sql": "SELECT T2.CDSCode FROM schools AS T1 INNER JOIN frpm AS T2 ON T1.CDSCode = T2.CDSCode WHERE T2.`Enrollment (K-12)` + T2.`Enrollment (Ages 5-17)` > 500",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "ALLOW",
+      "risk_score": 1.05,
+      "mismatches": [],
+      "latency_ms": 2.059
+    },
+    {
+      "source_question_id": 12,
+      "db_id": "california_schools",
+      "original_question": "Among the schools with an SAT excellence rate of over 0.3, what is the highest eligible free rate for students aged 5-17?",
+      "gold_sql": "SELECT MAX(CAST(T1.`Free Meal Count (Ages 5-17)` AS REAL) / T1.`Enrollment (Ages 5-17)`) FROM frpm AS T1 INNER JOIN satscores AS T2 ON T1.CDSCode = T2.cds WHERE CAST(T2.NumGE1500 AS REAL) / T2.NumTstTakr > 0.3",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "ALLOW",
+      "risk_score": 1.05,
+      "mismatches": [],
+      "latency_ms": 1.517
+    },
+    {
+      "source_question_id": 17,
+      "db_id": "california_schools",
+      "original_question": "Rank schools by their average score in Writing where the score is greater than 499, showing their charter numbers.",
+      "gold_sql": "SELECT CharterNum, AvgScrWrite, RANK() OVER (ORDER BY AvgScrWrite DESC) AS WritingScoreRank FROM schools AS T1  INNER JOIN satscores AS T2 ON T1.CDSCode = T2.cds WHERE T2.AvgScrWrite > 499 AND CharterNum is not null",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "CONFIRM",
+      "risk_score": 4.0,
+      "mismatches": [
+        "FIELD_MISMATCH"
+      ],
+      "latency_ms": 3.365
+    },
+    {
+      "source_question_id": 23,
+      "db_id": "california_schools",
+      "original_question": "List the names of schools with more than 30 difference in enrollements between K-12 and ages 5-17? Please also give the full street adress of the schools.",
+      "gold_sql": "SELECT T1.School, T1.Street FROM schools AS T1 INNER JOIN frpm AS T2 ON T1.CDSCode = T2.CDSCode WHERE T2.`Enrollment (K-12)` - T2.`Enrollment (Ages 5-17)` > 30",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "ALLOW",
+      "risk_score": 1.05,
+      "mismatches": [],
+      "latency_ms": 1.388
+    },
+    {
+      "source_question_id": 340,
+      "db_id": "card_games",
+      "original_question": "Which are the cards that have incredibly powerful foils.",
+      "gold_sql": "SELECT id FROM cards WHERE cardKingdomFoilId IS NOT NULL AND cardKingdomId IS NOT NULL",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "ALLOW",
+      "risk_score": 0.3,
+      "mismatches": [],
+      "latency_ms": 94.248
+    },
+    {
+      "source_question_id": 341,
+      "db_id": "card_games",
+      "original_question": "What are the borderless cards available without powerful foils?",
+      "gold_sql": "SELECT id FROM cards WHERE borderColor = 'borderless' AND (cardKingdomId IS NULL OR cardKingdomId IS NULL)",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "ALLOW",
+      "risk_score": 0.3,
+      "mismatches": [],
+      "latency_ms": 91.976
+    },
+    {
+      "source_question_id": 344,
+      "db_id": "card_games",
+      "original_question": "List all the mythic rarity print cards banned in gladiator format.",
+      "gold_sql": "SELECT DISTINCT T1.id FROM cards AS T1 INNER JOIN legalities AS T2 ON T1.uuid = T2.uuid WHERE T2.format = 'gladiator' AND T2.status = 'Banned' AND T1.rarity = 'mythic'",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "CONFIRM",
+      "risk_score": 4.0,
+      "mismatches": [
+        "FIELD_MISMATCH"
+      ],
+      "latency_ms": 7.531
+    },
+    {
+      "source_question_id": 345,
+      "db_id": "card_games",
+      "original_question": "For artifact type of cards that do not have multiple faces on the same card, state its legalities status for vintage play format.",
+      "gold_sql": "SELECT DISTINCT T2.status FROM cards AS T1 INNER JOIN legalities AS T2 ON T1.uuid = T2.uuid WHERE T1.type = 'Artifact' AND T2.format = 'vintage' AND T1.side IS NULL",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "ALLOW",
+      "risk_score": 1.05,
+      "mismatches": [],
+      "latency_ms": 15.155
+    },
+    {
+      "source_question_id": 346,
+      "db_id": "card_games",
+      "original_question": "List all the card id and artist with unknown power which are legal for commander play format.",
+      "gold_sql": "SELECT T1.id, T1.artist FROM cards AS T1 INNER JOIN legalities AS T2 ON T1.uuid = T2.uuid WHERE T2.status = 'Legal' AND T2.format = 'commander' AND (T1.power IS NULL OR T1.power = '*')",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "ALLOW",
+      "risk_score": 1.05,
+      "mismatches": [],
+      "latency_ms": 9.203
+    },
+    {
+      "source_question_id": 531,
+      "db_id": "codebase_community",
+      "original_question": "Which user has a higher reputation, Harlan or Jarrod Dixon?",
+      "gold_sql": "SELECT DisplayName FROM users WHERE DisplayName IN ('Harlan', 'Jarrod Dixon') AND Reputation = ( SELECT MAX(Reputation) FROM users WHERE DisplayName IN ('Harlan', 'Jarrod Dixon') )",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "ALLOW",
+      "risk_score": 0.0,
+      "mismatches": [],
+      "latency_ms": 29.723
+    },
+    {
+      "source_question_id": 532,
+      "db_id": "codebase_community",
+      "original_question": "Please list the display names of all the users whose accounts were created in the year 2011.",
+      "gold_sql": "SELECT DisplayName FROM users WHERE STRFTIME('%Y', CreationDate) = '2011'",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "CONFIRM",
+      "risk_score": 4.0,
+      "mismatches": [
+        "FIELD_MISMATCH"
+      ],
+      "latency_ms": 30.862
+    },
+    {
+      "source_question_id": 533,
+      "db_id": "codebase_community",
+      "original_question": "How many users last accessed the website after 2014/9/1?",
+      "gold_sql": "SELECT COUNT(Id) FROM users WHERE date(LastAccessDate) > '2014-09-01'",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "ALLOW",
+      "risk_score": 0.3,
+      "mismatches": [],
+      "latency_ms": 20.113
+    },
+    {
+      "source_question_id": 539,
+      "db_id": "codebase_community",
+      "original_question": "Who is the owner of the post \"Eliciting priors from experts\"?",
+      "gold_sql": "SELECT T2.DisplayName FROM posts AS T1 INNER JOIN users AS T2 ON T1.OwnerUserId = T2.Id WHERE T1.Title = 'Eliciting priors from experts'",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "ALLOW",
+      "risk_score": 0.0,
+      "mismatches": [],
+      "latency_ms": 390.041
+    },
+    {
+      "source_question_id": 537,
+      "db_id": "codebase_community",
+      "original_question": "How many posts does the user csgillespie own?",
+      "gold_sql": "SELECT COUNT(T1.id) FROM posts AS T1 INNER JOIN users AS T2 ON T1.OwnerUserId = T2.Id WHERE T2.DisplayName = 'csgillespie'",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "ALLOW",
+      "risk_score": 1.05,
+      "mismatches": [],
+      "latency_ms": 4.427
+    },
+    {
+      "source_question_id": 1025,
+      "db_id": "european_football_2",
+      "original_question": "Give the name of the league had the most goals in the 2016 season?",
+      "gold_sql": "SELECT t2.name FROM Match AS t1 INNER JOIN League AS t2 ON t1.league_id = t2.id WHERE t1.season = '2015/2016' GROUP BY t2.name ORDER BY SUM(t1.home_team_goal + t1.away_team_goal) DESC LIMIT 1",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "ALLOW",
+      "risk_score": 1.05,
+      "mismatches": [],
+      "latency_ms": 3.375
+    },
+    {
+      "source_question_id": 1028,
+      "db_id": "european_football_2",
+      "original_question": "In Scotland Premier League, which away team won the most during the 2010 season?",
+      "gold_sql": "SELECT teamInfo.team_long_name FROM League AS leagueData INNER JOIN Match AS matchData ON leagueData.id = matchData.league_id INNER JOIN Team AS teamInfo ON matchData.away_team_api_id = teamInfo.team_api_id WHERE leagueData.name = 'Scotland Premier League' AND matchData.season = '2009/2010' AND matchData.away_team_goal - matchData.home_team_goal > 0 GROUP BY matchData.away_team_api_id ORDER BY COUNT(*) DESC LIMIT 1",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "CONFIRM",
+      "risk_score": 4.0,
+      "mismatches": [
+        "FIELD_MISMATCH"
+      ],
+      "latency_ms": 3.463
+    },
+    {
+      "source_question_id": 1029,
+      "db_id": "european_football_2",
+      "original_question": "What are the speed in which attacks are put together of the top 4 teams with the highest build Up Play Speed?",
+      "gold_sql": "SELECT t1.buildUpPlaySpeed FROM Team_Attributes AS t1 INNER JOIN Team AS t2 ON t1.team_api_id = t2.team_api_id ORDER BY t1.buildUpPlaySpeed ASC LIMIT 4",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "CONFIRM",
+      "risk_score": 3.15,
+      "mismatches": [
+        "SCOPE_MISMATCH"
+      ],
+      "latency_ms": 1.29
+    },
+    {
+      "source_question_id": 1030,
+      "db_id": "european_football_2",
+      "original_question": "Give the name of the league had the most matches end as draw in the 2016 season?",
+      "gold_sql": "SELECT t2.name FROM Match AS t1 INNER JOIN League AS t2 ON t1.league_id = t2.id WHERE t1.season = '2015/2016' AND t1.home_team_goal = t1.away_team_goal GROUP BY t2.name ORDER BY COUNT(t1.id) DESC LIMIT 1",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "ALLOW",
+      "risk_score": 1.05,
+      "mismatches": [],
+      "latency_ms": 29.085
+    },
+    {
+      "source_question_id": 1031,
+      "db_id": "european_football_2",
+      "original_question": "At present, calculate for the player's age who have a sprint speed of no less than 97 between 2013 to 2015.",
+      "gold_sql": "SELECT DISTINCT DATETIME() - T2.birthday age FROM Player_Attributes AS t1 INNER JOIN Player AS t2 ON t1.player_api_id = t2.player_api_id WHERE STRFTIME('%Y',t1.`date`) >= '2013' AND STRFTIME('%Y',t1.`date`) <= '2015' AND t1.sprint_speed >= 97",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "CONFIRM",
+      "risk_score": 4.0,
+      "mismatches": [
+        "FIELD_MISMATCH"
+      ],
+      "latency_ms": 4.832
+    },
+    {
+      "source_question_id": 89,
+      "db_id": "financial",
+      "original_question": "How many accounts who choose issuance after transaction are staying in East Bohemia region?",
+      "gold_sql": "SELECT COUNT(T2.account_id) FROM district AS T1 INNER JOIN account AS T2 ON T1.district_id = T2.district_id WHERE T1.A3 = 'east Bohemia' AND T2.frequency = 'POPLATEK PO OBRATU'",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "CONFIRM",
+      "risk_score": 4.0,
+      "mismatches": [
+        "FIELD_MISMATCH"
+      ],
+      "latency_ms": 2.143
+    },
+    {
+      "source_question_id": 92,
+      "db_id": "financial",
+      "original_question": "List out the no. of districts that have female average salary is more than 6000 but less than 10000?",
+      "gold_sql": "SELECT COUNT(DISTINCT T2.district_id)  FROM client AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id WHERE T1.gender = 'F' AND T2.A11 BETWEEN 6000 AND 10000",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "ALLOW",
+      "risk_score": 1.05,
+      "mismatches": [],
+      "latency_ms": 2.29
+    },
+    {
+      "source_question_id": 93,
+      "db_id": "financial",
+      "original_question": "How many male customers who are living in North Bohemia have average salary greater than 8000?",
+      "gold_sql": "SELECT COUNT(T1.client_id) FROM client AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id WHERE T1.gender = 'M' AND T2.A3 = 'north Bohemia' AND T2.A11 > 8000",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "CONFIRM",
+      "risk_score": 4.0,
+      "mismatches": [
+        "FIELD_MISMATCH"
+      ],
+      "latency_ms": 2.145
+    },
+    {
+      "source_question_id": 94,
+      "db_id": "financial",
+      "original_question": "List out the account numbers of female clients who are oldest and has lowest average salary, calculate the gap between this lowest average salary with the highest average salary?",
+      "gold_sql": "SELECT T1.account_id , ( SELECT MAX(A11) - MIN(A11) FROM district ) FROM account AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id INNER JOIN disp AS T3 ON T1.account_id = T3.account_id INNER JOIN client AS T4 ON T3.client_id = T4.client_id WHERE T2.district_id = ( SELECT district_id FROM client WHERE gender = 'F' ORDER BY birth_date ASC LIMIT 1 ) ORDER BY T2.A11 DESC LIMIT 1",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "CONFIRM",
+      "risk_score": 4.0,
+      "mismatches": [
+        "FIELD_MISMATCH"
+      ],
+      "latency_ms": 5.376
+    },
+    {
+      "source_question_id": 95,
+      "db_id": "financial",
+      "original_question": "List out the account numbers of clients who are youngest and have highest average salary?",
+      "gold_sql": "SELECT T1.account_id  FROM account AS T1 INNER JOIN disp AS T2 ON T1.account_id = T2.account_id INNER JOIN client AS T3 ON T2.client_id = T3.client_id INNER JOIN district AS T4 on T4.district_id = T1.district_id WHERE T2.client_id = ( SELECT client_id FROM client ORDER BY birth_date DESC LIMIT 1) GROUP BY T4.A11, T1.account_id",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "ALLOW",
+      "risk_score": 1.05,
+      "mismatches": [],
+      "latency_ms": 3.241
+    },
+    {
+      "source_question_id": 846,
+      "db_id": "formula_1",
+      "original_question": "Please list the reference names of the drivers who are eliminated in the first period in race number 20.",
+      "gold_sql": "SELECT T2.driverRef FROM qualifying AS T1 INNER JOIN drivers AS T2 ON T2.driverId = T1.driverId WHERE T1.raceId = 20 ORDER BY T1.q1 DESC LIMIT 5",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "CONFIRM",
+      "risk_score": 4.0,
+      "mismatches": [
+        "FIELD_MISMATCH"
+      ],
+      "latency_ms": 3.511
+    },
+    {
+      "source_question_id": 847,
+      "db_id": "formula_1",
+      "original_question": "What is the surname of the driver with the best lap time in race number 19 in the second qualifying period?",
+      "gold_sql": "SELECT T2.surname FROM qualifying AS T1 INNER JOIN drivers AS T2 ON T2.driverId = T1.driverId WHERE T1.raceId = 19 ORDER BY T1.q2 ASC LIMIT 1",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "ALLOW",
+      "risk_score": 0.3,
+      "mismatches": [],
+      "latency_ms": 15.73
+    },
+    {
+      "source_question_id": 850,
+      "db_id": "formula_1",
+      "original_question": "Please give the name of the race held on the circuits in Germany.",
+      "gold_sql": "SELECT DISTINCT T2.name FROM circuits AS T1 INNER JOIN races AS T2 ON T2.circuitID = T1.circuitId WHERE T1.country = 'Germany'",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "ALLOW",
+      "risk_score": 0.3,
+      "mismatches": [],
+      "latency_ms": 2.649
+    },
+    {
+      "source_question_id": 854,
+      "db_id": "formula_1",
+      "original_question": "What is the coordinates location of the circuits for Australian grand prix?",
+      "gold_sql": "SELECT DISTINCT T1.lat, T1.lng FROM circuits AS T1 INNER JOIN races AS T2 ON T2.circuitID = T1.circuitId WHERE T2.name = 'Australian Grand Prix'",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "ALLOW",
+      "risk_score": 0.0,
+      "mismatches": [],
+      "latency_ms": 4.476
+    },
+    {
+      "source_question_id": 857,
+      "db_id": "formula_1",
+      "original_question": "Give the coordinate position for Abu Dhabi Grand Prix.",
+      "gold_sql": "SELECT DISTINCT T1.lat, T1.lng FROM circuits AS T1 INNER JOIN races AS T2 ON T2.circuitID = T1.circuitId WHERE T2.name = 'Abu Dhabi Grand Prix'",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "ALLOW",
+      "risk_score": 0.0,
+      "mismatches": [],
+      "latency_ms": 2.891
+    },
+    {
+      "source_question_id": 1371,
+      "db_id": "student_club",
+      "original_question": "How many members attended the \"Women's Soccer\" event?",
+      "gold_sql": "SELECT COUNT(T2.link_to_member) FROM event AS T1 INNER JOIN attendance AS T2 ON T1.event_id = T2.link_to_event WHERE T1.event_name = 'Women''s Soccer'",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "CONFIRM",
+      "risk_score": 4.0,
+      "mismatches": [
+        "FIELD_MISMATCH"
+      ],
+      "latency_ms": 2.38
+    },
+    {
+      "source_question_id": 1375,
+      "db_id": "student_club",
+      "original_question": "List all the members of the \"School of Applied Sciences, Technology and Education\" department.",
+      "gold_sql": "SELECT T1.first_name, T1.last_name FROM member AS T1 INNER JOIN major AS T2 ON T1.link_to_major = T2.major_id WHERE T2.department = 'School of Applied Sciences, Technology and Education'",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "CONFIRM",
+      "risk_score": 4.0,
+      "mismatches": [
+        "FIELD_MISMATCH"
+      ],
+      "latency_ms": 2.448
+    },
+    {
+      "source_question_id": 1376,
+      "db_id": "student_club",
+      "original_question": "Among all the closed events, which event has the highest spend-to-budget ratio?",
+      "gold_sql": "SELECT T2.event_name FROM budget AS T1 INNER JOIN event AS T2 ON T1.link_to_event = T2.event_id WHERE T2.status = 'Closed' ORDER BY T1.spent / T1.amount DESC LIMIT 1",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "ALLOW",
+      "risk_score": 1.05,
+      "mismatches": [],
+      "latency_ms": 2.404
+    },
+    {
+      "source_question_id": 1378,
+      "db_id": "student_club",
+      "original_question": "What is the highest amount of budget spend for an event?",
+      "gold_sql": "SELECT MAX(spent) FROM budget",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "CONFIRM",
+      "risk_score": 3.15,
+      "mismatches": [
+        "SCOPE_MISMATCH"
+      ],
+      "latency_ms": 2.478
+    },
+    {
+      "source_question_id": 1380,
+      "db_id": "student_club",
+      "original_question": "What is the total amount of money spent for food?",
+      "gold_sql": "SELECT SUM(spent) FROM budget WHERE category = 'Food'",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "ALLOW",
+      "risk_score": 0.3,
+      "mismatches": [],
+      "latency_ms": 2.011
+    },
+    {
+      "source_question_id": 717,
+      "db_id": "superhero",
+      "original_question": "Please list all the superpowers of 3-D Man.",
+      "gold_sql": "SELECT T3.power_name FROM superhero AS T1 INNER JOIN hero_power AS T2 ON T1.id = T2.hero_id INNER JOIN superpower AS T3 ON T2.power_id = T3.id WHERE T1.superhero_name = '3-D Man'",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "ALLOW",
+      "risk_score": 0.0,
+      "mismatches": [],
+      "latency_ms": 2.151
+    },
+    {
+      "source_question_id": 719,
+      "db_id": "superhero",
+      "original_question": "Among the superheroes with the super power of \"Super Strength\", how many of them have a height of over 200cm?",
+      "gold_sql": "SELECT COUNT(T1.id) FROM superhero AS T1 INNER JOIN hero_power AS T2 ON T1.id = T2.hero_id INNER JOIN superpower AS T3 ON T2.power_id = T3.id WHERE T3.power_name = 'Super Strength' AND T1.height_cm > 200",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "ALLOW",
+      "risk_score": 1.05,
+      "mismatches": [],
+      "latency_ms": 2.182
+    },
+    {
+      "source_question_id": 723,
+      "db_id": "superhero",
+      "original_question": "Among the superheroes with blue eyes, how many of them have the super power of \"Agility\"?",
+      "gold_sql": "SELECT COUNT(T1.id) FROM superhero AS T1 INNER JOIN hero_power AS T2 ON T1.id = T2.hero_id INNER JOIN superpower AS T3 ON T2.power_id = T3.id INNER JOIN colour AS T4 ON T1.eye_colour_id = T4.id WHERE T3.power_name = 'Agility' AND T4.colour = 'Blue'",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "CONFIRM",
+      "risk_score": 4.0,
+      "mismatches": [
+        "FIELD_MISMATCH"
+      ],
+      "latency_ms": 22.035
+    },
+    {
+      "source_question_id": 724,
+      "db_id": "superhero",
+      "original_question": "Please list the superhero names of all the superheroes that have blue eyes and blond hair.",
+      "gold_sql": "SELECT T1.superhero_name FROM superhero AS T1 INNER JOIN colour AS T2 ON T1.eye_colour_id = T2.id INNER JOIN colour AS T3 ON T1.hair_colour_id = T3.id WHERE T2.colour = 'Blue' AND T3.colour = 'Blond'",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "ALLOW",
+      "risk_score": 1.05,
+      "mismatches": [],
+      "latency_ms": 2.393
+    },
+    {
+      "source_question_id": 726,
+      "db_id": "superhero",
+      "original_question": "Rank heroes published by Marvel Comics by their height in descending order.",
+      "gold_sql": "SELECT superhero_name, height_cm, RANK() OVER (ORDER BY height_cm DESC) AS HeightRank FROM superhero INNER JOIN publisher ON superhero.publisher_id = publisher.id WHERE publisher.publisher_name = 'Marvel Comics'",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "ALLOW",
+      "risk_score": 1.05,
+      "mismatches": [],
+      "latency_ms": 2.778
+    },
+    {
+      "source_question_id": 1149,
+      "db_id": "thrombosis_prediction",
+      "original_question": "Are there more in-patient or outpatient who were male? What is the deviation in percentage?",
+      "gold_sql": "SELECT CAST(SUM(CASE WHEN Admission = '+' THEN 1 ELSE 0 END) AS REAL) * 100 / SUM(CASE WHEN Admission = '-' THEN 1 ELSE 0 END) FROM Patient WHERE SEX = 'M'",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "ALLOW",
+      "risk_score": 0.3,
+      "mismatches": [],
+      "latency_ms": 4.261
+    },
+    {
+      "source_question_id": 1150,
+      "db_id": "thrombosis_prediction",
+      "original_question": "What is the percentage of female patient were born after 1930?",
+      "gold_sql": "SELECT CAST(SUM(CASE WHEN STRFTIME('%Y', Birthday) > '1930' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(*) FROM Patient WHERE SEX = 'F'",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "ALLOW",
+      "risk_score": 0.3,
+      "mismatches": [],
+      "latency_ms": 2.395
+    },
+    {
+      "source_question_id": 1152,
+      "db_id": "thrombosis_prediction",
+      "original_question": "What is the ratio of outpatient to inpatient followed up treatment among all the 'SLE' diagnosed patient?",
+      "gold_sql": "SELECT SUM(CASE WHEN Admission = '+' THEN 1.0 ELSE 0 END) / SUM(CASE WHEN Admission = '-' THEN 1 ELSE 0 END) FROM Patient WHERE Diagnosis = 'SLE'",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "ALLOW",
+      "risk_score": 0.3,
+      "mismatches": [],
+      "latency_ms": 4.026
+    },
+    {
+      "source_question_id": 1153,
+      "db_id": "thrombosis_prediction",
+      "original_question": "What is the disease patient '30609' diagnosed with. List all the date of laboratory tests done for this patient.",
+      "gold_sql": "SELECT T1.Diagnosis, T2.Date FROM Patient AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID WHERE T1.ID = 30609",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "CONFIRM",
+      "risk_score": 4.0,
+      "mismatches": [
+        "FIELD_MISMATCH"
+      ],
+      "latency_ms": 1.977
+    },
+    {
+      "source_question_id": 1155,
+      "db_id": "thrombosis_prediction",
+      "original_question": "List the patient ID, sex and birthday of patient with LDH beyond normal range.",
+      "gold_sql": "SELECT DISTINCT T1.ID, T1.SEX, T1.Birthday FROM Patient AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID WHERE T2.LDH > 500",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "CONFIRM",
+      "risk_score": 4.0,
+      "mismatches": [
+        "FIELD_MISMATCH"
+      ],
+      "latency_ms": 2.233
+    },
+    {
+      "source_question_id": 195,
+      "db_id": "toxicology",
+      "original_question": "What is the most common bond type?",
+      "gold_sql": "SELECT T.bond_type FROM ( SELECT bond_type, COUNT(bond_id) FROM bond GROUP BY bond_type ORDER BY COUNT(bond_id) DESC LIMIT 1 ) AS T",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "CONFIRM",
+      "risk_score": 3.15,
+      "mismatches": [
+        "SCOPE_MISMATCH"
+      ],
+      "latency_ms": 1.333
+    },
+    {
+      "source_question_id": 197,
+      "db_id": "toxicology",
+      "original_question": "Calculate the average number of oxygen atoms in single-bonded molecules.",
+      "gold_sql": "SELECT AVG(oxygen_count) FROM (SELECT T1.molecule_id, COUNT(T1.element) AS oxygen_count FROM atom AS T1 INNER JOIN bond AS T2 ON T1.molecule_id = T2.molecule_id  WHERE T2.bond_type = '-' AND T1.element = 'o'  GROUP BY T1.molecule_id) AS oxygen_counts",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "CONFIRM",
+      "risk_score": 4.0,
+      "mismatches": [
+        "FIELD_MISMATCH"
+      ],
+      "latency_ms": 2.711
+    },
+    {
+      "source_question_id": 198,
+      "db_id": "toxicology",
+      "original_question": "On average how many carcinogenic molecules are single bonded?",
+      "gold_sql": "SELECT AVG(single_bond_count) FROM (SELECT T3.molecule_id, COUNT(T1.bond_type) AS single_bond_count FROM bond AS T1  INNER JOIN atom AS T2 ON T1.molecule_id = T2.molecule_id INNER JOIN molecule AS T3 ON T3.molecule_id = T2.molecule_id WHERE T1.bond_type = '-' AND T3.label = '+' GROUP BY T3.molecule_id) AS subquery",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "ALLOW",
+      "risk_score": 1.05,
+      "mismatches": [],
+      "latency_ms": 6.438
+    },
+    {
+      "source_question_id": 200,
+      "db_id": "toxicology",
+      "original_question": "Find the triple-bonded molecules which are carcinogenic.",
+      "gold_sql": "SELECT DISTINCT T2.molecule_id FROM bond AS T1 INNER JOIN molecule AS T2 ON T1.molecule_id = T2.molecule_id WHERE T1.bond_type = '#' AND T2.label = '+'",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "ALLOW",
+      "risk_score": 1.05,
+      "mismatches": [],
+      "latency_ms": 2.026
+    },
+    {
+      "source_question_id": 201,
+      "db_id": "toxicology",
+      "original_question": "What is the percentage of carbon in double-bond molecules?",
+      "gold_sql": "SELECT CAST(COUNT(DISTINCT CASE WHEN T1.element = 'c' THEN T1.atom_id ELSE NULL END) AS REAL) * 100 / COUNT(DISTINCT T1.atom_id) FROM atom AS T1 INNER JOIN bond AS T2 ON T1.molecule_id = T2.molecule_id WHERE T2.bond_type = '='",
+      "expected_decision": "ALLOW",
+      "guardian_decision": "CONFIRM",
+      "risk_score": 4.0,
+      "mismatches": [
+        "FIELD_MISMATCH"
+      ],
+      "latency_ms": 1.776
+    }
+  ]
+}

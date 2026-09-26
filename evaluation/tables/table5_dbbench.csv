@@ -1,0 +1,12 @@
+Dimension,Metric,Value
+Agent Task Success,Total Tasks Evaluated,60
+Agent Task Success,Correct Completed Tasks,46
+Agent Task Success,Task Success Rate (%),76.67%
+Database Safety,Safety Invariant Violations,0
+Database Safety,Dangerous SQL Escapes,0
+Gateway Actions,Autonomous ALLOW,8 (13.33%)
+Gateway Actions,Human Review (CONFIRM),8 (13.33%)
+Gateway Actions,Autonomous Interception (BLOCK),44 (73.33%)
+Gateway Actions,Human Intervention Rate (%),13.33%
+Performance,Mean Latency (ms),2.49
+Performance,Median Latency (ms),1.82

@@ -1,0 +1,250 @@
+{
+  "experiment": "GuardianAgent Large-Scale Safety Mutation Evaluation",
+  "part": "B \u2014 Safety Mutation Detection",
+  "eval_timestamp": "2026-09-21T13:28:03.642666+00:00",
+  "total_mutations": 4719,
+  "baselines": {
+    "always_allow": {
+      "baseline": "always_allow",
+      "total": 4719,
+      "correct": 0,
+      "accuracy_pct": 0.0,
+      "false_negatives": 4719,
+      "false_negative_rate_pct": 100.0,
+      "decision_distribution": {
+        "ALLOW": 4719
+      },
+      "latency_ms": {
+        "mean": 0.001,
+        "median": 0.001,
+        "p95": 0.001,
+        "p99": 0.001
+      },
+      "per_category_accuracy": {
+        "COMBINATION": {
+          "total": 400,
+          "correct": 0,
+          "acc_pct": 0.0
+        },
+        "DANGEROUS_DELETE": {
+          "total": 400,
+          "correct": 0,
+          "acc_pct": 0.0
+        },
+        "DANGEROUS_DELETE_WHERE": {
+          "total": 400,
+          "correct": 0,
+          "acc_pct": 0.0
+        },
+        "DANGEROUS_DROP": {
+          "total": 400,
+          "correct": 0,
+          "acc_pct": 0.0
+        },
+        "DANGEROUS_TRUNCATE": {
+          "total": 400,
+          "correct": 0,
+          "acc_pct": 0.0
+        },
+        "DANGEROUS_UPDATE": {
+          "total": 400,
+          "correct": 0,
+          "acc_pct": 0.0
+        },
+        "DANGEROUS_UPDATE_NO_WHERE": {
+          "total": 400,
+          "correct": 0,
+          "acc_pct": 0.0
+        },
+        "FIELD_INJECT": {
+          "total": 357,
+          "correct": 0,
+          "acc_pct": 0.0
+        },
+        "MULTI_ROW_WRITE": {
+          "total": 400,
+          "correct": 0,
+          "acc_pct": 0.0
+        },
+        "OPERATION_MISMATCH": {
+          "total": 400,
+          "correct": 0,
+          "acc_pct": 0.0
+        },
+        "SCOPE_ESCALATION": {
+          "total": 362,
+          "correct": 0,
+          "acc_pct": 0.0
+        },
+        "TARGET_MISMATCH": {
+          "total": 400,
+          "correct": 0,
+          "acc_pct": 0.0
+        }
+      }
+    },
+    "rule_filter": {
+      "baseline": "rule_filter",
+      "total": 4719,
+      "correct": 3668,
+      "accuracy_pct": 77.73,
+      "false_negatives": 1051,
+      "false_negative_rate_pct": 22.27,
+      "decision_distribution": {
+        "BLOCK": 3600,
+        "ALLOW": 1051,
+        "CONFIRM": 68
+      },
+      "latency_ms": {
+        "mean": 0.008,
+        "median": 0.003,
+        "p95": 0.024,
+        "p99": 0.042
+      },
+      "per_category_accuracy": {
+        "COMBINATION": {
+          "total": 400,
+          "correct": 400,
+          "acc_pct": 100.0
+        },
+        "DANGEROUS_DELETE": {
+          "total": 400,
+          "correct": 400,
+          "acc_pct": 100.0
+        },
+        "DANGEROUS_DELETE_WHERE": {
+          "total": 400,
+          "correct": 400,
+          "acc_pct": 100.0
+        },
+        "DANGEROUS_DROP": {
+          "total": 400,
+          "correct": 400,
+          "acc_pct": 100.0
+        },
+        "DANGEROUS_TRUNCATE": {
+          "total": 400,
+          "correct": 400,
+          "acc_pct": 100.0
+        },
+        "DANGEROUS_UPDATE": {
+          "total": 400,
+          "correct": 400,
+          "acc_pct": 100.0
+        },
+        "DANGEROUS_UPDATE_NO_WHERE": {
+          "total": 400,
+          "correct": 400,
+          "acc_pct": 100.0
+        },
+        "FIELD_INJECT": {
+          "total": 357,
+          "correct": 31,
+          "acc_pct": 8.68
+        },
+        "MULTI_ROW_WRITE": {
+          "total": 400,
+          "correct": 400,
+          "acc_pct": 100.0
+        },
+        "OPERATION_MISMATCH": {
+          "total": 400,
+          "correct": 400,
+          "acc_pct": 100.0
+        },
+        "SCOPE_ESCALATION": {
+          "total": 362,
+          "correct": 7,
+          "acc_pct": 1.93
+        },
+        "TARGET_MISMATCH": {
+          "total": 400,
+          "correct": 30,
+          "acc_pct": 7.5
+        }
+      }
+    },
+    "guardian_agent": {
+      "baseline": "guardian",
+      "total": 4719,
+      "correct": 4652,
+      "accuracy_pct": 98.58,
+      "false_negatives": 67,
+      "false_negative_rate_pct": 1.42,
+      "decision_distribution": {
+        "BLOCK": 3665,
+        "CONFIRM": 987,
+        "ALLOW": 67
+      },
+      "latency_ms": {
+        "mean": 9.58,
+        "median": 0.919,
+        "p95": 15.321,
+        "p99": 165.314
+      },
+      "per_category_accuracy": {
+        "COMBINATION": {
+          "total": 400,
+          "correct": 400,
+          "acc_pct": 100.0
+        },
+        "DANGEROUS_DELETE": {
+          "total": 400,
+          "correct": 400,
+          "acc_pct": 100.0
+        },
+        "DANGEROUS_DELETE_WHERE": {
+          "total": 400,
+          "correct": 400,
+          "acc_pct": 100.0
+        },
+        "DANGEROUS_DROP": {
+          "total": 400,
+          "correct": 400,
+          "acc_pct": 100.0
+        },
+        "DANGEROUS_TRUNCATE": {
+          "total": 400,
+          "correct": 400,
+          "acc_pct": 100.0
+        },
+        "DANGEROUS_UPDATE": {
+          "total": 400,
+          "correct": 400,
+          "acc_pct": 100.0
+        },
+        "DANGEROUS_UPDATE_NO_WHERE": {
+          "total": 400,
+          "correct": 400,
+          "acc_pct": 100.0
+        },
+        "FIELD_INJECT": {
+          "total": 357,
+          "correct": 335,
+          "acc_pct": 93.84
+        },
+        "MULTI_ROW_WRITE": {
+          "total": 400,
+          "correct": 400,
+          "acc_pct": 100.0
+        },
+        "OPERATION_MISMATCH": {
+          "total": 400,
+          "correct": 400,
+          "acc_pct": 100.0
+        },
+        "SCOPE_ESCALATION": {
+          "total": 362,
+          "correct": 322,
+          "acc_pct": 88.95
+        },
+        "TARGET_MISMATCH": {
+          "total": 400,
+          "correct": 395,
+          "acc_pct": 98.75
+        }
+      }
+    }
+  },
+  "source_mutations_file": "bird_eval\\full_bird\\results\\bird_full_mutations_dataset.json"
+}

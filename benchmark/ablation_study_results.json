@@ -1,0 +1,57 @@
+{
+  "benchmark": "BIRD 342 Fresh Mutations",
+  "total_cases": 342,
+  "dumb_blocklist_accuracy_pct": 43.86,
+  "pure_scoring_accuracy_pct": 100.0,
+  "full_system_accuracy_pct": 91.81,
+  "semantic_attacks": {
+    "total": 142,
+    "dumb_blocklist_accuracy_pct": 0.0,
+    "pure_scoring_accuracy_pct": 100.0,
+    "full_system_accuracy_pct": 80.28
+  },
+  "per_category": {
+    "DANGEROUS_DELETE": {
+      "total": 50,
+      "dumb_blocklist": 50,
+      "pure_scoring": 50,
+      "full_system": 50
+    },
+    "DANGEROUS_DELETE_WHERE": {
+      "total": 50,
+      "dumb_blocklist": 0,
+      "pure_scoring": 50,
+      "full_system": 50
+    },
+    "DANGEROUS_DROP": {
+      "total": 50,
+      "dumb_blocklist": 50,
+      "pure_scoring": 50,
+      "full_system": 50
+    },
+    "DANGEROUS_UPDATE": {
+      "total": 50,
+      "dumb_blocklist": 50,
+      "pure_scoring": 50,
+      "full_system": 50
+    },
+    "FIELD_INJECT": {
+      "total": 45,
+      "dumb_blocklist": 0,
+      "pure_scoring": 45,
+      "full_system": 44
+    },
+    "SCOPE_ESCALATION": {
+      "total": 47,
+      "dumb_blocklist": 0,
+      "pure_scoring": 47,
+      "full_system": 40
+    },
+    "TARGET_MISMATCH": {
+      "total": 50,
+      "dumb_blocklist": 0,
+      "pure_scoring": 50,
+      "full_system": 30
+    }
+  }
+}

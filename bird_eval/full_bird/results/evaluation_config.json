@@ -1,0 +1,11 @@
+{
+  "experiment_config": {
+    "guardian_disable_llm": true,
+    "guardian_read_safety_level": "STRICT",
+    "random_seed": 42,
+    "db_access_mode": "read_only_uri",
+    "mutation_source": "bird_eval\\full_bird\\results\\bird_full_mutations_dataset.json",
+    "eval_timestamp": "2026-09-21T13:28:03.644348+00:00",
+    "total_mutations_evaluated": 4719
+  }
+}

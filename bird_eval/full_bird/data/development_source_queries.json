@@ -1,0 +1,802 @@
+[
+  {
+    "question_id": 1471,
+    "db_id": "debit_card_specializing",
+    "question": "What is the ratio of customers who pay in EUR against customers who pay in CZK?",
+    "evidence": "ratio of customers who pay in EUR against customers who pay in CZK = count(Currency = 'EUR') / count(Currency = 'CZK').",
+    "SQL": "SELECT CAST(SUM(IIF(Currency = 'EUR', 1, 0)) AS FLOAT) / SUM(IIF(Currency = 'CZK', 1, 0)) AS ratio FROM customers",
+    "difficulty": "simple"
+  },
+  {
+    "question_id": 1472,
+    "db_id": "debit_card_specializing",
+    "question": "In 2012, who had the least consumption in LAM?",
+    "evidence": "Year 2012 can be presented as Between 201201 And 201212; The first 4 strings of the Date values in the yearmonth table can represent year.",
+    "SQL": "SELECT T1.CustomerID FROM customers AS T1 INNER JOIN yearmonth AS T2 ON T1.CustomerID = T2.CustomerID WHERE T1.Segment = 'LAM' AND SUBSTR(T2.Date, 1, 4) = '2012' GROUP BY T1.CustomerID ORDER BY SUM(T2.Consumption) ASC LIMIT 1",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1473,
+    "db_id": "debit_card_specializing",
+    "question": "What was the average monthly consumption of customers in SME for the year 2013?",
+    "evidence": "Average Monthly consumption = AVG(Consumption) / 12; Year 2013 can be presented as Between 201301 And 201312; The first 4 strings of the Date values in the yearmonth table can represent year.",
+    "SQL": "SELECT AVG(T2.Consumption) / 12 FROM customers AS T1 INNER JOIN yearmonth AS T2 ON T1.CustomerID = T2.CustomerID WHERE SUBSTR(T2.Date, 1, 4) = '2013' AND T1.Segment = 'SME'",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1476,
+    "db_id": "debit_card_specializing",
+    "question": "What was the difference in gas consumption between CZK-paying customers and EUR-paying customers in 2012?",
+    "evidence": "Year 2012 can be presented as Between 201201 And 201212; The first 4 strings of the Date values in the yearmonth table can represent year; Difference in Consumption = CZK customers consumption in 2012 - EUR customers consumption in 2012",
+    "SQL": "SELECT SUM(IIF(T1.Currency = 'CZK', T2.Consumption, 0)) - SUM(IIF(T1.Currency = 'EUR', T2.Consumption, 0)) FROM customers AS T1 INNER JOIN yearmonth AS T2 ON T1.CustomerID = T2.CustomerID WHERE SUBSTR(T2.Date, 1, 4) = '2012'",
+    "difficulty": "challenging"
+  },
+  {
+    "question_id": 1479,
+    "db_id": "debit_card_specializing",
+    "question": "Which year recorded the most consumption of gas paid in CZK?",
+    "evidence": "The first 4 strings of the Date values in the yearmonth table can represent year.",
+    "SQL": "SELECT SUBSTR(T2.Date, 1, 4) FROM customers AS T1 INNER JOIN yearmonth AS T2 ON T1.CustomerID = T2.CustomerID WHERE T1.Currency = 'CZK' GROUP BY SUBSTR(T2.Date, 1, 4) ORDER BY SUM(T2.Consumption) DESC LIMIT 1",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1480,
+    "db_id": "debit_card_specializing",
+    "question": "What was the gas consumption peak month for SME customers in 2013?",
+    "evidence": "Year 2013 can be presented as Between 201301 And 201312; The first 4 strings of the Date values in the yearmonth table can represent year; The 5th and 6th string of the date can refer to month.",
+    "SQL": "SELECT SUBSTR(T2.Date, 5, 2) FROM customers AS T1 INNER JOIN yearmonth AS T2 ON T1.CustomerID = T2.CustomerID WHERE SUBSTR(T2.Date, 1, 4) = '2013' AND T1.Segment = 'SME' GROUP BY SUBSTR(T2.Date, 5, 2) ORDER BY SUM(T2.Consumption) DESC LIMIT 1",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1481,
+    "db_id": "debit_card_specializing",
+    "question": "What is the difference in the annual average consumption of the customers with the least amount of consumption paid in CZK for 2013 between SME and LAM, LAM and KAM, and KAM and SME?",
+    "evidence": "annual average consumption of customer with the lowest consumption in each segment = total consumption per year / the number of customer with lowest consumption in each segment; Difference in annual average = SME's annual average - LAM's annual average; Difference in annual average = LAM's annual average - KAM's annual average; Year 2013 can be presented as Between 201301 And 201312; The first 4 strings of the Date values in the yearmonth table can represent year.",
+    "SQL": "SELECT CAST(SUM(IIF(T1.Segment = 'SME', T2.Consumption, 0)) AS REAL) / COUNT(T1.CustomerID) - CAST(SUM(IIF(T1.Segment = 'LAM', T2.Consumption, 0)) AS REAL) / COUNT(T1.CustomerID) , CAST(SUM(IIF(T1.Segment = 'LAM', T2.Consumption, 0)) AS REAL) / COUNT(T1.CustomerID) - CAST(SUM(IIF(T1.Segment = 'KAM', T2.Consumption, 0)) AS REAL) / COUNT(T1.CustomerID) , CAST(SUM(IIF(T1.Segment = 'KAM', T2.Consumption, 0)) AS REAL) / COUNT(T1.CustomerID) - CAST(SUM(IIF(T1.Segment = 'SME', T2.Consumption, 0)) AS REAL) / COUNT(T1.CustomerID) FROM customers AS T1 INNER JOIN yearmonth AS T2 ON T1.CustomerID = T2.CustomerID WHERE T1.Currency = 'CZK' AND T2.Consumption = ( SELECT MIN(Consumption) FROM yearmonth ) AND T2.Date BETWEEN 201301 AND 201312",
+    "difficulty": "challenging"
+  },
+  {
+    "question_id": 1482,
+    "db_id": "debit_card_specializing",
+    "question": "Which of the three segments\u2014SME, LAM and KAM\u2014has the biggest and lowest percentage increases in consumption paid in EUR between 2012 and 2013?",
+    "evidence": "Increase or Decrease = consumption for 2013 - consumption for 2012; Percentage of Increase = (Increase or Decrease / consumption for 2013) * 100%; The first 4 strings of the Date values in the yearmonth table can represent year",
+    "SQL": "SELECT CAST((SUM(IIF(T1.Segment = 'SME' AND T2.Date LIKE '2013%', T2.Consumption, 0)) - SUM(IIF(T1.Segment = 'SME' AND T2.Date LIKE '2012%', T2.Consumption, 0))) AS FLOAT) * 100 / SUM(IIF(T1.Segment = 'SME' AND T2.Date LIKE '2012%', T2.Consumption, 0)), CAST(SUM(IIF(T1.Segment = 'LAM' AND T2.Date LIKE '2013%', T2.Consumption, 0)) - SUM(IIF(T1.Segment = 'LAM' AND T2.Date LIKE '2012%', T2.Consumption, 0)) AS FLOAT) * 100 / SUM(IIF(T1.Segment = 'LAM' AND T2.Date LIKE '2012%', T2.Consumption, 0)) , CAST(SUM(IIF(T1.Segment = 'KAM' AND T2.Date LIKE '2013%', T2.Consumption, 0)) - SUM(IIF(T1.Segment = 'KAM' AND T2.Date LIKE '2012%', T2.Consumption, 0)) AS FLOAT) * 100 / SUM(IIF(T1.Segment = 'KAM' AND T2.Date LIKE '2012%', T2.Consumption, 0)) FROM customers AS T1 INNER JOIN yearmonth AS T2 ON T1.CustomerID = T2.CustomerID",
+    "difficulty": "challenging"
+  },
+  {
+    "question_id": 1483,
+    "db_id": "debit_card_specializing",
+    "question": "How much did customer 6 consume in total between August and November 2013?",
+    "evidence": "Between August And November 2013 refers to Between 201308 And 201311; The first 4 strings of the Date values in the yearmonth table can represent year; The 5th and 6th string of the date can refer to month.",
+    "SQL": "SELECT SUM(Consumption) FROM yearmonth WHERE CustomerID = 6 AND Date BETWEEN '201308' AND '201311'",
+    "difficulty": "simple"
+  },
+  {
+    "question_id": 1484,
+    "db_id": "debit_card_specializing",
+    "question": "How many more \"discount\" gas stations does the Czech Republic have compared to Slovakia?",
+    "evidence": "Czech Republic can be represented as the Country value in gasstations table is 'CZE'; Slovakia can be represented as the Country value in the gasstations table is 'SVK';  Computation of more \"discount\" gas stations= Total no. of discount gas stations in Czech Republic - Total no. of discount gas stations in Slovakia",
+    "SQL": "SELECT SUM(IIF(Country = 'CZE', 1, 0)) - SUM(IIF(Country = 'SVK', 1, 0)) FROM gasstations WHERE Segment = 'Discount'",
+    "difficulty": "simple"
+  },
+  {
+    "question_id": 1486,
+    "db_id": "debit_card_specializing",
+    "question": "Is it true that more SMEs pay in Czech koruna than in euros? If so, how many more?",
+    "evidence": "Amount of more SMEs = Total of SMEs pay using Currency CZK - Total of SMEs pay using Currency EUR",
+    "SQL": "SELECT SUM(Currency = 'CZK') - SUM(Currency = 'EUR') FROM customers WHERE Segment = 'SME'",
+    "difficulty": "simple"
+  },
+  {
+    "question_id": 1490,
+    "db_id": "debit_card_specializing",
+    "question": "How many percent of LAM customer consumed more than 46.73?",
+    "evidence": "Percentage of LAM customer consumed more than 46.73 = (Total no. of LAM customers who consumed more than 46.73 / Total no. of LAM customers) * 100.",
+    "SQL": "SELECT CAST(SUM(IIF(T2.Consumption > 46.73, 1, 0)) AS FLOAT) * 100 / COUNT(T1.CustomerID) FROM customers AS T1 INNER JOIN yearmonth AS T2 ON T1.CustomerID = T2.CustomerID WHERE T1.Segment = 'LAM'",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1493,
+    "db_id": "debit_card_specializing",
+    "question": "In February 2012, what percentage of customers consumed more than 528.3?",
+    "evidence": "February 2012 refers to '201202' in yearmonth.date; The first 4 strings of the Date values in the yearmonth table can represent year; The 5th and 6th string of the date can refer to month.",
+    "SQL": "SELECT CAST(SUM(IIF(Consumption > 528.3, 1, 0)) AS FLOAT) * 100 / COUNT(CustomerID) FROM yearmonth WHERE Date = '201202'",
+    "difficulty": "simple"
+  },
+  {
+    "question_id": 1498,
+    "db_id": "debit_card_specializing",
+    "question": "What is the highest monthly consumption in the year 2012?",
+    "evidence": "The first 4 strings of the Date values in the yearmonth table can represent year; The 5th and 6th string of the date can refer to month.",
+    "SQL": "SELECT SUM(Consumption) FROM yearmonth WHERE SUBSTR(Date, 1, 4) = '2012' GROUP BY SUBSTR(Date, 5, 2) ORDER BY SUM(Consumption) DESC LIMIT 1",
+    "difficulty": "simple"
+  },
+  {
+    "question_id": 1500,
+    "db_id": "debit_card_specializing",
+    "question": "Please list the product description of the products consumed in September, 2013.",
+    "evidence": "September 2013 refers to 201309; The first 4 strings of the Date values in the yearmonth table can represent year; The 5th and 6th string of the date can refer to month.",
+    "SQL": "SELECT T3.Description FROM transactions_1k AS T1 INNER JOIN yearmonth AS T2 ON T1.CustomerID = T2.CustomerID INNER JOIN products AS T3 ON T1.ProductID = T3.ProductID WHERE T2.Date = '201309'",
+    "difficulty": "simple"
+  },
+  {
+    "question_id": 1501,
+    "db_id": "debit_card_specializing",
+    "question": "Please list the countries of the gas stations with transactions taken place in June, 2013.",
+    "evidence": "June 2013 refers to '201306'; The first 4 strings of the Date values in the yearmonth table can represent year; The 5th and 6th string of the date can refer to month;",
+    "SQL": "SELECT DISTINCT T2.Country FROM transactions_1k AS T1 INNER JOIN gasstations AS T2 ON T1.GasStationID = T2.GasStationID INNER JOIN yearmonth AS T3 ON T1.CustomerID = T3.CustomerID WHERE T3.Date = '201306'",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1505,
+    "db_id": "debit_card_specializing",
+    "question": "Among the customers who paid in euro, how many of them have a monthly consumption of over 1000?",
+    "evidence": "Pays in euro = Currency = 'EUR'.",
+    "SQL": "SELECT COUNT(*) FROM yearmonth AS T1 INNER JOIN customers AS T2 ON T1.CustomerID = T2.CustomerID WHERE T2.Currency = 'EUR' AND T1.Consumption > 1000.00",
+    "difficulty": "simple"
+  },
+  {
+    "question_id": 1506,
+    "db_id": "debit_card_specializing",
+    "question": "Please list the product descriptions of the transactions taken place in the gas stations in the Czech Republic.",
+    "evidence": "Czech Republic can be represented as the Country value in the gasstations table is 'CZE'; ",
+    "SQL": "SELECT DISTINCT T3.Description FROM transactions_1k AS T1 INNER JOIN gasstations AS T2 ON T1.GasStationID = T2.GasStationID INNER JOIN products AS T3 ON T1.ProductID = T3.ProductID WHERE T2.Country = 'CZE'",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1507,
+    "db_id": "debit_card_specializing",
+    "question": "Please list the disparate time of the transactions taken place in the gas stations from chain no. 11.",
+    "evidence": "",
+    "SQL": "SELECT DISTINCT T1.Time FROM transactions_1k AS T1 INNER JOIN gasstations AS T2 ON T1.GasStationID = T2.GasStationID WHERE T2.ChainID = 11",
+    "difficulty": "simple"
+  },
+  {
+    "question_id": 1509,
+    "db_id": "debit_card_specializing",
+    "question": "Among the transactions made in the gas stations in the Czech Republic, how many of them are taken place after 2012/1/1?",
+    "evidence": "Czech Republic can be represented as the Country value in the gasstations table is 'CZE'",
+    "SQL": "SELECT COUNT(T1.TransactionID) FROM transactions_1k AS T1 INNER JOIN gasstations AS T2 ON T1.GasStationID = T2.GasStationID WHERE T2.Country = 'CZE' AND STRFTIME('%Y', T1.Date) >= '2012'",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1514,
+    "db_id": "debit_card_specializing",
+    "question": "What kind of currency did the customer paid at 16:25:00 in 2012/8/24?",
+    "evidence": "'2012/8/24' can be represented by '2012-08-24'; ",
+    "SQL": "SELECT DISTINCT T3.Currency FROM transactions_1k AS T1 INNER JOIN gasstations AS T2 ON T1.GasStationID = T2.GasStationID INNER JOIN customers AS T3 ON T1.CustomerID = T3.CustomerID WHERE T1.Date = '2012-08-24' AND T1.Time = '16:25:00'",
+    "difficulty": "simple"
+  },
+  {
+    "question_id": 1515,
+    "db_id": "debit_card_specializing",
+    "question": "What segment did the customer have at 2012/8/23 21:20:00?",
+    "evidence": "'2012/8/23' can be represented by '2012-08-23'",
+    "SQL": "SELECT T2.Segment FROM transactions_1k AS T1 INNER JOIN customers AS T2 ON T1.CustomerID = T2.CustomerID WHERE T1.date = '2012-08-23' AND T1.time = '21:20:00'",
+    "difficulty": "simple"
+  },
+  {
+    "question_id": 1521,
+    "db_id": "debit_card_specializing",
+    "question": "For all the transactions happened during 8:00-9:00 in 2012/8/26, how many happened in CZE?",
+    "evidence": "Czech Republic can be represented as the Country value in the gasstations table is 'CZE'; '2012/8/26' can be represented by '2012-08-26'; during 8:00-9:00 can be represented as Time BETWEEN '08:00:00' AND '09:00:00'",
+    "SQL": "SELECT COUNT(T1.TransactionID) FROM transactions_1k AS T1 INNER JOIN gasstations AS T2 ON T1.GasStationID = T2.GasStationID WHERE T1.Date = '2012-08-26' AND T1.Time BETWEEN '08:00:00' AND '09:00:00' AND T2.Country = 'CZE'",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1524,
+    "db_id": "debit_card_specializing",
+    "question": "What's the nationality of the customer who spent 548.4 in 2012/8/24?",
+    "evidence": "'2012/8/24' can be represented by '2012-08-24'",
+    "SQL": "SELECT T2.Country FROM transactions_1k AS T1 INNER JOIN gasstations AS T2 ON T1.GasStationID = T2.GasStationID WHERE T1.Date = '2012-08-24' AND T1.Price  = 548.4",
+    "difficulty": "simple"
+  },
+  {
+    "question_id": 1525,
+    "db_id": "debit_card_specializing",
+    "question": "What is the percentage of the customers who used EUR in 2012/8/25?",
+    "evidence": "'2012/8/25' can be represented by '2012-08-25'",
+    "SQL": "SELECT CAST(SUM(IIF(T2.Currency = 'EUR', 1, 0)) AS FLOAT) * 100 / COUNT(T1.CustomerID) FROM transactions_1k AS T1 INNER JOIN customers AS T2 ON T1.CustomerID = T2.CustomerID WHERE T1.Date = '2012-08-25'",
+    "difficulty": "simple"
+  },
+  {
+    "question_id": 1526,
+    "db_id": "debit_card_specializing",
+    "question": "For the customer who paid 634.8 in 2012/8/25, what was the consumption decrease rate from Year 2012 to 2013?",
+    "evidence": "'2012/8/24' can be represented by '2012-08-24'; Consumption decrease rate = (consumption_2012 - consumption_2013) / consumption_2012",
+    "SQL": "SELECT CAST(SUM(IIF(SUBSTRING(Date, 1, 4) = '2012', Consumption, 0)) - SUM(IIF(SUBSTRING(Date, 1, 4) = '2013', Consumption, 0)) AS FLOAT) / SUM(IIF(SUBSTRING(Date, 1, 4) = '2012', Consumption, 0)) FROM yearmonth WHERE CustomerID = ( SELECT T1.CustomerID FROM transactions_1k AS T1 INNER JOIN gasstations AS T2 ON T1.GasStationID = T2.GasStationID WHERE T1.Date = '2012-08-25' AND T1.Price  = 1513.12 )",
+    "difficulty": "challenging"
+  },
+  {
+    "question_id": 1528,
+    "db_id": "debit_card_specializing",
+    "question": "What is the percentage of \"premium\" against the overall segment in Country = \"SVK\"?",
+    "evidence": "",
+    "SQL": "SELECT CAST(SUM(IIF(Country = 'SVK' AND Segment = 'Premium', 1, 0)) AS FLOAT) * 100 / SUM(IIF(Country = 'SVK', 1, 0)) FROM gasstations",
+    "difficulty": "simple"
+  },
+  {
+    "question_id": 1529,
+    "db_id": "debit_card_specializing",
+    "question": "What is the amount spent by customer \"38508\" at the gas stations? How much had the customer spent in January 2012?",
+    "evidence": "January 2012 refers to the Date value = '201201'",
+    "SQL": "SELECT SUM(T1.Price ) , SUM(IIF(T3.Date = '201201', T1.Price, 0)) FROM transactions_1k AS T1 INNER JOIN gasstations AS T2 ON T1.GasStationID = T2.GasStationID INNER JOIN yearmonth AS T3 ON T1.CustomerID = T3.CustomerID WHERE T1.CustomerID = '38508'",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1531,
+    "db_id": "debit_card_specializing",
+    "question": "Who is the top spending customer and how much is the average price per single item purchased by this customer? What currency was being used?",
+    "evidence": "average price per single item = Total(price) / Total(amount)",
+    "SQL": "SELECT T2.CustomerID, SUM(T2.Price / T2.Amount), T1.Currency FROM customers AS T1 INNER JOIN transactions_1k AS T2 ON T1.CustomerID = T2.CustomerID WHERE T2.CustomerID = ( SELECT CustomerID FROM yearmonth ORDER BY Consumption DESC LIMIT 1 ) GROUP BY T2.CustomerID, T1.Currency",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1533,
+    "db_id": "debit_card_specializing",
+    "question": "For all the people who paid more than 29.00 per unit of product id No.5. Give their consumption status in the August of 2012.",
+    "evidence": "August of 2012 refers to the Date value = '201208' ; Price per unit of product = Price / Amount;",
+    "SQL": "SELECT T2.Consumption FROM transactions_1k AS T1 INNER JOIN yearmonth AS T2 ON T1.CustomerID = T2.CustomerID WHERE T1.Price / T1.Amount > 29.00 AND T1.ProductID = 5 AND T2.Date = '201208'",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1312,
+    "db_id": "student_club",
+    "question": "What's Angela Sanders's major?",
+    "evidence": "Angela Sanders is the full name; full name refers to first_name, last_name; major refers to major_name.",
+    "SQL": "SELECT T2.major_name FROM member AS T1 INNER JOIN major AS T2 ON T1.link_to_major = T2.major_id WHERE T1.first_name = 'Angela' AND T1.last_name = 'Sanders'",
+    "difficulty": "simple"
+  },
+  {
+    "question_id": 1317,
+    "db_id": "student_club",
+    "question": "Among the students from the Student_Club who attended the event \"Women's Soccer\", how many of them want a T-shirt that's in medium size?",
+    "evidence": "Women's Soccer is an event name; T-shirt that is in medium size refers to t_shirt_size = 'Medium'",
+    "SQL": "SELECT COUNT(T1.event_id) FROM event AS T1 INNER JOIN attendance AS T2 ON T1.event_id = T2.link_to_event INNER JOIN member AS T3 ON T2.link_to_member = T3.member_id WHERE T1.event_name = 'Women''s Soccer' AND T3.t_shirt_size = 'Medium'",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1322,
+    "db_id": "student_club",
+    "question": "Among the events attended by more than 10 members of the Student_Club, how many of them are meetings?",
+    "evidence": "meetings events refers to type = 'Meeting'; attended by more than 10 members refers to COUNT(event_id) > 10",
+    "SQL": "SELECT T1.event_name FROM event AS T1  INNER JOIN attendance AS T2 ON T1.event_id = T2.link_to_event GROUP BY T1.event_id  HAVING COUNT(T2.link_to_event) > 10 EXCEPT SELECT T1.event_name  FROM event AS T1  WHERE T1.type = 'Meeting'",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1323,
+    "db_id": "student_club",
+    "question": "List all the names of events that had an attendance of over 20 students but were not fundraisers.",
+    "evidence": "name of events refers to event_name; attendance of over 20 students COUNT(event_id) > 20.",
+    "SQL": "SELECT T1.event_name FROM event AS T1 INNER JOIN attendance AS T2 ON T1.event_id = T2.link_to_event GROUP BY T1.event_id HAVING COUNT(T2.link_to_event) > 20 EXCEPT SELECT T1.event_name FROM event AS T1  WHERE T1.type = 'Fundraiser'",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1331,
+    "db_id": "student_club",
+    "question": "What is the amount of the funds that the Vice President received?",
+    "evidence": "'Vice President' is a position of Student Club; funds received refers to amount.",
+    "SQL": "SELECT T2.amount FROM member AS T1 INNER JOIN income AS T2 ON T1.member_id = T2.link_to_member WHERE T1.position = 'Vice President'",
+    "difficulty": "simple"
+  },
+  {
+    "question_id": 1334,
+    "db_id": "student_club",
+    "question": "List the full name of the Student_Club members that grew up in Illinois state.",
+    "evidence": "full name of member refers to first_name, last_name",
+    "SQL": "SELECT T1.first_name, T1.last_name FROM member AS T1 INNER JOIN zip_code AS T2 ON T1.zip = T2.zip_code WHERE T2.state = 'Illinois'",
+    "difficulty": "simple"
+  },
+  {
+    "question_id": 1338,
+    "db_id": "student_club",
+    "question": "Was each expense in October Meeting on October 8, 2019 approved?",
+    "evidence": "event_name = 'October Meeting' where event_date = '2019-10-08'; approved = True means expenses was approved; approved = False means expenses was not approved",
+    "SQL": "SELECT T3.approved FROM event AS T1 INNER JOIN budget AS T2 ON T1.event_id = T2.link_to_event INNER JOIN expense AS T3 ON T2.budget_id = T3.link_to_budget WHERE T1.event_name = 'October Meeting' AND T1.event_date LIKE '2019-10-08%'",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1339,
+    "db_id": "student_club",
+    "question": "Calculate the total average cost that Elijah Allen spent in the events on September and October.",
+    "evidence": "Elijah Allen is the full name; full name refers to first_name, last_name; The 5th and 6th string of the expense_date in the expense table can refer to month; events in September and October refers to month(expense_date) = 9 OR month(expense_date) = 10",
+    "SQL": "SELECT AVG(T2.cost) FROM member AS T1 INNER JOIN expense AS T2 ON T1.member_id = T2.link_to_member WHERE T1.last_name = 'Allen' AND T1.first_name = 'Elijah' AND (SUBSTR(T2.expense_date, 6, 2) = '09' OR SUBSTR(T2.expense_date, 6, 2) = '10')",
+    "difficulty": "challenging"
+  },
+  {
+    "question_id": 1340,
+    "db_id": "student_club",
+    "question": "Calculate the difference of the total amount spent in all events by the Student_Club in year 2019 and 2020.",
+    "evidence": "The first 4 strings of the event_date values in the event table can represent year; The difference of the total amount spent = SUBTRACT(spent where YEAR(event_date) = 2019, spent where YEAR(event_date) = 2020)",
+    "SQL": "SELECT SUM(CASE WHEN SUBSTR(T1.event_date, 1, 4) = '2019' THEN T2.spent ELSE 0 END) - SUM(CASE WHEN SUBSTR(T1.event_date, 1, 4) = '2020' THEN T2.spent ELSE 0 END) AS num FROM event AS T1 INNER JOIN budget AS T2 ON T1.event_id = T2.link_to_event",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1344,
+    "db_id": "student_club",
+    "question": "What was the notes of the fundraising on 2019/9/14?",
+    "evidence": "fundraising on 2019/9/14 refers to source = 'Fundraising' where date_received = '2019-09-14'",
+    "SQL": "SELECT notes FROM income WHERE source = 'Fundraising' AND date_received = '2019-09-14'",
+    "difficulty": "simple"
+  },
+  {
+    "question_id": 1346,
+    "db_id": "student_club",
+    "question": "Tell the phone number of \"Carlo Jacobs\".",
+    "evidence": "Carlo Jacobs is the full name; full name refers to first_name, last_name;",
+    "SQL": "SELECT phone FROM member WHERE first_name = 'Carlo' AND last_name = 'Jacobs'",
+    "difficulty": "simple"
+  },
+  {
+    "question_id": 1350,
+    "db_id": "student_club",
+    "question": "What is the status of the event which bought \"Post Cards, Posters\" on 2019/8/20?",
+    "evidence": "'Post Cards, Posters' is an expense description; on 2019/8/20 refers to expense_date = '2019-8-20'; status of event refers to event_status",
+    "SQL": "SELECT T1.event_status FROM budget AS T1 INNER JOIN expense AS T2 ON T1.budget_id = T2.link_to_budget WHERE T2.expense_description = 'Post Cards, Posters' AND T2.expense_date = '2019-08-20'",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1351,
+    "db_id": "student_club",
+    "question": "What was Brent Thomason's major?",
+    "evidence": "Brent Thomason is the full name; full name refers to first_name, last_name; major refers to major_name",
+    "SQL": "SELECT T2.major_name FROM member AS T1 INNER JOIN major AS T2 ON T1.link_to_major = T2.major_id WHERE T1.first_name = 'Brent' AND T1.last_name = 'Thomason'",
+    "difficulty": "simple"
+  },
+  {
+    "question_id": 1352,
+    "db_id": "student_club",
+    "question": "For all the club members from \"Business\" major, how many of them wear medium size t-shirt?",
+    "evidence": "'Business' is a major name; wear medium size t-shirt refers to t_shirt_size = 'Medium'",
+    "SQL": "SELECT COUNT(T1.member_id) FROM member AS T1 INNER JOIN major AS T2 ON T1.link_to_major = T2.major_id WHERE T2.major_name = 'Business' AND T1.t_shirt_size = 'Medium'",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1356,
+    "db_id": "student_club",
+    "question": "Which department was the President of the club in?",
+    "evidence": "'President' is a position of Student Club",
+    "SQL": "SELECT T2.department FROM member AS T1 INNER JOIN major AS T2 ON T1.link_to_major = T2.major_id WHERE T1.position = 'President'",
+    "difficulty": "simple"
+  },
+  {
+    "question_id": 1357,
+    "db_id": "student_club",
+    "question": "State the date Connor Hilton paid his/her dues.",
+    "evidence": "Connor Hilton is the full name; full name refers to first_name, last_name; date the dues was paid refers to date_received where source = 'Dues';",
+    "SQL": "SELECT T2.date_received FROM member AS T1 INNER JOIN income AS T2 ON T1.member_id = T2.link_to_member WHERE T1.first_name = 'Connor' AND T1.last_name = 'Hilton' AND T2.source = 'Dues'",
+    "difficulty": "simple"
+  },
+  {
+    "question_id": 1359,
+    "db_id": "student_club",
+    "question": "How many times was the budget in Advertisement for \"Yearly Kickoff\" meeting more than \"October Meeting\"?",
+    "evidence": "budget in Advertisement refer to category = 'Advertisement' in the budget table; DIVIDE(SUM(amount when event_name = 'Yearly Kickoff'), SUM(amount when event_name = 'October Meeting'))",
+    "SQL": "SELECT CAST(SUM(CASE WHEN T2.event_name = 'Yearly Kickoff' THEN T1.amount ELSE 0 END) AS REAL) / SUM(CASE WHEN T2.event_name = 'October Meeting' THEN T1.amount ELSE 0 END) FROM budget AS T1 INNER JOIN event AS T2 ON T1.link_to_event = T2.event_id WHERE T1.category = 'Advertisement' AND T2.type = 'Meeting'",
+    "difficulty": "challenging"
+  },
+  {
+    "question_id": 1361,
+    "db_id": "student_club",
+    "question": "What is the total cost of the pizzas for all the events?",
+    "evidence": "total cost of the pizzas refers to SUM(cost) where expense_description = 'Pizza'",
+    "SQL": "SELECT SUM(cost) FROM expense WHERE expense_description = 'Pizza'",
+    "difficulty": "simple"
+  },
+  {
+    "question_id": 1362,
+    "db_id": "student_club",
+    "question": "How many cities are there in Orange County, Virginia?",
+    "evidence": "Orange County is the county name, Virginia is the state name",
+    "SQL": "SELECT COUNT(city) FROM zip_code WHERE county = 'Orange County' AND state = 'Virginia'",
+    "difficulty": "simple"
+  },
+  {
+    "question_id": 1368,
+    "db_id": "student_club",
+    "question": "What does the person with the phone number \"809-555-3360\" major in?",
+    "evidence": "major in refers to major_name",
+    "SQL": "SELECT T2.major_name FROM member AS T1 INNER JOIN major AS T2 ON T1.link_to_major = T2.major_id WHERE T1.phone = '809-555-3360'",
+    "difficulty": "simple"
+  },
+  {
+    "question_id": 1371,
+    "db_id": "student_club",
+    "question": "How many members attended the \"Women's Soccer\" event?",
+    "evidence": "'Women's Soccer' is the event name;",
+    "SQL": "SELECT COUNT(T2.link_to_member) FROM event AS T1 INNER JOIN attendance AS T2 ON T1.event_id = T2.link_to_event WHERE T1.event_name = 'Women''s Soccer'",
+    "difficulty": "simple"
+  },
+  {
+    "question_id": 1375,
+    "db_id": "student_club",
+    "question": "List all the members of the \"School of Applied Sciences, Technology and Education\" department.",
+    "evidence": "list all members means to list all the full name; full name refers to first_name, last_name;",
+    "SQL": "SELECT T1.first_name, T1.last_name FROM member AS T1 INNER JOIN major AS T2 ON T1.link_to_major = T2.major_id WHERE T2.department = 'School of Applied Sciences, Technology and Education'",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1376,
+    "db_id": "student_club",
+    "question": "Among all the closed events, which event has the highest spend-to-budget ratio?",
+    "evidence": "closed events refers to event_name where status = 'Closed'; highest spend-to budget ratio refers to MAX(DIVIDE(spent, amount))",
+    "SQL": "SELECT T2.event_name FROM budget AS T1 INNER JOIN event AS T2 ON T1.link_to_event = T2.event_id WHERE T2.status = 'Closed' ORDER BY T1.spent / T1.amount DESC LIMIT 1",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1378,
+    "db_id": "student_club",
+    "question": "What is the highest amount of budget spend for an event?",
+    "evidence": "highest amount of budget spend refers to MAX(spent)",
+    "SQL": "SELECT MAX(spent) FROM budget",
+    "difficulty": "simple"
+  },
+  {
+    "question_id": 1380,
+    "db_id": "student_club",
+    "question": "What is the total amount of money spent for food?",
+    "evidence": "total amount of money spent refers to SUM(spent); spent for food refers to category = 'Food'",
+    "SQL": "SELECT SUM(spent) FROM budget WHERE category = 'Food'",
+    "difficulty": "simple"
+  },
+  {
+    "question_id": 1381,
+    "db_id": "student_club",
+    "question": "List the name of students that have attended more than 7 events.",
+    "evidence": "name of students means the full name; full name refers to first_name, last_name; attended more than 7 events refers to COUNT(link_to_event) > 7",
+    "SQL": "SELECT T1.first_name, T1.last_name FROM member AS T1 INNER JOIN attendance AS T2 ON T1.member_id = T2.link_to_member GROUP BY T2.link_to_member HAVING COUNT(T2.link_to_event) > 7",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1387,
+    "db_id": "student_club",
+    "question": "Which student has been entrusted to manage the budget for the Yearly Kickoff?",
+    "evidence": "name of students means the full name; full name refers to first_name, last_name;'Yearly Kickoff' is an event name;",
+    "SQL": "SELECT T4.first_name, T4.last_name FROM event AS T1 INNER JOIN budget AS T2 ON T1.event_id = T2.link_to_event INNER JOIN expense AS T3 ON T2.budget_id = T3.link_to_budget INNER JOIN member AS T4 ON T3.link_to_member = T4.member_id WHERE T1.event_name = 'Yearly Kickoff'",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1389,
+    "db_id": "student_club",
+    "question": "Which event has the lowest cost?",
+    "evidence": "event refers to event_name; lowest cost means MIN(cost)",
+    "SQL": "SELECT T1.event_name FROM event AS T1 INNER JOIN budget AS T2 ON T1.event_id = T2.link_to_event INNER JOIN expense AS T3 ON T2.budget_id = T3.link_to_budget ORDER BY T3.cost LIMIT 1",
+    "difficulty": "simple"
+  },
+  {
+    "question_id": 1390,
+    "db_id": "student_club",
+    "question": "Based on the total cost for all event, what is the percentage of cost for Yearly Kickoff event?",
+    "evidence": "percentage = DIVIDE(SUM(cost where event_name = 'Yearly Kickoff'), SUM(cost)) * 100",
+    "SQL": "SELECT CAST(SUM(CASE WHEN T1.event_name = 'Yearly Kickoff' THEN T3.cost ELSE 0 END) AS REAL) * 100 / SUM(T3.cost) FROM event AS T1 INNER JOIN budget AS T2 ON T1.event_id = T2.link_to_event INNER JOIN expense AS T3 ON T2.budget_id = T3.link_to_budget",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1392,
+    "db_id": "student_club",
+    "question": "Indicate the top source of funds received in September 2019 based on their amount.",
+    "evidence": "top source funds refers to MAX(source); September 2019 means date_received BETWEEN '2019-09-01' and '2019-09-30'",
+    "SQL": "SELECT source FROM income WHERE date_received BETWEEN '2019-09-01' and '2019-09-30' ORDER BY source DESC LIMIT 1",
+    "difficulty": "simple"
+  },
+  {
+    "question_id": 1394,
+    "db_id": "student_club",
+    "question": "How many members of the Student_Club have major in 'Physics Teaching'?",
+    "evidence": "'Physics Teaching' is the major_name;",
+    "SQL": "SELECT COUNT(T2.member_id) FROM major AS T1 INNER JOIN member AS T2 ON T1.major_id = T2.link_to_major WHERE T1.major_name = 'Physics Teaching'",
+    "difficulty": "simple"
+  },
+  {
+    "question_id": 1398,
+    "db_id": "student_club",
+    "question": "Name the event with the highest amount spent on advertisement.",
+    "evidence": "Name of event refers to event_name; highest amount spent on advertisement refers to MAX(spent) where category = 'Advertisement'",
+    "SQL": "SELECT T2.event_name FROM budget AS T1 INNER JOIN event AS T2 ON T1.link_to_event = T2.event_id WHERE T1.category = 'Advertisement' ORDER BY T1.spent DESC LIMIT 1",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1399,
+    "db_id": "student_club",
+    "question": "Did Maya Mclean attend the 'Women's Soccer' event?",
+    "evidence": "Maya Mclean is the full name; full name refers to first_name, last_name; 'Women's Soccer' is an event_name",
+    "SQL": "SELECT CASE WHEN T3.event_name = 'Women''s Soccer' THEN 'YES' END AS result FROM member AS T1 INNER JOIN attendance AS T2 ON T1.member_id = T2.link_to_member INNER JOIN event AS T3 ON T2.link_to_event = T3.event_id WHERE T1.first_name = 'Maya' AND T1.last_name = 'Mclean'",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1401,
+    "db_id": "student_club",
+    "question": "Indicate the cost of posters for 'September Speaker' event.",
+    "evidence": "'Posters' is the expense description; 'September Speaker' is an event name",
+    "SQL": "SELECT T3.cost FROM event AS T1 INNER JOIN budget AS T2 ON T1.event_id = T2.link_to_event INNER JOIN expense AS T3 ON T2.budget_id = T3.link_to_budget WHERE T1.event_name = 'September Speaker' AND T3.expense_description = 'Posters'",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1403,
+    "db_id": "student_club",
+    "question": "Indicate the name of the closed event whose cost has exceeded the budget the most.",
+    "evidence": "closed events refers to event_name where status = 'Closed'; exceed the budget the most refers to MIN(remaining) where remaining < 0",
+    "SQL": "SELECT T2.event_name FROM budget AS T1 INNER JOIN event AS T2 ON T2.event_id = T1.link_to_event WHERE T1.event_status = 'Closed' AND T1.remaining < 0 ORDER BY T1.remaining LIMIT 1",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1404,
+    "db_id": "student_club",
+    "question": "Identify the type of expenses and their total value approved for 'October Meeting' event.",
+    "evidence": "total value refers to SUM(cost); 'October Meeting' is an event name;",
+    "SQL": "SELECT T1.type, SUM(T3.cost) FROM event AS T1 INNER JOIN budget AS T2 ON T1.event_id = T2.link_to_event INNER JOIN expense AS T3 ON T2.budget_id = T3.link_to_budget WHERE T1.event_name = 'October Meeting'",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1405,
+    "db_id": "student_club",
+    "question": "Calculate the amount budgeted for 'April Speaker' event. List all the budgeted categories for said event in an ascending order based on their amount budgeted.",
+    "evidence": "'April Speaker' is an event name; amount budgeted refers to SUM(amount); budget categories refers to category",
+    "SQL": "SELECT T2.category, SUM(T2.amount) FROM event AS T1 JOIN budget AS T2 ON T1.event_id = T2.link_to_event WHERE T1.event_name = 'April Speaker' GROUP BY T2.category ORDER BY SUM(T2.amount) ASC",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1409,
+    "db_id": "student_club",
+    "question": "Mention the total expense used on 8/20/2019.",
+    "evidence": "total expense refers SUM(cost) where expense_date = '2019-08-20'",
+    "SQL": "SELECT SUM(cost) FROM expense WHERE expense_date = '2019-08-20'",
+    "difficulty": "simple"
+  },
+  {
+    "question_id": 1410,
+    "db_id": "student_club",
+    "question": "List out the full name and total cost that member id \"rec4BLdZHS2Blfp4v\" incurred?",
+    "evidence": "full name refers to first_name, last name",
+    "SQL": "SELECT T1.first_name, T1.last_name, SUM(T2.cost) FROM member AS T1 INNER JOIN expense AS T2 ON T1.member_id = T2.link_to_member WHERE T1.member_id = 'rec4BLdZHS2Blfp4v'",
+    "difficulty": "simple"
+  },
+  {
+    "question_id": 1411,
+    "db_id": "student_club",
+    "question": "State what kind of expenses that Sacha Harrison incurred?",
+    "evidence": "kind of expenses refers to expense_description; Sacha Harrison is the full name; full name refers to first_name, last_name;",
+    "SQL": "SELECT T2.expense_description FROM member AS T1 INNER JOIN expense AS T2 ON T1.member_id = T2.link_to_member WHERE T1.first_name = 'Sacha' AND T1.last_name = 'Harrison'",
+    "difficulty": "simple"
+  },
+  {
+    "question_id": 1422,
+    "db_id": "student_club",
+    "question": "State the category of events were held at MU 215.",
+    "evidence": "'MU 215' is the location of event; ",
+    "SQL": "SELECT DISTINCT T2.category FROM event AS T1 INNER JOIN budget AS T2 ON T1.event_id = T2.link_to_event WHERE T1.location = 'MU 215'",
+    "difficulty": "simple"
+  },
+  {
+    "question_id": 1426,
+    "db_id": "student_club",
+    "question": "List the last name of members with a major in environmental engineering and include its department and college name.",
+    "evidence": "'Environmental Engineering' is the major_name;",
+    "SQL": "SELECT T2.last_name, T1.department, T1.college FROM major AS T1 INNER JOIN member AS T2 ON T1.major_id = T2.link_to_major WHERE T2.position = 'Member' AND T1.major_name = 'Environmental Engineering'",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1427,
+    "db_id": "student_club",
+    "question": "What are the budget category of the events located at MU 215 and a guest speaker type with a 0 budget spent?",
+    "evidence": "budget category refers to category; events located at refers to location; type = 'Guest Speaker'; 0 budget spent refers to spent = 0; ",
+    "SQL": "SELECT DISTINCT T2.category, T1.type FROM event AS T1 INNER JOIN budget AS T2 ON T1.event_id = T2.link_to_event WHERE T1.location = 'MU 215' AND T2.spent = 0 AND T1.type = 'Guest Speaker'",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1432,
+    "db_id": "student_club",
+    "question": "Among the members with t-shirt size of medium, what is the percentage of the amount 50 received by the Student_Club?",
+    "evidence": "t_shirt_size = 'Medium' where position = 'Member'; percentage = DIVIDE(COUNT(amount = 50), COUNT(member_id)) * 100",
+    "SQL": "SELECT CAST(SUM(CASE WHEN T2.amount = 50 THEN 1.0 ELSE 0 END) AS REAL) * 100 / COUNT(T2.income_id) FROM member AS T1 INNER JOIN income AS T2 ON T1.member_id = T2.link_to_member WHERE T1.position = 'Member' AND T1.t_shirt_size = 'Medium'",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1435,
+    "db_id": "student_club",
+    "question": "List the names of closed event as \"game\" that was closed from 3/15/2019 to 3/20/2020.",
+    "evidence": "name of events refers event_name; game event that was closed refers to type = 'Game' where status = 'Closed'; event_date BETWEEN '2019-03-15' and '2020-03-20'; ",
+    "SQL": "SELECT DISTINCT event_name FROM event WHERE type = 'Game' AND date(SUBSTR(event_date, 1, 10)) BETWEEN '2019-03-15' AND '2020-03-20' AND status = 'Closed'",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1457,
+    "db_id": "student_club",
+    "question": "Give the full name and contact number of members who had to spend more than average on each expense.",
+    "evidence": "full name refers to first_name, last_name; contact number refers to phone; had spent more than average on each expense refers to cost > AVG(cost)",
+    "SQL": "SELECT DISTINCT T3.first_name, T3.last_name, T3.phone FROM expense AS T1 INNER JOIN budget AS T2 ON T1.link_to_budget = T2.budget_id INNER JOIN member AS T3 ON T3.member_id = T1.link_to_member WHERE T1.cost > ( SELECT AVG(T1.cost) FROM expense AS T1 INNER JOIN budget AS T2 ON T1.link_to_budget = T2.budget_id INNER JOIN member AS T3 ON T3.member_id = T1.link_to_member )",
+    "difficulty": "challenging"
+  },
+  {
+    "question_id": 1460,
+    "db_id": "student_club",
+    "question": "Write the full name of the member who spent money for water, veggie tray and supplies and include the cost of it.",
+    "evidence": "full name refers to first_name, last name; spent money for refers expense description; expense_description = 'Water, Veggie tray, supplies'",
+    "SQL": "SELECT T2.first_name, T2.last_name, T1.cost FROM expense AS T1 INNER JOIN member AS T2 ON T1.link_to_member = T2.member_id WHERE T1.expense_description = 'Water, Veggie tray, supplies'",
+    "difficulty": "challenging"
+  },
+  {
+    "question_id": 1464,
+    "db_id": "student_club",
+    "question": "Write the full names of students who received funds on the date of 9/9/2019 and include the amount received.",
+    "evidence": "full name refers to first_name, last_name, amount of funds received refers to amount, received funds on date refers to date_received",
+    "SQL": "SELECT DISTINCT T3.first_name, T3.last_name, T4.amount FROM event AS T1 INNER JOIN attendance AS T2 ON T1.event_id = T2.link_to_event INNER JOIN member AS T3 ON T3.member_id = T2.link_to_member INNER JOIN income AS T4 ON T4.link_to_member = T3.member_id WHERE T4.date_received = '2019-09-09'",
+    "difficulty": "challenging"
+  },
+  {
+    "question_id": 1149,
+    "db_id": "thrombosis_prediction",
+    "question": "Are there more in-patient or outpatient who were male? What is the deviation in percentage?",
+    "evidence": "male refers to SEX = 'M'; in-patient refers to Admission = '+'; outpatient refers to Admission = '-'; percentage = DIVIDE(COUNT(ID) where SEX = 'M' and Admission = '+', COUNT(ID) where SEX\u00a0 = 'M' and Admission = '-')",
+    "SQL": "SELECT CAST(SUM(CASE WHEN Admission = '+' THEN 1 ELSE 0 END) AS REAL) * 100 / SUM(CASE WHEN Admission = '-' THEN 1 ELSE 0 END) FROM Patient WHERE SEX = 'M'",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1150,
+    "db_id": "thrombosis_prediction",
+    "question": "What is the percentage of female patient were born after 1930?",
+    "evidence": "female refers to Sex = 'F'; patient who were born after 1930 refers to year(Birthday) > '1930'; calculation = DIVIDE(COUNT(ID) where year(Birthday) > '1930' and SEX = 'F'), (COUNT(ID) where SEX = 'F')",
+    "SQL": "SELECT CAST(SUM(CASE WHEN STRFTIME('%Y', Birthday) > '1930' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(*) FROM Patient WHERE SEX = 'F'",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1152,
+    "db_id": "thrombosis_prediction",
+    "question": "What is the ratio of outpatient to inpatient followed up treatment among all the 'SLE' diagnosed patient?",
+    "evidence": "'SLE' diagnosed patient means Diagnosis = 'SLE'; inpatient refers to Admission = '+'; outpatient refers to Admission = '-'; calculation =  DIVIDE(COUNT(ID) where Diagnosis = 'SLE' and Admission = '+', COUNT(ID) where Diagnosis = 'SLE' and Admission = '-')",
+    "SQL": "SELECT SUM(CASE WHEN Admission = '+' THEN 1.0 ELSE 0 END) / SUM(CASE WHEN Admission = '-' THEN 1 ELSE 0 END) FROM Patient WHERE Diagnosis = 'SLE'",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1153,
+    "db_id": "thrombosis_prediction",
+    "question": "What is the disease patient '30609' diagnosed with. List all the date of laboratory tests done for this patient.",
+    "evidence": "'30609' is the Patient ID; disease means Diagnosis",
+    "SQL": "SELECT T1.Diagnosis, T2.Date FROM Patient AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID WHERE T1.ID = 30609",
+    "difficulty": "simple"
+  },
+  {
+    "question_id": 1155,
+    "db_id": "thrombosis_prediction",
+    "question": "List the patient ID, sex and birthday of patient with LDH beyond normal range.",
+    "evidence": "LDH beyond normal range refers to LDH > '500';",
+    "SQL": "SELECT DISTINCT T1.ID, T1.SEX, T1.Birthday FROM Patient AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID WHERE T2.LDH > 500",
+    "difficulty": "simple"
+  },
+  {
+    "question_id": 1156,
+    "db_id": "thrombosis_prediction",
+    "question": "State the ID and age of patient with positive degree of coagulation.",
+    "evidence": "age refers to SUBTRACT(year(current_timestamp), year(Birthday)); positive degree of coagulation refers to RVVT = '+';",
+    "SQL": "SELECT DISTINCT T1.ID, STRFTIME('%Y', CURRENT_TIMESTAMP) - STRFTIME('%Y', T1.Birthday) FROM Patient AS T1 INNER JOIN Examination AS T2 ON T1.ID = T2.ID WHERE T2.RVVT = '+'",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1157,
+    "db_id": "thrombosis_prediction",
+    "question": "For patients with severe degree of thrombosis, list their ID, sex and disease the patient is diagnosed with.",
+    "evidence": "severe degree of thrombosis refers to thrombosis = 2; disease refers to diagnosis;",
+    "SQL": "SELECT DISTINCT T1.ID, T1.SEX, T1.Diagnosis FROM Patient AS T1 INNER JOIN Examination AS T2 ON T1.ID = T2.ID WHERE T2.Thrombosis = 2",
+    "difficulty": "simple"
+  },
+  {
+    "question_id": 1162,
+    "db_id": "thrombosis_prediction",
+    "question": "How many female patients who came at the hospital in 1997 was immediately followed at the outpatient clinic?",
+    "evidence": "female refers to sex = 'F'; came at the hospital in 1997 refers to year(Description) = '1997'; immediately followed at the outpatient clinic refers to Admission = '-'",
+    "SQL": "SELECT COUNT(*) FROM Patient WHERE STRFTIME('%Y', Description) = '1997' AND SEX = 'F' AND Admission = '-'",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1164,
+    "db_id": "thrombosis_prediction",
+    "question": "How many of the patients with the most serious thrombosis cases examined in 1997 are women?",
+    "evidence": "the most serious thrombosis refers to Thrombosis = '1' (the most severe one); women refers to sex = 'F'",
+    "SQL": "SELECT  COUNT(*) FROM Patient AS T1 INNER JOIN Examination AS T2 ON T1.ID = T2.ID WHERE T1.SEX = 'F' AND STRFTIME('%Y', T2.`Examination Date`) = '1997' AND T2.Thrombosis = 1",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1166,
+    "db_id": "thrombosis_prediction",
+    "question": "What are the symptoms observed by the youngest patient to ever did a medical examination? Identify their diagnosis.",
+    "evidence": "The larger the birthday value, the younger the person is, and vice versa; symptoms observed refers to the symptoms is not NULL",
+    "SQL": "SELECT T2.Symptoms, T1.Diagnosis FROM Patient AS T1 INNER JOIN Examination AS T2 ON T1.ID = T2.ID WHERE T2.Symptoms IS NOT NULL ORDER BY T1.Birthday DESC LIMIT 1",
+    "difficulty": "simple"
+  },
+  {
+    "question_id": 1168,
+    "db_id": "thrombosis_prediction",
+    "question": "The oldest SJS patient's medical laboratory work was completed on what date, and what age was the patient when they initially arrived at the hospital?",
+    "evidence": "The larger the birthday value, the younger the person is, and vice versa; 'SJS' refers to diagnosis; (SUBTRACT(year(`First Date`)), year(Birthday)); age of the patients when they initially arrived at the hospital refers to year(Birthday)",
+    "SQL": "SELECT T1.Date, STRFTIME('%Y', T2.`First Date`) - STRFTIME('%Y', T2.Birthday),T2.Birthday FROM Laboratory AS T1 INNER JOIN Patient AS T2 ON T1.ID = T2.ID WHERE T2.Diagnosis = 'SJS' AND T2.Birthday IS NOT NULL ORDER BY T2.Birthday ASC LIMIT 1",
+    "difficulty": "challenging"
+  },
+  {
+    "question_id": 1169,
+    "db_id": "thrombosis_prediction",
+    "question": "What is the ratio of male to female patients among all those with abnormal uric acid counts?",
+    "evidence": "male refers to SEX = 'M'; female refers to SEX = 'F'; abnormal uric acid refers to UA < = '8.0' where SEX = 'M', UA < = '6.5' where SEX = 'F'; calculation = DIVIDE(SUM(UA <= '8.0' and SEX = 'M'), SUM(UA <= '6.5 and SEX = 'F'))",
+    "SQL": "SELECT CAST(SUM(CASE WHEN T2.UA <= 8.0 AND T1.SEX = 'M' THEN 1 ELSE 0 END) AS REAL) / SUM(CASE WHEN T2.UA <= 6.5 AND T1.SEX = 'F' THEN 1 ELSE 0 END) FROM Patient AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID",
+    "difficulty": "challenging"
+  },
+  {
+    "question_id": 1171,
+    "db_id": "thrombosis_prediction",
+    "question": "How many underage patients were examined during the course of the three-year period from 1990 to 1993?",
+    "evidence": "underage patients refers to year(Birthday) < 18; three-year period from 1990 to 1993 refers to year(`Examination Date`) between '1990' and '1993'",
+    "SQL": "SELECT COUNT(T1.ID) FROM Patient AS T1 INNER JOIN Examination AS T2 ON T1.ID = T2.ID WHERE STRFTIME('%Y', T2.`Examination Date`) BETWEEN '1990' AND '1993' AND STRFTIME('%Y', T2.`Examination Date`) - STRFTIME('%Y', T1.Birthday) < 18",
+    "difficulty": "challenging"
+  },
+  {
+    "question_id": 1175,
+    "db_id": "thrombosis_prediction",
+    "question": "How old was the patient who had the highest hemoglobin count at the time of the examination, and what is the doctor's diagnosis?",
+    "evidence": "How old the patient refers to SUBTRACT(year(`Examination Date`), year(Birthday)); the highest hemoglobin count refers to MAX(HGB)",
+    "SQL": "SELECT STRFTIME('%Y', T2.Date) - STRFTIME('%Y', T1.Birthday), T1.Diagnosis FROM Patient AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID ORDER BY T2.HGB DESC LIMIT 1",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1179,
+    "db_id": "thrombosis_prediction",
+    "question": "For the patient who was diagnosed with SLE on 1994/2/19, what was his/her anti-Cardiolipin antibody concentration status on 1993/11/12?",
+    "evidence": "diagnosed with SLE refers to Diagnosis = 'SLE'; 1994/2/19 refers to Description = '1994-02-19'; anti-Cardiolipin refers to aCL IgM; 1993/11/12 refers to Examination Date = '1993/11/12'",
+    "SQL": "SELECT `aCL IgA`, `aCL IgG`, `aCL IgM` FROM Examination WHERE ID IN ( SELECT ID FROM Patient WHERE Diagnosis = 'SLE' AND Description = '1994-02-19' ) AND `Examination Date` = '1993-11-12'",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1185,
+    "db_id": "thrombosis_prediction",
+    "question": "For the patient who was born on 1959/2/18, what is the decrease rate for his/her total cholesterol from November to December in 1981?",
+    "evidence": "born on 1959/2/18 refers to Birthday = '1959-02-18'; calculation = DIVISION(SUBTRACT(SUM(Birthday = '1959-02-18' and Date like '1981-11-%' THEN `T-CHO`), SUM(Birthday = '1959-02-18' and Date like '1981-12-%' THEN `T-CHO`)), SUM(Birthday = '1959-02-18' and Date like '1981-12-%' THEN `T-CHO`))",
+    "SQL": "SELECT CAST((SUM(CASE WHEN T2.Date LIKE '1981-11-%' THEN T2.`T-CHO` ELSE 0 END) - SUM(CASE WHEN T2.Date LIKE '1981-12-%' THEN T2.`T-CHO` ELSE 0 END)) AS REAL) / SUM(CASE WHEN T2.Date LIKE '1981-12-%' THEN T2.`T-CHO` ELSE 0 END) FROM Patient AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID WHERE T1.Birthday = '1959-02-18'",
+    "difficulty": "challenging"
+  },
+  {
+    "question_id": 1187,
+    "db_id": "thrombosis_prediction",
+    "question": "How many patients who were examined between 1987/7/6 and 1996/1/31 had a GPT level greater than 30 and an ALB level less than 4? List them by their ID.",
+    "evidence": "examined between 1987/7/6 and 1996/1/31 refers to Date BETWEEN '1987-07-06' AND '1996-01-31'; GPT level greater than 30 refers to GPT > 30; ALB level less than 4 ALB < 4",
+    "SQL": "SELECT DISTINCT ID FROM Laboratory WHERE Date BETWEEN '1987-07-06' AND '1996-01-31' AND GPT > 30 AND ALB < 4",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1189,
+    "db_id": "thrombosis_prediction",
+    "question": "What number of patients with a degree of thrombosis level 2 and ANA pattern of only S, have a level of anti-Cardiolip in antibody (IgM) 20% higher than average?",
+    "evidence": "thrombosis level 2 refers to Thrombosis = 2; ANA pattern of only S refers to ANA = 'S'; average anti-Cardiolip in antibody (IgM) refers to AVG(`aCL IgM`); calculation = MULTIPLY(AVG + AVG, 0.2)",
+    "SQL": "SELECT COUNT(*) FROM Examination WHERE Thrombosis = 2 AND `ANA Pattern` = 'S' AND `aCL IgM` > (SELECT AVG(`aCL IgM`) * 1.2 FROM Examination WHERE Thrombosis = 2 AND `ANA Pattern` = 'S')",
+    "difficulty": "challenging"
+  },
+  {
+    "question_id": 1192,
+    "db_id": "thrombosis_prediction",
+    "question": "List all patients who were followed up at the outpatient clinic who underwent a laboratory test in October 1991 and had a total blood bilirubin level within the normal range.",
+    "evidence": "followed up at the outpatient clinic refers to Admission = '-'; laboratory test in April 1981 refers to Date like '1991-10%'; blood bilirubin level within the normal range refers to T-BIL < 2.0; ",
+    "SQL": "SELECT DISTINCT T1.ID FROM Patient AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID WHERE T1.Admission = '-' AND T2.`T-BIL` < 2.0 AND T2.Date LIKE '1991-10-%'",
+    "difficulty": "challenging"
+  },
+  {
+    "question_id": 1195,
+    "db_id": "thrombosis_prediction",
+    "question": "What is the average blood albumin level for female patients with a PLT greater than 400 who have been diagnosed with SLE?",
+    "evidence": "average blood albumin level refers to AVG(ALB); female refers to SEX = 'F'; PLT greater than 400 refers to PLT > 400; diagnosed with SLE refers to Diagnosis= 'SLE'",
+    "SQL": "SELECT AVG(T2.ALB) FROM Patient AS T1 INNER JOIN Laboratory AS T2 ON T1.ID = T2.ID WHERE T2.PLT > 400 AND T1.Diagnosis = 'SLE' AND T1.SEX = 'F'",
+    "difficulty": "moderate"
+  },
+  {
+    "question_id": 1198,
+    "db_id": "thrombosis_prediction",
+    "question": "How many female patients were given an APS diagnosis?",
+    "evidence": "female refers to SEX = 'F'; APS diagnosis refers to Diagnosis='APS'",
+    "SQL": "SELECT COUNT(ID) FROM Patient WHERE SEX = 'F' AND Diagnosis = 'APS'",
+    "difficulty": "simple"
+  },
+  {
+    "question_id": 1201,
+    "db_id": "thrombosis_prediction",
+    "question": "What percentage of patients who were born in 1980 and were diagnosed with RA are women?",
+    "evidence": "born in 1980 refers to YEAR(BIRTHDAY) = '1980'; 'RA' refers to Diagnosis='RA' ; women refers to SEX = 'F'; calculation = DIVIDE(SUM(SEX = 'F'), COUNT(SEX)) * 100",
+    "SQL": "SELECT CAST(SUM(CASE WHEN SEX = 'F' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(ID) FROM Patient WHERE Diagnosis = 'RA' AND STRFTIME('%Y', Birthday) = '1980'",
+    "difficulty": "moderate"
+  }
+]

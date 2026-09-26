@@ -300,28 +300,12 @@ def _apply_safety_overrides(
 
     # ---------------------------------------------------------------
     # 5. Field mismatch
-    # For data-modifying operations (UPDATE, INSERT, DELETE), mutating
-    # the wrong field corrupts records and is deterministically blocked.
-    # For SELECT queries, an unmapped field mismatch reflects safe harmless
-    # columns; it triggers human confirmation (CONFIRM) rather than a hard BLOCK.
     # ---------------------------------------------------------------
 
-    if (
-        operation in {
-            "UPDATE",
-            "INSERT",
-            "DELETE",
-        }
-        and "FIELD_MISMATCH" in mismatches
-    ):
+    if "FIELD_MISMATCH" in mismatches:
         risk_score = max(
             risk_score,
             7.0
-        )
-    elif operation == "SELECT" and "FIELD_MISMATCH" in mismatches:
-        risk_score = max(
-            risk_score,
-            4.0
         )
 
     # ---------------------------------------------------------------
