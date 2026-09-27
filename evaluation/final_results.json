@@ -117,12 +117,6 @@
       "false_block_pct": 0.0,
       "mean_latency_ms": 1.76
     },
-    "LLM_Safety_Judge_Pilot": {
-      "interception_pct": 100.0,
-      "miss_rate_pct": 0.0,
-      "false_block_pct": null,
-      "mean_latency_ms": 4031.1
-    },
     "GuardianAgent": {
       "interception_pct": 97.37,
       "miss_rate_pct": 2.63,

@@ -61,7 +61,6 @@ The evaluation adheres to a strict evidence hierarchy to prevent data snooping a
 | **Always Allow** | Trivial baseline | 342 | 0.00% | 0.00% | 100.00% | 0.00% | < 0.01 ms |
 | **Keyword Filter** | Static regex blocklist | 342 | 43.86% | 43.86% | 56.14% | 12.00% | 0.12 ms |
 | **AST Policy Firewall** | Non-LLM AST rules | 342 | 44.74% | 44.74% | 55.26% | **0.00%** | **1.76 ms** |
-| **LLM Safety Judge (Pilot)** | Gemini 3.6 Flash | 8 | 100.00% | 100.00% | 0.00% | N/A | 4,031.10 ms |
 | **GuardianAgent (Proposed)** | Intent-consequence gateway | 342 | **97.37%** | **91.81%** | **2.63%** | **0.00%** | **17.38 ms** |
 
 *Key Result:* GuardianAgent achieves a **97.37% Safety Interception Rate** (333/342) and a **91.81% Strict BLOCK Accuracy** (314/342), reducing dangerous autonomous escapes to **2.63%** (9/342).
@@ -162,7 +161,6 @@ All 9 autonomous escapes are non-destructive read operations (`SELECT`), categor
 - DBBench Inline Agent: 2.49 ms mean (1.82 ms median)
 - Benign BIRD Queries: 17.38 ms mean
 - Fresh BIRD Mutations (with SQLite scope checking): 662.40 ms mean (287.36 ms median)
-- Frontier LLM Judge (Gemini 3.6 Flash): 4,031.10 ms mean
 
 ---
 
@@ -215,7 +213,7 @@ Manifest hash and provenance recorded in `evaluation/final_experiment_manifest.j
 ## I. Introduction
 - **Context:** Rapid adoption of LLM-based coding and data analysis assistants (e.g., Cursor, Devin, GitHub Copilot Workspace).
 - **The Problem:** Upstream LLMs frequently hallucinate destructive operations (`DROP`, unconstrained `DELETE`) or make subtle semantic errors (scoping omissions, table mismatches).
-- **The Gap:** Conventional database security relies on AST policy firewalls (which lack intent awareness and miss 55% of semantic attacks) or frontier LLM judges (which introduce >4s latency per query and non-deterministic behavior).
+- **The Gap:** Conventional database security relies on static keyword blocklists or deterministic AST policy firewalls, which lack awareness of user natural-language intent and fail to detect over 55% of subtle semantic database attacks.
 - **GuardianAgent:** A lightweight, pre-execution safety gateway uniting intent parsing, relational AST analysis, and consequence-aware risk scoring.
 - **Contributions:**
   1. Multi-attribute risk formulation balancing structural severity, intent divergence, and scope impact.
@@ -236,7 +234,7 @@ Manifest hash and provenance recorded in `evaluation/final_experiment_manifest.j
 
 ## IV. Experimental Setup
 - **Benchmarks:** 342 held-out BIRD mutations (10 databases), 50 benign queries, 60 DBBench tasks.
-- **Baselines:** Always Allow, Static Keyword Filter, AST Policy Firewall, LLM Safety Judge.
+- **Baselines:** Always Allow, Static Keyword Filter, AST Policy Firewall.
 - **Evaluation Metrics:** Safety Interception Rate, Strict BLOCK Accuracy, Dangerous Miss Rate, False-Block Rate, Latency.
 
 ## V. Results

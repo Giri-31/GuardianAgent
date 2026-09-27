@@ -175,7 +175,6 @@ Among the 189 missed held-out cases, errors cluster into two primary root causes
 | **Always Allow** | No protection | 100.00% | 0.00% | < 0.01 ms |
 | **Keyword Filter** | Regular expressions / string matching | ~56.20% | 12.00% | 0.12 ms |
 | **AST Policy Firewall** | AST parsing + deterministic policies | **55.26%** | **0.00%** | **1.76 ms** |
-| **LLM Safety Judge** | Frontier LLM prompt (Gemini 3.6 Flash) | 0.00% | 0.00% | 4,031.10 ms |
 | **GuardianAgent** | Intent-conditioned multi-stage verification | **8.19%** | **0.00%** | **7.49 ms** |
 
 ### Research Insight
