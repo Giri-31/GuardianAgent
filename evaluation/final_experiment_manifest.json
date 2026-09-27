@@ -2,7 +2,7 @@
   "experiment_title": "GuardianAgent Final IEEE Conference Experimental Freeze",
   "version": "2.0-calibrated-frozen",
   "timestamp_utc": "2026-09-26T10:29:48Z",
-  "git_commit": "14c31a74460772b15f4a9302d04068eb33c9cabf",
+  "git_commit": "08f747fac1cd6861615de83e3924e3cf4d052ec2",
   "environment": {
     "os": "Windows-10-10.0.19045-SP0",
     "python_version": "3.13.15 (tags/v3.13.15:4061bc4, Aug  5 2026, 13:05:39) [MSC v.1944 64 bit (AMD64)]",
