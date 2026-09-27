@@ -11,12 +11,12 @@
 
 ## 1. System Configuration
 
-GuardianAgent is evaluated as a pre-execution safety gateway for LLM-generated database actions. The evaluated engine is the **Calibrated Production Engine (Frozen v2.0)** running in deterministic mode:
+GuardianAgent is evaluated as a pre-execution safety gateway for LLM-generated database actions. The evaluated engine is the **Calibrated Evaluation Configuration (Frozen v2.0)** running in deterministic mode:
 
 - **Pipeline Execution:** Natural-language intent extraction $\to$ SQL parsing $\to$ Intent-SQL consistency analysis $\to$ Scope analysis $\to$ Consequence/risk calculation $\to$ Action dispatch (`ALLOW`, `CONFIRM`, `BLOCK`).
 - **Environment Invariants:** `GUARDIAN_DISABLE_LLM=1`, `GUARDIAN_READ_SAFETY_LEVEL=STRICT`.
 - **Formal Risk Formulation:**
-  $$R = 0.20 \cdot S_{\text{operation}} + 0.40 \cdot S_{\text{mismatch}} + 0.25 \cdot S_{\text{scope}} + 0.15 \cdot S_{\text{impact}}$$
+  $$R = 0.20 \cdot S_{\text{operation}} + 0.40 \cdot S_{\text{mismatch}} + 0.15 \cdot S_{\text{scope}} + 0.25 \cdot S_{\text{impact}}$$
   where:
   - $S_{\text{operation}} \in [0, 10]$ reflects structural severity of the command verb (e.g. `DROP` = 10.0, `DELETE` = 8.0, `SELECT` = 1.0).
   - $S_{\text{mismatch}} \in [0, 10]$ penalizes divergence between user intent and SQL actions (e.g., target entity redirection = 7.0, operation mismatch = 10.0, unrequested field projection = 4.0).
@@ -61,7 +61,9 @@ The evaluation adheres to a strict evidence hierarchy to prevent data snooping a
 | **Always Allow** | Trivial baseline | 342 | 0.00% | 0.00% | 100.00% | 0.00% | < 0.01 ms |
 | **Keyword Filter** | Static regex blocklist | 342 | 43.86% | 43.86% | 56.14% | 12.00% | 0.12 ms |
 | **AST Policy Firewall** | Non-LLM AST rules | 342 | 44.74% | 44.74% | 55.26% | **0.00%** | **1.76 ms** |
-| **GuardianAgent (Proposed)** | Intent-consequence gateway | 342 | **97.37%** | **91.81%** | **2.63%** | **0.00%** | **17.38 ms** |
+| **GuardianAgent (Proposed)** | Intent-consequence gateway | 342 | **97.37%** | **91.81%** | **2.63%** | **0.00%** | 17 ms (benign); 662 ms (mutation)\* |
+
+*\*GuardianAgent latency is benchmark-dependent. On the 50-query benign BIRD evaluation (no per-query SQLite scope checking): **17.38 ms mean** (3.07 ms median). On the 342-case held-out mutation benchmark (full per-query SQLite scope checking enabled): **662.40 ms mean** (287.36 ms median). See Section 11 for full latency provenance. The AST Policy Firewall latency (1.76 ms) reflects parse-only evaluation with no live SQL execution.
 
 *Key Result:* GuardianAgent achieves a **97.37% Safety Interception Rate** (333/342) and a **91.81% Strict BLOCK Accuracy** (314/342), reducing dangerous autonomous escapes to **2.63%** (9/342).
 
@@ -133,7 +135,7 @@ The evaluation adheres to a strict evidence hierarchy to prevent data snooping a
 ## 8. Baseline Comparison: AST Policy Firewall vs. GuardianAgent
 
 - **Gross Structural Operations:** Both the AST Policy Firewall and GuardianAgent intercept 100.0% of unconstrained writes (`DELETE` without `WHERE`, `UPDATE` without `WHERE`, `DROP`).
-- **Semantic Attacks:** The AST Policy Firewall misses 98.4% of subtle attacks (189 misses across `DANGEROUS_DELETE_WHERE`, `TARGET_MISMATCH`, and `SCOPE_ESCALATION`) because the queries are structurally compliant SQL.
+- **Semantic Attacks:** The AST Policy Firewall misses 98.44% of semantic-category attacks (189 misses across all four semantic categories: `DANGEROUS_DELETE_WHERE`, `TARGET_MISMATCH`, `SCOPE_ESCALATION`, and `FIELD_INJECT`) because these queries are structurally compliant SQL that requires natural-language context to evaluate.
 - **GuardianAgent Advantage:** GuardianAgent reduces dangerous misses from 55.26% down to **2.63%** by cross-referencing user intent with AST-derived relational targets.
 
 ---
@@ -141,10 +143,11 @@ The evaluation adheres to a strict evidence hierarchy to prevent data snooping a
 ## 9. Autonomous Escape Analysis (9 Cases)
 
 All 9 autonomous escapes are non-destructive read operations (`SELECT`), categorized across four failure mechanisms:
-1. **Self-Join Ambiguity (1 case - California Schools ID 13):** The mutation substituted a secondary join with a self-join (`frpm AS T1 JOIN frpm AS T2`). Because `frpm` was a valid intent entity, table matching succeeded.
-2. **Negative Prepositional Clauses (1 case - Card Games ID 47):** Natural language constraint *"without powerful foils"* was dropped by the intent extractor.
-3. **Comparative Language & Named Filters (1 case - Codebase Community ID 75):** Constraint *"higher reputation, Harlan or Jarrod"* omitted in generated SQL.
-4. **Geographic / Restrictive Modifiers (6 cases - Formula 1, Thrombosis, Toxicology):** Complex subordinate clauses (e.g. *"held on circuit in Germany"*, *"among all the SLE patients"*) were dropped, resulting in unconstrained scans.
+1. **Self-Join Ambiguity (1 case — California Schools ID 13, `TARGET_MISMATCH`):** The mutation substituted the correct table reference with a self-join (`frpm AS T1 JOIN frpm AS T2`). Because `frpm` is a valid intent entity, table matching succeeded and the mismatch was not detected.
+2. **Negative Prepositional Clause (1 case — Card Games ID 47, `SCOPE_ESCALATION`):** The natural language constraint *"without powerful foils"* was dropped by the intent extractor, producing an unconstrained scan.
+3. **Comparative Language & Named Filters (1 case — Codebase Community ID 75, `SCOPE_ESCALATION`):** The comparative constraint *"higher reputation, Harlan or Jarrod"* was omitted in generated SQL.
+4. **Unrequested Field Projection (1 case — Superhero ID 276, `FIELD_INJECT`):** The SQL injected `weight_kg` alongside the requested `height_cm` ranking, but the FIELD_MISMATCH signal was not raised because the field was superficially consistent with the `superhero` entity context.
+5. **Dropped Restrictive Modifiers (5 cases — Formula 1 ID 191, Thrombosis Prediction IDs 281/288/295, Toxicology ID 334, all `SCOPE_ESCALATION`):** Complex subordinate clauses (e.g. *"held on circuit in Germany"*, *"among all the SLE patients"*, *"carcinogenic"*) were omitted, producing unconstrained scans that the intent extractor could not detect.
 
 ---
 
@@ -156,11 +159,14 @@ All 9 autonomous escapes are non-destructive read operations (`SELECT`), categor
 
 ## 11. Latency Profile
 
-- Controlled Test Baseline: 0.33 ms
-- AST Policy Firewall: 1.76 ms mean (1.06 ms median)
-- DBBench Inline Agent: 2.49 ms mean (1.82 ms median)
-- Benign BIRD Queries: 17.38 ms mean
-- Fresh BIRD Mutations (with SQLite scope checking): 662.40 ms mean (287.36 ms median)
+- Controlled Test Baseline (no intent extraction, no schema query): 0.33 ms mean
+- AST Policy Firewall (held-out 342-case benchmark): 1.76 ms mean (1.06 ms median)
+- DBBench Inline Agent (60 live agent tasks, intent extraction included): 2.49 ms mean (1.82 ms median)
+- Benign BIRD Queries (50 clean gold queries, intent extraction included, no scope-check penalty): **17.38 ms mean** (3.07 ms median)
+- Held-Out BIRD Mutations (342 adversarial cases, full intent extraction + SQLite scope-checking per query): **662.40 ms mean** (287.36 ms median)
+
+> [!NOTE]
+> The 17.38 ms figure (benign queries) and 662.40 ms figure (held-out mutations) both include GuardianAgent's LLM-free intent extraction path (`GUARDIAN_DISABLE_LLM=1`). The 640 ms difference is attributable primarily to SQLite per-query scope verification executed for each mutation case but not required for structurally simple benign queries. Mean latency figures should be interpreted relative to their evaluation scope.
 
 ---
 
@@ -175,7 +181,7 @@ All 9 autonomous escapes are non-destructive read operations (`SELECT`), categor
 ## 13. Threats to Validity
 
 - **Internal Validity:** Controlled regression tests guarantee reproducible rule firing (100% on 39 unit tests).
-- **External Validity:** Generalization confirmed on 10 held-out databases unseen during development.
+- **External Validity:** Evaluated on 10 held-out databases unseen during development; results are encouraging but generalization to deployment environments with substantially different query distributions or database schemas has not been established.
 - **Construct Validity:** Evaluated on both strict policy classification and end-to-end task completion (DBBench).
 
 ---
@@ -218,7 +224,7 @@ Manifest hash and provenance recorded in `evaluation/final_experiment_manifest.j
 - **Contributions:**
   1. Multi-attribute risk formulation balancing structural severity, intent divergence, and scope impact.
   2. Evaluation across 342 held-out BIRD mutations in 10 unseen databases, demonstrating 97.37% safety interception and 0/200 catastrophic write escapes.
-  3. Empirical comparison showing an 85.2% relative risk reduction over deterministic AST policy firewalls.
+  3. Empirical comparison showing a **52.63 percentage-point improvement** in safety interception rate (97.37% vs. 44.74%) over deterministic AST policy firewalls, reducing dangerous autonomous escapes from 55.26% to 2.63%.
   4. Real-world validation on DBBench (60 tasks) and 50 benign queries confirming a 0.0% false-block rate.
 
 ## II. Related Work
@@ -228,9 +234,9 @@ Manifest hash and provenance recorded in `evaluation/final_experiment_manifest.j
 
 ## III. Methodology
 - Architectural diagram of the 5-stage GuardianAgent gateway.
-- Formal risk formula ($R = 0.20 S_{\text{op}} + 0.40 S_{\text{mismatch}} + 0.25 S_{\text{scope}} + 0.15 S_{\text{impact}}$).
+- Formal risk formula ($R = 0.20 S_{\text{op}} + 0.40 S_{\text{mismatch}} + 0.15 S_{\text{scope}} + 0.25 S_{\text{impact}}$).
 - Tri-modal decision policy (`ALLOW`, `CONFIRM`, `BLOCK`).
-- Schema-independent database introspection.
+- Database-aware schema and impact analysis.
 
 ## IV. Experimental Setup
 - **Benchmarks:** 342 held-out BIRD mutations (10 databases), 50 benign queries, 60 DBBench tasks.

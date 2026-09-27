@@ -175,12 +175,12 @@ Among the 189 missed held-out cases, errors cluster into two primary root causes
 | **Always Allow** | No protection | 100.00% | 0.00% | < 0.01 ms |
 | **Keyword Filter** | Regular expressions / string matching | ~56.20% | 12.00% | 0.12 ms |
 | **AST Policy Firewall** | AST parsing + deterministic policies | **55.26%** | **0.00%** | **1.76 ms** |
-| **GuardianAgent** | Intent-conditioned multi-stage verification | **8.19%** | **0.00%** | **7.49 ms** |
+| **GuardianAgent** | Intent-conditioned multi-stage verification | **2.63%** | **0.00%** | **17.38 ms** |
 
 ### Research Insight
 - The AST Policy Firewall is fast (1.76 ms) and completely immune to false-blocking benign queries (0.0%), making it an excellent first-line defense for gross structural errors (DROP, TRUNCATE, unconstrained UPDATE/DELETE).
 - However, the AST Policy Firewall suffers a **55.26% dangerous miss rate** because over half of LLM database failures are **semantic attacks** where the SQL is grammatically pristine but directly contradicts user intent.
-- GuardianAgent reduces dangerous misses from 55.26% to **8.19%** (an **85.2% relative risk reduction**) while adding only ~5.7 ms of verification overhead.
+- GuardianAgent reduces dangerous misses from 55.26% to **2.63%** — a **52.63 percentage-point improvement** in safety interception rate (97.37% vs. 44.74%) — while adding only ~15.6 ms of verification overhead.
 
 ---
 

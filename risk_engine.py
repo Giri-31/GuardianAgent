@@ -4,7 +4,7 @@ GuardianAgent Risk Engine
 Consequence-aware risk scoring for SQL actions.
 
 Design principles:
-    - Schema-independent
+    - Database-aware schema and impact analysis
     - No table/column/entity-specific rules
     - Weighted risk model
     - Explicit safety overrides

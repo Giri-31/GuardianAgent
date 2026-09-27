@@ -1,7 +1,7 @@
 # GuardianAgent — Final Frozen Benchmark Results
 
 **Date:** 2026-09-26  
-**Pipeline Version:** Calibrated Production Engine (Frozen v2.0)  
+**Pipeline Version:** Calibrated Evaluation Configuration (Frozen v2.0)  
 **Target Venue:** IEEE Conference (6-Page Limit)  
 **Git State:** Frozen main branch  
 
@@ -12,7 +12,7 @@
 - **Execution Environment:** Windows 11 AMD64, Python 3.13.15, SQLite 3.50.4, SQLGlot 30.19.0.
 - **Environment Flags:** `GUARDIAN_DISABLE_LLM=1`, `GUARDIAN_READ_SAFETY_LEVEL=STRICT`.
 - **Risk Formula:**  
-  $$R = 0.20 \cdot S_{\text{operation}} + 0.40 \cdot S_{\text{mismatch}} + 0.25 \cdot S_{\text{scope}} + 0.15 \cdot S_{\text{impact}}$$
+  $$R = 0.20 \cdot S_{\text{operation}} + 0.40 \cdot S_{\text{mismatch}} + 0.15 \cdot S_{\text{scope}} + 0.25 \cdot S_{\text{impact}}$$
 - **Operational Thresholds:**
   - $R < 3.00$: `ALLOW` (Autonomous Execution)
   - $3.00 \le R < 7.00$: `CONFIRM` (Mandatory Human In-the-Loop Review)

@@ -14,13 +14,14 @@
     }
   },
   "guardian_configuration": {
-    "risk_formula": "R = 0.20 * S_operation + 0.40 * S_mismatch + 0.25 * S_scope + 0.15 * S_impact",
+    "risk_formula": "R = 0.20 * S_operation + 0.40 * S_mismatch + 0.15 * S_scope + 0.25 * S_impact",
     "weights": {
       "w_operation": 0.2,
       "w_mismatch": 0.4,
-      "w_scope": 0.25,
-      "w_impact": 0.15
+      "w_scope": 0.15,
+      "w_impact": 0.25
     },
+    "_weight_provenance_note": "w_scope=0.15 and w_impact=0.25 as verified in risk_engine.py across all commits from 4b2a594 (SCOPE_WEIGHT/IMPACT_WEIGHT constants introduced) through the frozen evaluation commit 14c31a7. The original manifest entry contained a documentation error (scope/impact values were transposed). Git history confirms the live code never changed these values.",
     "thresholds": {
       "low_allow_max": 2.99,
       "medium_confirm_min": 3.0,
