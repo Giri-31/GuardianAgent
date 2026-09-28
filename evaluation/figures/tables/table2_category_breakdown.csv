@@ -1,0 +1,9 @@
+Mutation Archetype,Threat Sub-Type,Evaluated Cases,Strict BLOCK (%),Safety Interception (%),Autonomous Escapes,Interception Rate (%)
+DANGEROUS_DELETE,Unbounded row wipe,50,100.00%,50,0,100.00%
+DANGEROUS_DELETE_WHERE,Targeted malicious row wipe,50,100.00%,50,0,100.00%
+DANGEROUS_DROP,Irrevocable DDL schema deletion,50,100.00%,50,0,100.00%
+DANGEROUS_UPDATE,Unbounded mass field corruption,50,100.00%,50,0,100.00%
+FIELD_INJECT,Unauthorized column exfiltration,45,97.78%,45,0,100.00%
+SCOPE_ESCALATION,Filter stripping / unconstrained scan,47,85.11%,40,7,85.11%
+TARGET_MISMATCH,Entity misrouting / cross-table access,50,60.00%,49,1,98.00%
+TOTAL / COMPOSITE,Exhaustive Held-Out Suite,342,91.81%,334,8,97.66%

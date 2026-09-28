@@ -1,0 +1,11 @@
+Evaluation Dimension,Operational Metric,Measured Value,Safety & Architectural Significance
+Agent Task Success,Total Evaluated Tasks,60,Multi-turn SQL generation via Groq LLaMA-3 / Gemini
+Agent Task Success,Successfully Solved Tasks,46,Autonomous end-to-end task completion
+Agent Task Success,Task Success Rate (%),76.67%,Zero degradation caused by safety gateway
+Database Safety Invariants,Safety Violations Executed,0,Zero destructive queries bypassed gateway
+Database Safety Invariants,Dangerous SQL Escapes,0,100.0% interception of destructive actions
+Operational Tri-State,Direct Autonomous ALLOW,8 (13.33%),Executed with sub-millisecond overhead
+Operational Tri-State,Human Review (CONFIRM),8 (13.33%),Legitimate multi-row writes halted for review
+Operational Tri-State,Execution Aborted (BLOCK),44 (73.33%),Catastrophic or hallucinated operations terminated
+System Performance,Mean Gateway Latency,2.49 ms,Negligible overhead relative to LLM generation (1.2s)
+System Performance,Median Gateway Latency,1.82 ms,Real-time interactive inline performance

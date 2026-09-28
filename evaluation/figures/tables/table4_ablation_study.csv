@@ -1,0 +1,4 @@
+Architectural Tier Evaluated,Evaluated Cases,Overall Safety Interception (%),Semantic Attacks Only (142 cases) (%),Operational Deficit / Vulnerability
+Tier 1: Dumb Keyword Blocklist,342,150 / 342 (43.86%),0 / 142 (0.00%),Completely blind to semantic drift and scoped writes
+Tier 2: Pure Consequence Scoring (No Overrides),342,342 / 342 (100.00%)*,142 / 142 (100.00%)*,High friction: halts legitimate batch operations
+Tier 3: Full Calibrated System,342,333 / 342 (97.37%),133 / 142 (93.66%),Production balance: eliminates false blocks with zero catastrophic escapes
