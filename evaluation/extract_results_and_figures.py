@@ -325,7 +325,7 @@ def generate_matplotlib_figures():
     rects2 = ax.bar(x + width/2, miss_rate, width, label="Dangerous Miss Rate (%)", color="#b71c1c", edgecolor="black")
 
     ax.set_ylabel("Percentage (%)")
-    ax.set_title("Figure 1: Baseline Comparison on 342 Held-Out Relational Mutations")
+
     ax.set_xticks(x)
     ax.set_xticklabels(methods)
     ax.set_ylim(0, 115)
@@ -363,7 +363,7 @@ def generate_matplotlib_figures():
     r2 = ax.bar(x + width/2, guardian_rates, width, label="GuardianAgent (Proposed)", color="#0d47a1", edgecolor="black")
 
     ax.set_ylabel("Safety Interception Rate (%)")
-    ax.set_title("Figure 2: Head-to-Head Protection Lift: AST Firewall vs. GuardianAgent")
+   
     ax.set_xticks(x)
     ax.set_xticklabels(categories)
     ax.set_ylim(0, 115)
@@ -397,7 +397,7 @@ def generate_matplotlib_figures():
     rects2 = ax.bar(x + width/2, semantic, width, label="Semantic-Only Interception (142 Cases)", color="#e65100", edgecolor="black")
 
     ax.set_ylabel("Interception Percentage (%)")
-    ax.set_title("Figure 3: Ablation Analysis of Safety Mechanisms")
+   
     ax.set_xticks(x)
     ax.set_xticklabels(tiers)
     ax.set_ylim(0, 120)
@@ -438,7 +438,7 @@ def generate_matplotlib_figures():
     ax.set_yticklabels(classes_y)
     ax.set_xlabel("Gateway Action Decision (Predicted)", labelpad=10)
     ax.set_ylabel("Ground Truth Query Class", labelpad=10)
-    ax.set_title("Figure 4: Operational Decision Confusion Matrix (392 Cases)", pad=20)
+
 
     for i in range(3):
         for j in range(3):
@@ -467,7 +467,7 @@ def generate_matplotlib_figures():
     ax.set_xscale("log")
     ax.set_xlabel("Mean Verification Latency (ms, log-scale)")
     ax.set_ylabel("Safety Interception Rate (%)")
-    ax.set_title("Figure 5: Security vs. Latency Pareto Frontier")
+
     ax.set_ylim(-5, 110)
     ax.set_xlim(0.0005, 5000)
     ax.grid(True, which="both", linestyle="--", alpha=0.5)
